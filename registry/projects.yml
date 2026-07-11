@@ -486,7 +486,7 @@ projects:
     workspace: maxone-sign
     domain: sign.maxone.one
     server: maxone-prod
-    deploy: single
+    deploy: blue-green
     container: maxone-sign-app
     supabase_url: null  # nacktes Postgres (maxone-sign-db), kein Supabase
     status: live
