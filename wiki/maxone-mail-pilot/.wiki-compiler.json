@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "name": "maxone-mail-pilot",
+  "mode": "knowledge",
+  "sources": [
+    { "path": "c:/Users/max/Projects/maxone.one/briefings/ZENTINEL-STALWART-BIBEL.md" },
+    { "path": "C:/Users/max/.claude/CLAUDE.md", "section_filter": "mail|stalwart|brevo|zentinel|secrets|tls" },
+    { "path": "C:/Users/max/.claude/projects/c--Users-max-Projects-maxone-one/memory/", "exclude": ["MEMORY.md"] }
+  ],
+  "output": "C:/Users/max/.claude/wiki/maxone-mail-pilot/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Standalone briefing of the topic", "required": true },
+    { "name": "Architecture", "description": "How the pieces fit together — containers, services, data flow" },
+    { "name": "Key Rules", "description": "Non-negotiable rules from real outages — what to never do, what to always do" },
+    { "name": "Failure Modes", "description": "Past incidents, root causes, and the rules they spawned" },
+    { "name": "Operational Patterns", "description": "Safe commands and recovery procedures" },
+    { "name": "Sources", "description": "Backlinks to all contributing source files", "required": true }
+  ],
+  "topic_hints": ["mail-architecture", "zentinel-rules", "secrets-tls"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-05-02",
+  "compiler": "manual-pilot-run"
+}

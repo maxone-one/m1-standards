@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "conventions",
+  "mode": "lookup",
+  "sources": [
+    { "path": "maxone-standards/standards/006-domain-policy", "note": "Im Text nur als 'Standard 006-domain-policy' benannt (environment-terminology.md, Abschnitt Infra-Hostname-Konvention), keine vollständige Datei-Pfadangabe im Wiki-Content. Repo-relative Schreibweise nach der estate-weiten Standards-Konvention (maxone-standards/standards/), nicht wörtlich aus dem Content belegt — Dateiendung/genauer Pfad ungeprüft." }
+  ],
+  "output": "C:/Users/max/.claude/maxone-wiki/conventions/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Was hier zu finden ist, in 2-3 Sätzen", "required": true },
+    { "name": "Definitions", "description": "Verbindliche Begriffs-Tabelle (live/Production/Staging/lokal, Domain-Architektur)", "required": true },
+    { "name": "Related Standards", "description": "Cross-Ref zu Standards, die diese Begriffe normativ festlegen" },
+    { "name": "Sources", "description": "Backlinks zu allen zitierten Quelldateien bzw. User-Direktiven", "required": true }
+  ],
+  "topic_hints": ["environment-terminology"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-07-06",
+  "compiler": "retroactive-rollout"
+}

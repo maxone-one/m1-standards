@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "name": "pioneers",
+  "mode": "knowledge",
+  "sources": [
+    { "path": "stadt-lahn-flow/src/app/api/register/route.ts", "section_filter": "Zeile 255 — Early-Slot-Formel", "note": "Kanonische Referenz-Implementation der Early-Slot-Formel, zitiert in implementation.md; Pfad wie im Text angegeben (repo-relativ), lokales Vollverzeichnis nicht im Wiki-Content genannt" },
+    { "path": "voltfair.de/app/(onboarding)/onboarding/actions.ts", "section_filter": "Zeile ~165 — abweichende Early-Slot-Formel", "note": "Drift-Watch-Beispiel (weicht vom Standard ab, nicht übernehmen), zitiert in implementation.md; Pfad wie im Text angegeben" }
+  ],
+  "output": "C:/Users/max/.claude/maxone-wiki/pioneers/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Was das Pioneers-Programm ist, für welche Projekte, in 2-3 Sätzen", "required": true },
+    { "name": "Concept", "description": "Das Warum: Cold-Start-Problem, Skarcity-Prinzip, Status vor Wert, Paradox des Teilens" },
+    { "name": "Canonical Spec", "description": "Credit-Pool, Punkt-Gewichte, Tier-Logik, Landing-Page-Struktur, technische Umsetzung (awardCredits, Idempotenz)" },
+    { "name": "Per-Project Status", "description": "Wording, Aktivitäts-Typen und Implementierungsstand je Projekt (stadtlahnflow, voltfair, vanfree)" },
+    { "name": "Drift Watch", "description": "Abweichungen vom kanonischen Standard je Projekt, was NICHT übernommen werden soll" },
+    { "name": "Sources", "description": "Backlinks zu allen zitierten Quelldateien", "required": true }
+  ],
+  "topic_hints": ["concept", "implementation", "per-project"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-07-06",
+  "compiler": "retroactive-rollout"
+}

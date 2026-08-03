@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "name": "inventories",
+  "mode": "lookup",
+  "sources": [
+    { "path": "/opt/secrets/", "note": "Konsumenten-/Token-Inventare je Projekt, per SSH gelesen, nie kopiert" },
+    { "path": "C:/Users/max/.claude/memory/", "section_filter": "reference_.*inventory|reference_.*ids" },
+    { "path": "c:/Users/max/Projects/maxone-standards/registry/", "note": "projects.yml, exceptions.yml als Cross-Check gegen Tabellen" }
+  ],
+  "output": "C:/Users/max/.claude/maxone-wiki/inventories/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Was hier zu finden ist, in 2-3 Saetzen", "required": true },
+    { "name": "Source-of-Truth", "description": "Authoritative Datei(en) + Lookup-Befehl" },
+    { "name": "Tabelle", "description": "Strukturiertes Inventar, eine Zeile pro Eintrag, erste Spalte Identifier, letzte Spalte Quelle" },
+    { "name": "Operational Patterns", "description": "Hinzufuegen, Aendern, Rotieren" },
+    { "name": "Architektur-Luecken", "description": "Was fehlt, wo der Workflow noch nicht sauber ist" },
+    { "name": "Sources", "description": "Backlinks zu jeder Quelldatei", "required": true }
+  ],
+  "topic_hints": ["brevo-accounts", "mail-aliases", "paperclip", "runners", "servers", "telegram", "vector-ops"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-07-06",
+  "compiler": "manual-pilot-run"
+}

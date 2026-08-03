@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "kitchen-station",
+  "mode": "knowledge",
+  "sources": [
+    { "path": "c:/Users/max/Projects/Kitchen Station/docs/archive/bootstrap-2026/PRD.md", "note": "Bootstrap-PRD (historisch, retroaktiv annotiert) — § 7 Bloatware-Liste, § 8 ADB-Cheat-Sheet zitiert in INDEX.md und tablet-ops.md" },
+    { "path": "c:/Users/max/Projects/Kitchen Station/CLAUDE.md", "note": "Project-Level CLAUDE.md, referenziert in INDEX.md 'Verwandte Dokumente'" },
+    { "path": "c:/Users/max/Projects/maxone-standards/registry/projects.yml", "section_filter": "kitchen-station", "note": "Registry-Eintrag, referenziert in INDEX.md" },
+    { "path": "c:/Users/max/Projects/Kitchen Station/.github/workflows/deploy.yml", "note": "Deploy-Workflow, referenziert in architecture.md 'Quellen / Belege'" },
+    { "path": "feedback_adb_screencap.md", "note": "In tablet-ops.md als 'Memory feedback_adb_screencap.md' referenziert (Screenshot-Workflow); exakter Projekt-Memory-Pfad im Wiki-Text nicht als vollständiger Pfad genannt, daher nicht rekonstruiert" }
+  ],
+  "output": "C:/Users/max/.claude/maxone-wiki/kitchen-station/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Was Kitchen Station ist, Kundin, Zwei-Schichten-Architektur in 2-3 Sätzen", "required": true },
+    { "name": "Architecture", "description": "Web-App + Kiosk-Launcher + Traefik + Auto-Update-Flow, Stakeholder + Infra" },
+    { "name": "Bugs & Failure Modes", "description": "Bekannte Bugs mit Root-Cause, Fix, Commit-Referenz, Wiedererkennungs-Muster (Quelle: bugs.md)" },
+    { "name": "Operational Patterns", "description": "ADB-Cheat-Sheet, Bloatware-Whitelist, Setup-Script, Tablet-Reset-Ablauf" },
+    { "name": "Open Issues", "description": "Source-Verlust der Kiosk-App, Rebuild-Spuren, was noch fehlt" },
+    { "name": "Sources", "description": "Backlinks zu allen zitierten Quelldateien", "required": true }
+  ],
+  "topic_hints": ["architecture", "custom-kiosk-app", "tablet-ops", "bugs"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-07-06",
+  "compiler": "retroactive-rollout"
+}

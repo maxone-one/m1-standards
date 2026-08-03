@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "name": "paperclip",
+  "mode": "knowledge",
+  "sources": [
+    { "path": "/opt/paperclip/HANDOFF.md", "note": "Auf maxone-prod, per SSH gelesen: ssh root@128.140.40.235 \"cat /opt/paperclip/HANDOFF.md\" — referenziert in INDEX.md 'Quellen'" },
+    { "path": "c:/Users/max/Projects/paperclip-source/", "note": "Lokale Source-Kopie, referenziert in INDEX.md 'Quellen'" },
+    { "path": "https://github.com/paperclipai/paperclip", "note": "Upstream OSS-Repo (MIT, ~60k Stars), referenziert in INDEX.md 'Quellen'" }
+  ],
+  "output": "C:/Users/max/.claude/maxone-wiki/paperclip/",
+  "auto_update": "prompt",
+  "article_sections": [
+    { "name": "Summary", "description": "Was Paperclip ist, Abgrenzung zu /opt/vector/, in 2-3 Sätzen", "required": true },
+    { "name": "Architecture", "description": "Company-Manifest/Agent-MDs/Prompts/CLI-Konzepte, Pfade auf maxone-prod, Request-Flow, Modell-Anbindung" },
+    { "name": "Operational Patterns", "description": "Start/Stop, Status-Checks, Rebrand-Checkliste, Agent hinzufügen" },
+    { "name": "Known Quirks", "description": "Bekannte Eigenheiten (systemd-User-Inkonsistenz, ForwardAuth-Abhängigkeit, hardcoded Pfade)" },
+    { "name": "Sources", "description": "Backlinks zu allen zitierten Quelldateien", "required": true }
+  ],
+  "topic_hints": ["architecture", "ops"],
+  "link_style": "obsidian",
+  "compiled_at": "2026-07-06",
+  "compiler": "retroactive-rollout"
+}

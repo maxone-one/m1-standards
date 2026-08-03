@@ -32,7 +32,24 @@ scripts/      audit.mjs (Compliance-Scan), apply-template.mjs (Roll-out)
 registry/     projects.yml — alle Projekte mit Domain/Server/Status
 texts/        Wiederverwendbare Texte (Impressum, Footer, Error-Seiten)
 checklists/   Neues Projekt, Neuer Kunde, Pre-Deploy, Post-Deploy
+wiki/         maxone wiki — das beschreibende Domänenwissen (Server, Mail,
+              Marke, Inventare). Tier 2 unter den Standards: sie sagen, wie es
+              sein muss, das Wiki sagt, wie es ist. Bei Widerspruch gewinnt
+              der Standard.
 ```
+
+### Die maxone wiki
+
+`wiki/` ist die Wissensbasis, die Claude in jeder Session liest. Sie lag bis
+zum 03.08.2026 im dotfiles-Repo unter `~/.claude/maxone-wiki/` und ist von dort
+hierher gezogen, weil sie Firmenwissen ist und nicht persönliche Konfiguration.
+Auf Max' Arbeitsrechnern zeigt eine Verzeichnis-Junction `~/.claude/maxone-wiki`
+auf diesen Ordner, damit alle bestehenden Lesepfade weiter gelten.
+
+**Zwei Regeln daraus:** Wiki-Änderungen gehören auf `main`, nicht auf einen
+Feature-Branch, sonst zeigt die Junction auf einen Zwischenstand. Und wer das
+Repo klont, um nur das Wiki zu lesen (Server, KI-Mitarbeiter, CI), braucht
+keinen weiteren Zugriff.
 
 ## Anwendung
 
