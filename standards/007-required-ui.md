@@ -30,6 +30,14 @@ Niemals hardcoded. Cache: `{ next: { revalidate: 3600 } }`.
 
 **Pflicht-Felder:** `legal_name`, `street/zip/city`, `email`, `vat_id`/`w_id_nr`/`tax_id`. Bei GmbH/UG/AG zusätzlich: `register_court`, `register_number`, `legal_form`.
 
+**Die Kontaktadresse im Impressum ist IMMER `impressum@<property-domain>`** (Max-Direktive 04.08.2026), nie die allgemeine Kontaktadresse der Property und nie eine persönliche. Also `impressum@griddone.de`, nicht `hallo@griddone.de`. Grund: Die Adresse steht öffentlich in einem Pflichtdokument, wird abgegriffen und landet auf Listen; ein eigener Empfänger hält das vom Arbeitspostfach fern und lässt sich getrennt filtern, ohne dass eine gesetzlich verlangte Erreichbarkeit leidet.
+
+**Vor dem Veröffentlichen ist die Adresse als zustellbar zu belegen, nicht anzunehmen.** Sie liegt als Alias auf dem Stalwart-Principal der Property (Konvention `<dienst>@<domain>`, siehe Wiki `maxone-mail-pilot`). Belegt wird per SMTP-Probe gegen `mail.maxone.one:25` mit `RCPT TO:<impressum@…>`: `250` heißt zustellbar, `550 5.1.2 Mailbox does not exist` heißt, der Alias fehlt oder ist noch nicht übernommen. Ein Impressum mit nicht zustellbarer Kontaktadresse verfehlt §5 DDG.
+
+**Nach dem Anlegen eines Alias über die Stalwart-Management-API ist `GET /api/reload` Pflicht.** Ohne den Reload steht die Adresse zwar im Principal, SMTP weist sie aber weiter mit `550` ab, weil der Verzeichnis-Cache noch die alte Adressliste hält (belegt am 04.08.2026 an `impressum@griddone.de`).
+
+**Die Stammdaten leben nicht nur im Impressum.** Die Datenschutzerklärung nennt denselben Verantwortlichen mit Anschrift (Art. 13 DSGVO), teils auch der Footer. Jede dieser Stellen bekommt dieselbe API-Anbindung und dieselben Element-IDs, sonst driftet sie gegen das Impressum, sobald sich eine Anschrift ändert, und niemand merkt es.
+
 **Statischer §36-VSBG-Block** (MUSS in jedem Impressum, kommt nicht aus API):
 ```html
 <h2>Verbraucherschlichtung</h2>

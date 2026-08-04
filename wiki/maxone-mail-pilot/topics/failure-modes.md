@@ -28,6 +28,14 @@ Aus jedem Vorfall sind unverhandelbare Regeln entstanden — vollständig dokume
 
 ## Notable Failures [coverage: high -- 1 source]
 
+### 2026-08-04 — Neuer Alias steht im Principal und wird trotzdem mit 550 abgewiesen
+
+- **Trigger:** `impressum@griddone.de` per Management-API an den Principal `hallo@griddone.de` gehängt (`PATCH /api/principal/<name>` mit `[{"action":"addItem","field":"emails","value":"…"}]`, Antwort 200). Ein `GET` auf den Principal zeigte die Adresse danach sauber in `emails`.
+- **Symptom:** SMTP wies sie weiter ab. `RCPT TO:<impressum@griddone.de>` gegen `localhost:25` gab `550 5.1.2 Mailbox does not exist`, während der ältere Alias `mastr@griddone.de` derselben Adresse mit `250 2.1.5 OK` antwortete. Die Kontrollprobe am zweiten Alias war der Punkt, an dem klar wurde: Aliase funktionieren, dieser eine ist nur nicht angekommen.
+- **Ursache:** Verzeichnis-Cache. Stalwart hält die Adressliste im Speicher und liest sie nach einem API-Schreibvorgang nicht neu ein.
+- **Fix:** `GET /api/reload` (200), danach sofort `250 2.1.5 OK`. Kein Container-Neustart nötig, und keiner erlaubt: der Mailserver bedient alle Postfächer, ein Restart für einen Alias steht in keinem Verhältnis.
+- **Lehre:** Nach jeder Principal-Änderung per API gehört der Reload dazu, und der Beleg ist die SMTP-Probe, nicht die API-Antwort. Ein `200` auf das Schreiben sagt nur, dass geschrieben wurde, nicht dass zugestellt wird. Steht die Adresse in einem Pflichtdokument (Impressum nach §5 DDG), ist der ungeprüfte Weg ein Rechtsrisiko. Kanonisch: Standard 007-A.
+
 ### 2026-05-21 — Globaler OOM-Storm (swap-guard + ungecapptes Stalwart)
 
 - **Trigger:** Zwei Faktoren in Kombination. (a) `stalwart-mail` lief ohne `mem_limit` (= Host-Total 7.6 GB Headroom). (b) `/opt/swap-guard.sh` (cron `*/5 * * * *`) machte `swapoff -a && swapon -a` bei Swap > 2 GB. Kernel zieht beim Swapoff ALLES aus Swap zurück ins RAM — bei knappem RAM (Spike durch Faktor a) → globaler OOM-Killer.
