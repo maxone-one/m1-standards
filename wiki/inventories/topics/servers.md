@@ -23,9 +23,11 @@ Alle Hetzner-Cloud-Server unter Max' Kontrolle, ihre SSH-Zugaenge, Container-Auf
 | `maxone-prod`      | 128.140.40.235  | `~/.ssh/id_ed25519`| `ssh -i ~/.ssh/id_ed25519 root@128.140.40.235`                 |
 | `maxone-watchdog`  | 167.235.226.129 | `~/.ssh/id_ed25519`| `ssh -i ~/.ssh/id_ed25519 root@167.235.226.129`                |
 | `maxone-staging`   | 178.105.124.92  | `~/.ssh/id_ed25519`| `ssh -i ~/.ssh/id_ed25519 root@178.105.124.92`                 |
-| `voltfair-cli`     | 46.225.107.118  | `~/.ssh/voltfair`  | `ssh -i ~/.ssh/voltfair root@46.225.107.118`                   |
-| `voltfair-db`      | 46.225.168.235  | `~/.ssh/voltfair`  | `ssh -i ~/.ssh/voltfair root@46.225.168.235`                   |
+| ~~`voltfair-cli`~~ | ~~46.225.107.118~~ | — | **GELOESCHT 2026-08-04** (voltfair an Robert Scholter uebergeben) |
+| ~~`voltfair-db`~~  | ~~46.225.168.235~~ | — | **GELOESCHT 2026-08-04** (voltfair an Robert Scholter uebergeben) |
 | ~~`vybora-prod`~~  | ~~46.225.88.53~~ | — | **schlaeft seit 2026-05-02** (IDE-Cloud-Projekt pausiert; nicht antippen) |
+
+> **voltfair ist seit dem 04.08.2026 nicht mehr Max' Infrastruktur.** Das Projekt laeuft vollstaendig auf `voltfair-prod` (46.225.15.232) in Robert Scholters eigenem Hetzner-Projekt "Voltfair.de" (ID 15471119), inklusive DNS-Zone (seit 26.07.) und Mailserver. Max hat dort weder SSH-Zugang noch einen gueltigen API-Token, nur die Admin-Rolle im Projekt. Seine beiden CPX22 wurden am 04.08. geloescht, samt primaeren IPs, das spart 16,98 € netto im Monat. Vorher gesichert nach `/opt/archiv/voltfair-{cli,db}-2026-08-04.tar.gz` auf maxone-prod. **Damit stehen nur noch drei Server in Max' Konto:** maxone-prod (`maxone-projekte`), maxone-staging und maxone-watchdog. Die Tabellen weiter unten fuehren die voltfair-Spalten noch als Vorgeschichte.
 
 ## maxone-watchdog — externer Uptime-Waechter (seit 2026-04-27)
 
