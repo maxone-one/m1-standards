@@ -152,7 +152,7 @@ projects:
     warmup_required: false  # Standard 033: Vue SPA via nginx, kein SSR (Cold-Start nur fuer /api-Proxy, der Backend triggert)
 
   - name: repivot
-    workspace: repivot.in
+    workspace: repivot.me
     domain: repivot.maxone.one
     server: maxone-prod
     deploy: blue-green
