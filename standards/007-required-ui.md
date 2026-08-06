@@ -108,14 +108,15 @@ Jedes Customer-facing Projekt hat einen Footer. Variante einmalig pro Projekt w�
 
 **Slim (einzeilig):**
 ```
-© 2026 ProjektName · Impressum · Datenschutz · Entwickelt von maxone · v: abc12345
+© 2026 ProjektName · Impressum · Datenschutz · Entwickelt von maxone.one · v: abc12345
 ```
 
 **Hide-Logik:** Footer nicht auf `/admin/*`, `/dashboard/*`, `/portal/*`, `/onboarding/*`, Print.
 
 **Attribution:**
-- "Entwickelt von maxone", B2B-Projekte
-- "Ein Projekt von maxone.one", wenn Verbindung zu maxone Marketing-Wert hat
+- "Entwickelt von maxone.one", B2B-Projekte
+- "Ein Projekt von maxone.one", wenn die Verbindung zu maxone.one Marketing-Wert hat
+- **Die Marke wird IMMER voll ausgeschrieben** (Max, 06.08.2026): nie das nackte "maxone", nie "Maxone" oder "MaxOne". Bis zu dieser Korrektur stand hier zweimal die verkuerzte Form und hat sie in Projekte verteilt.
 - NIEMALS "maxone studio" (Wortmarke tot seit 2026-05-12)
 
 **Skelette:** [`templates/footer/`](../templates/footer/), `Footer.tsx`, `FooterSlim.tsx`, `GlobalFooter.tsx`, `Footer.svelte`, `FooterSlim.svelte`.

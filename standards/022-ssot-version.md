@@ -43,6 +43,27 @@ ENV BUILD_ID=${BUILD_ID}
 
 ---
 
+## A.1: Build-Umfang, das noetigste Minimum
+
+**Max-Direktive 06.08.2026:** *immer das noetigste Minimum, begonnen beim Versionieren; nur mehr reinnehmen, wenn es optimiert statt verschlechtert.*
+
+Ein Build ist keine Packung, die man ganz nimmt, sondern eine Liste von Schritten, aus der ausgewaehlt wird: buendeln, verkleinern, uebersetzen, versionieren. **Pflicht ist genau einer, das Versionieren** (Abschnitt A). Jeder weitere Schritt muss sich rechtfertigen, nicht seine Abwesenheit.
+
+**Prueffrage vor jedem zusaetzlichen Schritt:** Was wird dadurch messbar besser, und was verliere ich dafuer? Ohne klare Antwort auf beides bleibt der Schritt draussen.
+
+**Warum das keine Bequemlichkeit ist, sondern eine Schutzregel.** Belegter Fall griddone, 06.08.2026: Dort waere Verkleinern schaedlich gewesen. Das Projekt hat keine Build-Kennung, und der einzige verlaessliche Weg, den Stand auf Produktion zu belegen, ist der byteweise Vergleich der ausgelieferten Dateien gegen den Commit. Minimierte Dateien lassen sich so nicht mehr vergleichen: der Schritt haette die Wahrheitsquelle zerstoert, die er nicht ersetzt, und das waere beim Rollout niemandem aufgefallen.
+
+**Typische Schritte und wann sie wegfallen:**
+
+| Schritt | faellt weg, wenn |
+|---|---|
+| Buendeln | der Code nicht zum Browser geht, etwa Server-Code auf Node |
+| Verkleinern | die Dateien klein sind, oder ein Datei-Vergleich als Nachweis dient |
+| Uebersetzen in aeltere Sprachformen | die Laufzeit modern genug ist (Node 20+, aktuelle Browser) |
+| Versionieren | nie, siehe A |
+
+---
+
 ## B: Cron-E-Mail-Dedup-Schutz
 
 Jeder Cron-Job der E-Mails versendet MUSS sicherstellen: Zähler wird **ausschließlich nach erfolgreichem Dedup-Write** inkrementiert.
