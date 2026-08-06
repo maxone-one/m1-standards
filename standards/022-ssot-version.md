@@ -68,17 +68,17 @@ Ein Build ist keine Packung, die man ganz nimmt, sondern eine Liste von Schritte
 
 **Max-Direktive 06.08.2026:** *Somit koennen wir nach diesem Schritt auch direkt auf die aktuelle Version pruefen, und der User kann selbst aktualisieren, sofern er noch eine alte Version sieht. Das ist immer die logische Konsequenz aus der Versionierung und muss direkt immer mitgezogen werden.*
 
-Ein Marker, den nur ein Entwickler per  liest, loest die halbe Aufgabe. Die andere Haelfte sitzt im Browser des Nutzers: er kann eine veraltete Fassung sehen, ohne es zu merken, und niemand sagt es ihm. **Sobald A steht, ist die Selbstpruefung Pflicht, nicht Kuer.**
+Ein Marker, den nur ein Entwickler per `docker inspect` liest, loest die halbe Aufgabe. Die andere Haelfte sitzt im Browser des Nutzers: er kann eine veraltete Fassung sehen, ohne es zu merken, und niemand sagt es ihm. **Sobald A steht, ist die Selbstpruefung Pflicht, nicht Kuer.**
 
 **Die drei Teile:**
 
 1. **Die ausgelieferte Seite kennt ihre eigene Kennung.** Sie wurde damit gebaut und traegt sie mit sich, nicht nur im sichtbaren Fussbereich, sondern abfragbar im Skript.
-2. **Sie fragt die aktuelle Kennung beim Server ab**, ueber  beziehungsweise . Mindestens beim Laden und beim Zurueckkehren in den Tab (), bei langlebigen Oberflaechen zusaetzlich in einem ruhigen Intervall.
+2. **Sie fragt die aktuelle Kennung beim Server ab**, ueber `/api/version` beziehungsweise `version.json`. Mindestens beim Laden und beim Zurueckkehren in den Tab (`visibilitychange`), bei langlebigen Oberflaechen zusaetzlich in einem ruhigen Intervall.
 3. **Weichen beide ab, erscheint ein dezenter Hinweis mit einem Knopf, der neu laedt.** Der Text nennt die Sache beim Namen: es gibt eine neuere Fassung.
 
 **Kein automatisches Neuladen.** Eine Seite, die sich unter den Haenden des Nutzers erneuert, zerstoert halb ausgefuellte Eingaben. Der Nutzer entscheidet, die Seite informiert nur. Das ist zugleich die ehrliche Variante des Nudgings (Standard 020): sichtbarer Wert-Tausch, volle Wahlfreiheit.
 
-**Anlass, belegt:**  liefert mit  aus. Am 06.08.2026 sah Max beim Abnehmen mehrfach die alte Fassung einer gerade ausgelieferten Seite, waehrend der Server nachweislich die neue hielt; die einzige Abhilfe war der Zuruf, mit  neu zu laden. Genau diesen Zuruf soll die Seite selbst uebernehmen.
+**Anlass, belegt:** `griddone.de` liefert mit `Cache-Control: public, max-age=3600` aus. Am 06.08.2026 sah Max beim Abnehmen mehrfach die alte Fassung einer gerade ausgelieferten Seite, waehrend der Server nachweislich die neue hielt; die einzige Abhilfe war der Zuruf, mit `Strg+F5` neu zu laden. Genau diesen Zuruf soll die Seite selbst uebernehmen.
 
 ---
 
