@@ -24,6 +24,31 @@ Elektro Piechocki.
 sich die Sitzungen und überdauern nicht. Das gewerbliche gehört ins Hauptprofil, das
 private in `playwright-privat`.
 
+## OFFEN, sicherheitsrelevant: eine fremde Telefonnummer am privaten Konto
+
+Am privaten Konto (`max@karastelev.de`) hängt eine Mobilnummer, die **auf 99 endet und
+Max nicht zuzuordnen ist** [B: gesehen 10.08.2026 durch die griddone-Session, Meldung
+22:47]. Gegengeprüft am 10.08.2026, 22:52: Von Max' bekannten Nummern endet **keine**
+auf 99 (`+49 176 48085640`, `0151 72210644`). Die einzigen 99er-Treffer in seinen
+Beständen gehören einem fremden Unternehmen aus einer Lead-Recherche
+(Transit-Express Nordhessen, `erfolgsfahrplan/.planning/monetarisierung/.../recherche-roh-2026-07-29.json`),
+haben also mit dem Konto nichts zu tun.
+
+**Warum das zählt, auch wenn der Zweitfaktor eine Authenticator-App ist:** Eine
+hinterlegte Nummer ist ein **Wiederherstellungsweg**. Wurde sie zwischenzeitlich neu
+vergeben, kann ihr heutiger Inhaber über „Passwort vergessen" an das Konto. Das ist
+derselbe Mechanismus, aus dem Max' Regel den Recovery-Anker nie in das System legt, das
+er absichert ([[feedback_mail_identitaet_eigene_vs_fremde]]).
+
+**Was noch fehlt, bevor gehandelt wird:** ob die Nummer als Zweitfaktor, als
+Wiederherstellungsweg oder nur als Profilangabe hängt, und die vollen Ziffern (Facebook
+maskiert sie). Zu prüfen unter `accountscenter.facebook.com/password_and_security` in der
+Stimme des privaten Kontos.
+
+**Die Änderung selbst gehört Max.** Eine hinterlegte Nummer zu ersetzen ist eine
+Credential-Änderung, und die passiert nur auf seine ausdrückliche Ansage. Am gewerblichen
+Konto ist dasselbe gegenzuprüfen, das war am 10.08.2026 noch nicht erhoben.
+
 ## Was bei einer Erstanmeldung passiert
 
 Ein Konto, das zum ersten Mal in einem frischen Browserprofil angemeldet wird, kommt
