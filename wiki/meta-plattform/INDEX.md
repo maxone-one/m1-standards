@@ -66,6 +66,32 @@ Seitentitel verschwindet, und jeder Dialogtext spricht von „dieser Facebook-Se
 Eintrag mit dem sprechenden Kennzeichen `[aria-label="Zu <Name> wechseln"]`. Das ist
 der einzige stabile Selektor, siehe unten.
 
+## Werbekonten: löschen gibt es nicht, schließen schon
+
+**Meta kennt kein „Werbekonto löschen".** Angeboten wird allein „Werbekonto
+deaktivieren", zu finden im Werbeanzeigenmanager unter
+`adsmanager.facebook.com/adsmanager/manage/ad_account_settings?act=<KONTO_ID>`,
+Abschnitt „Zahlungen von Unternehmen". Danach steht das Konto auf **„Wird demnächst
+geschlossen"** und später auf „Geschlossen".
+
+**Der Bestätigungsdialog nennt eine Geldfolge, und sie ist ernst zu nehmen:** „Deine
+Kreditkarte wird mit allen ausstehenden Beträgen in deinem Konto belastet." **Vor jeder
+Schließung deshalb den Saldo lesen**, er steht in der Abrechnungsübersicht
+`business.facebook.com/billing_hub/accounts?business_id=<PORTFOLIO_ID>`.
+
+**Schließen hängt an der Rolle IM Werbekonto, nicht am Portfolio.** Wer nur
+Portfolio-Admin ist, bekommt „Ungültige Berechtigungen. Du bist nicht zur Durchführung
+dieser Aktion berechtigt." Erst dem eigenen Profil das Werbekonto mit der Stufe
+**„Werbekonten verwalten"** zuweisen, dann schließen. Am 10.08.2026 belegt: Marketing
+Kerl ließ sich sofort schließen (beide Profile waren zugewiesen), Plansey GmbH nicht
+(null Personen zugewiesen).
+
+**Nach mehreren Schließungen verlangt Facebook eine erneute Bestätigung**
+(`facebook.com/sensitive_action/reauth/`). Dort führt „Andere Methode nutzen" zu einer
+Auswahl zwischen SMS und E-Mail. **Die E-Mail geht bei beiden Konten an eine Adresse,
+die ohne Max lesbar ist**, beim privaten an `max@karastelev.de`, beim geschäftlichen an
+`karastoni@googlemail.com`. Immer E-Mail wählen, nie SMS.
+
 ## Bedienfallen bei der Automatisierung
 
 - **Synthetische Klicks (`el.click()` per JavaScript) greifen bei Facebook nicht.**
@@ -77,6 +103,17 @@ der einzige stabile Selektor, siehe unten.
   zwischen zwei Aufrufen, ein danach gesetzter Selektor greift ins Leere.
 - **Ein „Overlay", das Klicks abfängt, ist oft der gesuchte Dialog selbst.** Vor dem
   Wegräumen prüfen: `document.querySelector('div.__fb-light-mode.xshlqvt').innerText`.
+- **Facebook führt drei verschiedene Dialogbauarten nebeneinander**, und ein Dialog, den
+  `div[role="dialog"]` nicht findet, ist deshalb selten abwesend. Alle drei abfragen:
+  `[role="dialog"]` (neue Oberfläche), `[role="alertdialog"]` (Bestätigungen im
+  Werbeanzeigenmanager) und `.generic_dialog.pop_dialog` beziehungsweise `.uiLayer`
+  (die alte Bauart, dort erscheinen auch Fehlermeldungen wie „Ungültige
+  Berechtigungen"). Am 10.08.2026 dreimal darüber gestolpert.
+- **Der Zuweisungsdialog verlangt die Berechtigung je Asset-Typ.** Die Auswahl bleibt
+  beim Wechsel der Kategorie erhalten, aber jede Kategorie zeigt eigene Stufen, und
+  ohne gesetzte Stufe meldet die Seitenleiste „Fehlende Berechtigungen". Innerhalb
+  einer Kategorie gibt es „Alle auswählen". **Zusammen zuweisen, was dieselbe Stufe
+  bekommt**, getrennt nur, was eine andere braucht.
 - **Niemals `browser_snapshot` auf ein Passwortfeld.** Der Snapshot gibt den Feldwert
   im Klartext aus. Am 10.08.2026 ist so ein Passwort ins Sitzungsprotokoll geraten.
 

@@ -127,7 +127,37 @@ Max' Ziel der Ausfallsicherheit ist das die eigentlich tragende Ebene: Solange b
 Profile Portfolio-Admin sind, kommt jedes an jedes Asset. Die Zuweisungen darunter
 sind Feinsteuerung, kein Zugangsschloss.
 
-## Versuchte Umsetzung am 10.08.2026, gescheitert
+## VOLLZOGEN am 10.08.2026 zwischen 22:18 und 22:36, über das PRIVATE Konto
+
+Nachdem die Ursache gefunden war (dem geschäftlichen Konto fehlte die zweistufige
+Authentifizierung, siehe [INDEX.md](INDEX.md)), lief die Angleichung über das private
+Konto durch, dessen 2FA seit Langem aktiv ist.
+
+| Asset | Stufe | Ergebnis |
+|---|---|---|
+| Secret Service Man | Alles | zugewiesen |
+| Hilfsprojekt Blindenmission | Alles | zugewiesen |
+| Plansey.com Hochzeits-App | Alles | zugewiesen, **nimmt `@plansey_bride` mit** |
+| Bikers Nest Gießen | Business-Tools und Facebook | zugewiesen, „Alles" ist dort gesperrt |
+| Katalog „Grptlk. fancy home systems" | Standard und Alles verwalten | zugewiesen |
+| WhatsApp „Stadt Land Solar GmbH & Co. KG" | Alles | zugewiesen |
+| sechs Werbekonten | Werbekonten verwalten | zugewiesen, als Vorstufe zur Schließung |
+
+**Alle acht Facebook-Seiten des Portfolios stehen jetzt auf „Bereits zugewiesen".** Der
+Instagram-Punkt der Liste hat sich miterledigt: `plansey_bride` teilt die
+Berechtigungen der Seite Plansey.
+
+**Offen geblieben: die App „KNX Pixel App".** Der Zuweisungsdialog kennt die Kategorien
+Facebook-Seiten, Werbekonten, Kataloge, Pixel, Instagram-Konten, Assets,
+Offline-Event-Sets, Domains, WhatsApp-Konten und Datensätze, **aber keine Apps**. Apps
+werden über den eigenen Bereich der Portfolio-Einstellungen verwaltet.
+
+**Bei „Bikers Nest Gießen" ist der Gleichstand trotzdem erreicht**, denn die Stufe
+„Business-Tools und Facebook" ist genau das, was in der Tabelle oben beim geschäftlichen
+Profil als „uneingeschränkt, ohne sensible Maßnahmen" steht. Höher geht es dort für
+niemanden, die Seite gehört individuellen Personen.
+
+## Versuchte Umsetzung am 10.08.2026 um 21:0x, gescheitert
 
 Die Angleichung wurde am selben Abend angestoßen und **von Meta abgelehnt**. Erst mit
 drei Seiten zugleich (Secret Service Man, Plansey.com Hochzeits-App, Hilfsprojekt
