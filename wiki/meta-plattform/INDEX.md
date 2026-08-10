@@ -24,30 +24,83 @@ Elektro Piechocki.
 sich die Sitzungen und überdauern nicht. Das gewerbliche gehört ins Hauptprofil, das
 private in `playwright-privat`.
 
-## OFFEN, sicherheitsrelevant: eine fremde Telefonnummer am privaten Konto
+## Die Kontenzentrale des privaten Kontos, vollständig erhoben am 10.08.2026, 23:10
 
-Am privaten Konto (`max@karastelev.de`) hängt eine Mobilnummer, die **auf 99 endet und
-Max nicht zuzuordnen ist** [B: gesehen 10.08.2026 durch die griddone-Session, Meldung
-22:47]. Gegengeprüft am 10.08.2026, 22:52: Von Max' bekannten Nummern endet **keine**
-auf 99 (`+49 176 48085640`, `0151 72210644`). Die einzigen 99er-Treffer in seinen
-Beständen gehören einem fremden Unternehmen aus einer Lead-Recherche
-(Transit-Express Nordhessen, `erfolgsfahrplan/.planning/monetarisierung/.../recherche-roh-2026-07-29.json`),
-haben also mit dem Konto nichts zu tun.
+**Sie führt mehr als das eine Profil**, und das Handbuch kannte bis dahin nur zwei
+Facebook-Konten. Alles an einer Stelle abgelesen unter
+`accountscenter.facebook.com/profiles`:
 
-**Warum das zählt, auch wenn der Zweitfaktor eine Authenticator-App ist:** Eine
-hinterlegte Nummer ist ein **Wiederherstellungsweg**. Wurde sie zwischenzeitlich neu
-vergeben, kann ihr heutiger Inhaber über „Passwort vergessen" an das Konto. Das ist
-derselbe Mechanismus, aus dem Max' Regel den Recovery-Anker nie in das System legt, das
-er absichert ([[feedback_mail_identitaet_eigene_vs_fremde]]).
+| Was | Name | Kennung |
+|---|---|---|
+| Facebook, privat | Max Karastelev | `100021983952708` |
+| Facebook, zweites Profil | ~~Miska Inotsara~~ **zur Löschung vorgesehen am 10.08.2026, 23:26** auf Max' Ansage | `61553923227469` |
+| Instagram | `tech.frankenstein` | `17841463335126778` |
+| Instagram | `stadt.lahn.flow` | `17841440372293575` |
+| Instagram (drittes, Zuordnung offen) | | `17841470613598019` |
+| WhatsApp | +49 1517 0843599 | `780303635159109` |
+| Threads | `karastokeles` | |
+| Seiten in dieser Zentrale | **14** | |
 
-**Was noch fehlt, bevor gehandelt wird:** ob die Nummer als Zweitfaktor, als
-Wiederherstellungsweg oder nur als Profilangabe hängt, und die vollen Ziffern (Facebook
-maskiert sie). Zu prüfen unter `accountscenter.facebook.com/password_and_security` in der
-Stimme des privaten Kontos.
+**Das zweite Profil ist mit hoher Wahrscheinlichkeit Max' eigenes, nicht fremdes**
+[A: abgeleitet, nicht bestätigt]: `tech.frankenstein` und `karastokeles` stehen als seine
+Handles in der Social-SSoT `maxone-standards/config/social.ts` und auf `maxone.one/bio`
+[B: `erfolgsfahrplan/.planning/monetarisierung/dossier/SOCIAL-AUDIT.md`]. Alle übrigen
+Konten derselben Zentrale sind belegt seine. **Ihn selbst danach zu fragen kostet einen
+Satz und ersetzt die Ableitung**, das ist noch offen.
 
-**Die Änderung selbst gehört Max.** Eine hinterlegte Nummer zu ersetzen ist eine
-Credential-Änderung, und die passiert nur auf seine ausdrückliche Ansage. Am gewerblichen
-Konto ist dasselbe gegenzuprüfen, das war am 10.08.2026 noch nicht erhoben.
+## OFFEN, sicherheitsrelevant: die Nummer +49 1517 0843599
+
+> **KORREKTUR 10.08.2026, 23:12: „Max nicht zuzuordnen" war zu stark.** Der Absatz unten
+> stützte sich darauf, dass keine seiner bekannten Nummern auf 99 endet. Das stimmt, führt
+> aber in die Irre: Am 13.02.2025 um 09:54 nannte Max dem Jobcenter Gießen selbst die
+> Nummer **0151 70843588** [B: `erfolgsfahrplan/.planning/jobcenter-portal/archiv/
+> nachrichten/raw/2025-02-13-1352_isaak_aw-aw-aw_termin-steinmetz.txt` Zeile 20]. Das sind
+> **neun identische Ziffern und dann 88 statt 99**. Und an der Nummer im Konto hängt ein
+> **WhatsApp-Profil**, das nur per SMS-Verifizierung entsteht. Sie war also einmal seine.
+> Die offene Frage ist damit nicht mehr „wem gehört sie", sondern **„besitzt Max sie
+> noch"**, und die beantwortet nur er.
+
+Volle Nummer und Einordnung [B: abgelesen 10.08.2026, 23:08 unter
+`accountscenter.facebook.com/youraccount/contact_points`]: Sie steht unter
+**Kontaktinformationen** neben `max@karastelev.de`, ist also ein **Wiederherstellungsweg,
+kein zweiter Faktor**. Der Zweitfaktor bleibt die Authenticator-App.
+
+~~Am privaten Konto hängt eine Mobilnummer, die auf 99 endet und Max nicht zuzuordnen
+ist.~~ Die einzigen weiteren 99er-Treffer in seinen Beständen gehören einem fremden
+Unternehmen aus einer Lead-Recherche und haben mit dem Konto nichts zu tun.
+
+**Warum es trotzdem zählt:** Gehört ihm die Nummer nicht mehr, kann ihr heutiger Inhaber
+über „Passwort vergessen" an das Konto, und an ihr hängt zusätzlich eine verknüpfte
+WhatsApp-Identität. Das ist derselbe Mechanismus, aus dem Max' Regel den Recovery-Anker
+nie in das System legt, das er absichert ([[feedback_mail_identitaet_eigene_vs_fremde]]).
+
+**Die Änderung gehört Max**, eine hinterlegte Nummer zu ersetzen ist eine
+Credential-Änderung. Am gewerblichen Konto ist dasselbe gegenzuprüfen, noch nicht erhoben.
+
+## Die Autofill-Falle: „Falsches Passwort", obwohl das Passwort stimmt
+
+**Meta liest Passwortfelder aus seinem eigenen Zustand, nicht aus dem Eingabefeld.**
+Chromes Autofill schreibt den Wert sichtbar hinein, löst dabei aber keine
+Tastatur-Ereignisse aus. Meta bekommt deshalb ein **leeres** Passwort und antwortet mit
+„Falsches Passwort. Bitte versuche es noch einmal." Die Meldung ist irreführend: Es wurde
+gar keines übermittelt.
+
+**Konsequenz:** In Meta-Dialogen nie auf Autofill verlassen, sondern tippen lassen
+(Playwright `browser_type`, notfalls `slowly`). Und einen solchen Fehlversuch nie als
+„Passwort veraltet" deuten, das kostet sonst eine Passwortrücksetzung, die niemand
+braucht.
+
+**So prüft man, ob das gespeicherte Passwort wirklich stimmt**, ohne es zu benutzen: Der
+Chrome-Speicher des Profils führt zu jedem Eintrag `date_last_used` und
+`date_password_modified` (`Default/Login Data`, SQLite, Werte in Mikrosekunden seit
+1601-01-01 **in UTC**). Am 10.08.2026 stand dort für `max@karastelev.de` 19:21 UTC, also
+21:21 deutscher Zeit, exakt die erfolgreiche Anmeldung desselben Abends. Damit war das
+Passwort belegt aktuell und die Fehlermeldung als Autofill-Effekt entlarvt.
+
+**Zwei Zugänge auf derselben Adresse:** Für `https://www.facebook.com/` liegen beide
+Konten im Speicher (`fb@karastelev.de` 15 Zeichen, `max@karastelev.de` 10 Zeichen).
+Welches Chrome einfüllt, hängt am zuletzt benutzten. Vor jeder Deutung also erst
+vergleichen, welches der beiden im Feld steht.
 
 ## Was bei einer Erstanmeldung passiert
 
