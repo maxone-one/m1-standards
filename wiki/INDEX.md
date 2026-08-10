@@ -19,5 +19,6 @@ Narratives Betriebswissen und Domain-Kontext für Claude-Sessions. Ergänzt die 
 | [pioneers](pioneers/INDEX.md) | Pioneer-System, Slots, Puls, Leaderboard | Bei Arbeit am Pioneer-Feature |
 | [kitchen-station](kitchen-station/INDEX.md) | Kiosk-App, Android, Tablet-Ops | Bei Arbeit an kitchen-station |
 | [paperclip](paperclip/INDEX.md) | Paperclip-Architektur und Ops | Bei Arbeit mit Paperclip |
+| [meta-plattform](meta-plattform/INDEX.md) | Facebook, Instagram, Business Suite: Konten, Stimmen, Zielpfade, Rechte | Vor jedem Griff an Seiten, Werbekonten oder Portfolios |
 | [conventions](conventions/INDEX.md) | Umgebungs-Terminologie, Cross-Cutting Concepts | Bei terminologischen Fragen |
 | [vanfree](vanfree/INDEX.md) | vanfree Projektkontext | Bei Arbeit an vanfree |
