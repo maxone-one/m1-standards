@@ -14,7 +14,8 @@ Elektro Piechocki.
 | Hinterlegte Adressen | `karastoni@googlemail.com`, `fb@karastelev.de` | Kontenzentrale, 10.08.2026 |
 | Playwright-Profil dafür | `playwright` (`C:\Users\max\.playwright-mcp-profile`) | Max-Direktive 10.08.2026 |
 | Privates Facebook-Konto | `max@karastelev.de`, Kennung **100021983952708** | Anmeldung 10.08.2026, 21:21 Uhr |
-| Zweitfaktor privat | Authenticator-App (TOTP), kein Mail- oder SMS-Weg angeboten | Anmeldung 10.08.2026 |
+| Zweitfaktor privat | Authenticator-App (TOTP), kein Mail- oder SMS-Weg angeboten. **Nur Max kommt an diesen Code** | Anmeldung 10.08.2026 |
+| Zweitfaktor gewerblich | seit 10.08.2026 aktiv. Bestätigungscodes gehen an `karastoni@googlemail.com`, also **ohne Max erreichbar** | Aktivierung 10.08.2026, 22:11 |
 | Playwright-Profil dafür | `playwright-privat` (`.playwright-mcp-profile-2`) | Max-Direktive 10.08.2026 |
 | Seiten am gewerblichen Konto | **22** | Kontenzentrale, 10.08.2026 |
 | Instagram am selben Konto | `getsnapflow`, `plansey_bride`, `griddone.de`, `venfree.de` | Kontenzentrale, 10.08.2026 |
@@ -84,11 +85,85 @@ der einzige stabile Selektor, siehe unten.
 | Adresse | Ergebnis | Stattdessen |
 |---|---|---|
 | `facebook.com/profile/<SEITEN_ID>/settings/?tab=your_facebook_information` | HTTP 404 | `facebook.com/settings/` in der Seiten-Stimme |
-| `business.facebook.com/latest/settings/pages?asset_id=1278546548674819` | „Invalid ID. Die angegebene ID ist nicht (und war noch nie) gültig." | Die Kennung stammt aus einem Irrtum, siehe unten |
+| `business.facebook.com/latest/settings/pages?asset_id=1278546548674819` | „Invalid ID. Die angegebene ID ist nicht (und war noch nie) gültig." | Die Kennung ist echt, nur kein Portfolio-Asset, siehe unten |
+| `facebook.com/accountquality` als Statusprüfung | „Keine Konto- oder Assetprobleme", obwohl das Konto eingeschränkt ist | `business-support-home/?landing_page=overview`, dort steht der echte Status |
 | `business.facebook.com/latest/settings/pages?asset_id=61592772701568` | „Leider ist dieser Inhalt derzeit nicht verfügbar" | Seite gehört keinem Portfolio an |
 | `facebook.com/110234024435075` | „Dieser Inhalt ist momentan nicht verfügbar" | Seite ist deaktiviert, nur über ihr Portfolio erreichbar |
 
-## Der eigentliche Blocker: das Konto darf gerade nichts schreiben
+## Der eigentliche Blocker: die zweistufige Authentifizierung fehlt, seit 16.01.2021
+
+**GELÖST am 10.08.2026, 22:01 Uhr. Meta nennt die Ursache selbst, im Klartext:**
+
+> „Konto eingeschränkt • **16.01.2021** — Du bist nicht berechtigt, für deine
+> Business-Portfolios Werbung zu schalten oder Business-Assets zu verwalten, **da du
+> die zweistufige Authentifizierung nicht nutzt**."
+
+Fundstelle: `facebook.com/business-support-home/100002368008924/`, also die
+**Detailseite des Kontos**, nicht die Startseite des Support-Centers.
+
+Die dort gelisteten Einschränkungen decken jede einzelne Ablehnung dieses Abends ab:
+
+| Einschränkung laut Meta | Was daran gescheitert ist |
+|---|---|
+| Kann keine Werbeassets oder **Personen für Unternehmen verwalten** | die sechs abgelehnten Asset-Zuweisungen |
+| Kann keine **Werbeanzeigen erstellen oder schalten** | die gesamte Phase 7 wäre hier aufgeschlagen |
+| Kann keine Werbekonten verwenden oder verwalten | Werbekonten aufräumen, BusOffensive zuweisen |
+
+**Kein Verstoß, kein Einspruch, kein Langläufer.** Es ist ein Schalter, und der Weg
+dorthin steht auf derselben Seite: „Aktiviere die zweistufige Authentifizierung, um
+Zugriff zu deinen Business-Konten und Assets zu erhalten."
+
+### Der Schalter ist umgelegt, die Sperre steht noch
+
+**10.08.2026, 22:11 Uhr: Die zweistufige Authentifizierung ist aktiviert.** Wortlaut
+der Kontenzentrale: „Zweistufige Authentifizierung aktiviert. Wir fragen nun bei jeder
+Anmeldung auf einem unbekannten Gerät nach einem Anmeldecode."
+
+**22:13 Uhr, Gegenprobe am Schreibvorgang: weiterhin abgelehnt**, wortgleich mit
+„Assets können nicht zugewiesen werden. Bitte versuche es später noch einmal". Auch
+der Statusblock nennt unverändert die fehlende 2FA als Grund, obwohl sie läuft.
+
+**Meta zieht den Kontostatus also verzögert nach.** Das ist der Stand, nicht eine
+Widerlegung der Diagnose. Was dagegen belegt ist und nicht mehr geprüft werden muss:
+Die Ursache steht schriftlich von Meta selbst, und sie ist adressiert.
+
+**Bemerkenswert:** Unter „Verknüpfte Geräte" stand bereits eine Authentifizierungs-App
+(„My Authenticator app"), die 2FA selbst war trotzdem aus. **Eine hinterlegte
+Authenticator-App belegt nicht, dass die zweistufige Authentifizierung aktiv ist.**
+
+### Der Einrichtungsweg, für den Wiederholungsfall
+
+1. `accountscenter.facebook.com/password_and_security/two_factor/`
+2. Konto „Max Karastelev, Facebook" wählen
+3. Facebook schickt einen **achtstelligen Code an `karastoni@googlemail.com`**
+   (Absender `security@facebookmail.com`, Betreff „Dein Sicherheitscode lautet …").
+   Der ist über den Gmail-Zugang **ohne Max erreichbar**, ein Handy braucht es nicht.
+4. Code eintragen, „Weiter". Damit ist die 2FA aktiv.
+
+**Warum das private Konto davon nicht betroffen ist:** Dort ist die zweistufige
+Authentifizierung aktiv, belegt durch die Abfrage der Authenticator-App beim Öffnen
+der Business Suite am 10.08. um 21:56 Uhr.
+
+**Die Einschränkung ist über fünf Jahre alt.** Sie hat mit der Meldung vom 09.08.2026
+nichts zu tun und läuft nicht von selbst ab.
+
+### Zwei Anzeigen widersprechen sich, und die Startseite ist die falsche
+
+| Ort | Aussage |
+|---|---|
+| `facebook.com/accountquality`, Startseite | „Keine Konto- oder Assetprobleme" für 30 Tage |
+| `business-support-home/?landing_page=overview` | „Max Karastelev: **Konto eingeschränkt**", „Proleads: **Assets eingeschränkt**" |
+
+Die Startseite zeigt **Verstöße gegen Werbestandards** der letzten 30 Tage, nicht den
+Kontostatus. Eine leere Anzeige dort belegt gar nichts. **Der Statusweg ist immer
+„Meine Konten ansehen", nie die Startseite.**
+
+Die Portfolio-Detailseite (`business-support-home/1693993127556558/`) meldet für alle
+Werbekonten, Kataloge, Datenquellen und das WhatsApp-Konto „keine Probleme". Das
+Etikett „Assets eingeschränkt" spiegelt also nur den Kontostatus wider und ist kein
+eigener Mangel des Portfolios.
+
+## Wie sich die Sperre gezeigt hat (Symptome, 10.08.2026)
 
 **Stand 10.08.2026, 21:10 Uhr.** Lesevorgänge laufen einwandfrei, **jeder
 Schreibvorgang wird abgelehnt**, und zwar mit wechselnden, irreführenden Meldungen.
@@ -110,8 +185,15 @@ Schreibsperre also nicht aus.**
 
 **Was daraus folgt:** Vor jedem weiteren Versuch an Seiten, Rechten oder Portfolios
 erst einen billigen Schreibtest machen, statt lange Wege zu bauen, die am Ende
-scheitern. Bleibt die Sperre, ist der Einspruch über das Business-Support-Center ein
-Langläufer und gehört sofort angestoßen.
+scheitern. ~~Bleibt die Sperre, ist der Einspruch über das Business-Support-Center ein
+Langläufer und gehört sofort angestoßen.~~
+
+**KORREKTUR 10.08.2026, 22:01:** Der Einspruch war nie nötig, siehe oben. Die Lehre
+aus dem Abend ist eine andere und sie ist teuer bezahlt: **Vier verschiedene
+Fehlertexte für eine Ursache**, und der einzige, der sie benannte, kam von einer
+Seite, die niemand geöffnet hatte. **Bei jeder abgelehnten Handlung zuerst den
+Kontostatus lesen**, bevor die Meldung selbst gedeutet wird. Der Weg dahin sind zwei
+Klicks und er steht in der Tabelle oben.
 
 ## Nachgelagerter Blocker: Seiten lassen sich nicht löschen
 
@@ -153,12 +235,31 @@ Benutzername ist bei Meta das einzige eindeutige Merkmal, Seitennamen dürfen do
 vorkommen. **Die geplante Umbenennung von „Die Autarken" nach GridDone wird von ihr
 also nicht behindert.**
 
-## Korrektur eines Irrtums aus dem Handoff
+## Eine Seite trägt zwei Kennungen, und beide sind echt
 
 Der Handoff vom 07.08.2026 führte für die Seite GridDone zwei Kennungen:
-„Profil-Kennung 61592772701568" und „Asset-Kennung 1278546548674819". **Die zweite
-ist bei Meta nie gültig gewesen**, die Business Suite lehnt sie mit „Invalid ID" ab.
-Gültig ist allein 61592772701568.
+„Profil-Kennung 61592772701568" und „Asset-Kennung 1278546548674819".
+
+~~**Die zweite ist bei Meta nie gültig gewesen**, die Business Suite lehnt sie mit
+„Invalid ID" ab. Gültig ist allein 61592772701568.~~
+
+**KORREKTUR 10.08.2026, 22:07. Das war falsch, und zwar in beide Richtungen belegt:**
+
+- `facebook.com/1278546548674819` **leitet auf** `profile.php?id=61592772701568`.
+  Beide Kennungen meinen dieselbe Seite.
+- Die Kontodetailseite des Support-Centers führt sie unter „Seiten, die von dir
+  verwaltet werden" als „GridDone, ID: 1278546548674819".
+
+**Was daraus wirklich folgt:** Eine Seite der neuen Seitenerfahrung hat eine
+**Seiten-Kennung** und eine **Profil-Kennung**, und sie sind nicht austauschbar. Die
+Meldung „Invalid ID. Die angegebene ID ist nicht (und war noch nie) gültig" bezog sich
+allein auf den Parameter `asset_id` der Business Suite, und dort ist sie ungültig,
+**weil die Seite keinem Portfolio angehört**, nicht weil es die Kennung nicht gäbe.
+
+**Die Lehre:** Eine Fehlermeldung gilt für den Kontext, in dem sie erscheint. „Nie
+gültig gewesen" aus einer Portfolio-Ansicht heißt „gehört keinem Portfolio", nicht
+„existiert nicht". Vor einer solchen Aussage die Kennung einmal direkt aufrufen, das
+kostet einen Aufruf.
 
 ## Kennungen
 
@@ -166,7 +267,8 @@ Gültig ist allein 61592772701568.
 |---|---|
 | Portfolio „Proleads" (das echte, trägt alles) | 1693993127556558 |
 | Portfolio „Max K" (fast leer) | 644805094242070 |
-| Seite GridDone | 61592772701568 |
+| Seite GridDone (Profil-Kennung) | 61592772701568 |
+| Seite GridDone (Seiten-Kennung, leitet auf die Profil-Kennung) | 1278546548674819 |
 | Seite Xenio DACH - Smart Home (deaktiviert) | 110234024435075 |
 | Seite Die Autarken | 100095155003279 |
 | Seite HOCHZEITSNEST | 113126068776326 |
