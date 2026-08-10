@@ -77,6 +77,25 @@ nie in das System legt, das er absichert ([[feedback_mail_identitaet_eigene_vs_f
 **Die Änderung gehört Max**, eine hinterlegte Nummer zu ersetzen ist eine
 Credential-Änderung. Am gewerblichen Konto ist dasselbe gegenzuprüfen, noch nicht erhoben.
 
+## Sicherheitsrelevante Änderungen sperrt Meta auf einem frischen Browserprofil
+
+Wortlaut der Sperre [B: 10.08.2026, 23:32, beim Versuch, eine Telefonnummer aus den
+Kontaktdaten zu löschen]: „**Du kannst diese Änderung momentan nicht vornehmen.** Der
+Grund dafür ist, dass du ein Gerät verwendest, das du normalerweise nicht verwendest, und
+wir dein Konto schützen müssen. Wenn du dieses Gerät eine Zeit lang verwendet hast,
+kannst du die Änderung vornehmen."
+
+Das Profil `playwright-privat` war zu dem Zeitpunkt **zwei Stunden alt** (Anmeldung
+21:21). Lesen, klicken, sogar ein Profil zur Löschung vormerken ging problemlos, nur
+Kontaktdaten und Sicherheitseinstellungen sind gesperrt.
+
+**Konsequenz für die Planung:** Alles, was an Kontaktdaten, Passwort oder Zweitfaktor
+rührt, ist auf einem frischen Profil kein Sofort-Vorgang, sondern ein Langläufer
+([[langlaeufer-zuerst-anstossen]]). Entweder das Profil reift ein paar Tage, oder der
+Schritt läuft auf einem Gerät, das Meta kennt (Max' Handy-App, sein eigener Chrome).
+**Ein neues Profil also anmelden, bevor es gebraucht wird**, das steht im Abschnitt
+darunter schon für die Business Suite und gilt hier genauso.
+
 ## Die Autofill-Falle: „Falsches Passwort", obwohl das Passwort stimmt
 
 **Meta liest Passwortfelder aus seinem eigenen Zustand, nicht aus dem Eingabefeld.**
