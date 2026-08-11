@@ -107,6 +107,24 @@ entschlüsselt. Datei-Kopie zwischen Profilen, externer CDP-Chrome und `--isolat
 deshalb technisch aussichtslos, nicht nur schwierig. Cookies teilen geht über Playwrights
 `storageState`, weil dort bereits entschlüsselte Werte exportiert werden.
 
+**„Browser is already in use for … .playwright-mcp-profile, use --isolated".** Eine andere
+Sitzung hält das Hauptprofil, und der eigene MCP-Server kommt an den laufenden Browser gar
+nicht heran, auch nicht für ein `browser_tabs list`. Der Rat in der Meldung ist für Max'
+Arbeit **kein gültiger Weg** (`--isolated` und `playwright-shared` sind gesperrt), und die
+fremde Sitzung wird nie abgeräumt. Was hilft: `bash ~/.claude/hooks/playwright-close.sh
+--nur-markierte --trockenlauf` zeigt ohne Eingriff, wer dort arbeitet, und danach entscheidet
+man zwischen warten und einem Weg ohne Browser. `[B: 11.08.2026, das Hauptprofil hielt einen
+Kleinanzeigen-Tab einer Nachbarsitzung]`
+
+**Headless-Chrome ist KEIN Ersatz, um eine Seite anzusehen.** Der naheliegende Ausweg
+(`chrome.exe --headless=new --screenshot` mit Wegwerf-Profil) scheitert an drei Stellen
+zugleich, alle am 11.08.2026 an `griddone.de` gemessen: `--window-size=390` rendert das
+**Desktop**-Layout in 390 Pixel und lässt es überlaufen, weil `<meta viewport>` nur auf
+echten Mobilgeräten greift; `--screenshot` liefert nur das Viewport, nie die ganze Seite;
+und eine Sektion, die per Scroll-Trigger einblendet, bleibt nach einem eingebauten
+`scrollTo` **leer weiß** im Bild. Für den Blick auf eine bestimmte Stelle taugt das nicht.
+Wer wirklich sehen muss, wartet auf das Hauptprofil.
+
 **Die Fensterfarbe ist der maxone-Akzent `#e8630a`**, damit Max ein Automationsfenster von
 seinem eigenen Chrome unterscheidet. Chrome speichert sie in `<profil>/Default/Preferences`
 als signed 32-bit ARGB, `#e8630a` mit Alpha ist **`-1547510`**, Felder `browser.theme.user_color`
