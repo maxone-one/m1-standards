@@ -23,5 +23,6 @@ Narratives Betriebswissen und Domain-Kontext für Claude-Sessions. Ergänzt die 
 | [playwright](playwright/INDEX.md) | Serverwahl, Profillage, Tab-Klassen, Node gegen Browser, Fehlerbilder | Vor jedem Browserschritt, besonders vor dem Öffnen oder Schließen |
 | [claude-code](claude-code/INDEX.md) | Was automatisch lädt, Hooks, Skills, Berechtigungen, Sessions und Pool, Fehlerbilder, Grenzen | Vor jedem Griff an Hooks, Skills, `settings.json` oder Kontext, und bei „warum fragt er schon wieder" |
 | [vscode](vscode/INDEX.md) | Fenster abfragen und öffnen, die drei Zustandsebenen, bekannte Fehlerbilder | Vor jedem `code`-Aufruf und bei „warum ist das Fenster weg" |
+| [deploy-prod](deploy-prod/INDEX.md) | Deploy auf maxone-prod: Blue/Green, die zwei Traefik-Netze, Traefik-Probe, Platz schaffen, Fehlerbilder | Vor jedem Deploy, vor jedem Griff an Traefik, und bei „die Seite antwortet nicht" |
 | [conventions](conventions/INDEX.md) | Umgebungs-Terminologie, Cross-Cutting Concepts | Bei terminologischen Fragen |
 | [vanfree](vanfree/INDEX.md) | vanfree Projektkontext | Bei Arbeit an vanfree |
