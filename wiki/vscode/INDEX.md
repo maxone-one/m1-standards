@@ -6,6 +6,23 @@ Gilt estate-weit: VS Code ist Max' einzige Arbeitsoberfläche, jedes Projekt lä
 
 **Das Bedienbare steht oben, die Nachweise stehen unten.**
 
+## Abgrenzung: hier steht der Editor, nicht Claude Code
+
+Entschieden am 11.08.2026 auf Max' Frage, ob beides in ein Handbuch gehört. **Getrennt**,
+und die Messung war eindeutig: Claude-Code-Bedienwissen liegt an **1.229 Stellen** im
+Bestand, reines VS-Code-Wissen an **56**. Zusammengelegt entstünde kein VS-Code-Handbuch
+mit Claude-Anhang, sondern das Gegenteil. Dazu läuft Claude Code auch als CLI, im Web und
+im Desktop; VS Code ist nur eine seiner Oberflächen.
+
+| Frage | Handbuch |
+|---|---|
+| Fenster, Workspaces, Zustände, Erweiterungen, Project Manager | **hier** |
+| Hooks, Skills, Commands, `settings.json`, Berechtigungen, Kontext, Pool | Claude Code (noch nicht gebaut) |
+| **Die Naht**: Anmelde-Abbruch, Sessions-Picker, Reload nach Extension-Update, `statusLine` im Panel | **Claude Code**, denn es sind Claude-Probleme, die zufällig in VS Code auftreten |
+
+Solange das Claude-Code-Handbuch fehlt, steht der Anmelde-Abbruch weiter unten hier und
+zieht beim Bau um.
+
 ## Fenster: die drei Sätze, die man wirklich braucht
 
 | Aufgabe | Befehl | Falle |
