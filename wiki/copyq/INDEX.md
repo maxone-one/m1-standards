@@ -92,33 +92,35 @@ Verlauf. CopyQ schiebt eine Wiederholung nach oben, statt sie zu stapeln. Max' B
 doppelter Einträge im Windows-Verlauf ist damit strukturell erledigt, unabhängig von jedem
 Filter.
 
-## Der Wispr-Flow-Filter, noch offen
+## Wispr-Flow-Diktate lassen sich NICHT herausfiltern, gemessen
 
-**Der Stand:** Wispr Flow tippt nicht, es legt den diktierten Text in die Zwischenablage
-und drückt Strg+V. In `AppData\Roaming\Wispr Flow\config.json` gibt es keinen Schalter,
-das abzustellen (192 Schlüssel geprüft, nur `polishAutoPaste`). Die Diktate landen also
-zwangsläufig im Verlauf.
+**Das war der ursprüngliche Plan und er ist widerlegt.** Vor dem Bau einer Regel wurde an
+fünf echten Diktaten gemessen, welche Formate sie tragen:
 
-**Warum noch kein Filter steht:** CopyQ filtert über `application/x-copyq-owner-window-title`,
-also den Titel des Fensters, aus dem kopiert wurde. Beim Einfügen durch Wispr Flow ist das
-aktive Fenster aber das **Ziel** (VS Code, der Browser), nicht Wispr Flow. Ein Filter auf
-den Fenstertitel würde also das Falsche treffen. `[?]` Welche Formate ein echter
-Wispr-Eintrag trägt, ist noch nicht gemessen; ein per PowerShell gesetzter Eintrag trug nur
-`text/plain`.
-
-**Der nächste Schritt** ist eine Messung an einem echten Diktat, nicht ein geratener
-Filter:
-
-```bash
-python - <<'PY'
-import sys; sys.path.insert(0, '/c/Users/max/.claude/bin'); import ablage
-print(ablage.js("var i = getItem(0); var o = []; for (var k in i) o.push(k); print(o.join('\\n'));"))
-PY
+```
+0: Ich überlege schon seit geraumer Zeit: Wen mö…    text/plain (1874 Zeichen)
+1: sollten die nicht in den guten Morgen laufen?     text/plain (46)
+2: Was ist mit den täglichen Kontostellen            text/plain (39)
 ```
 
-Trägt der Eintrag ein unterscheidbares Merkmal, wandern Diktate per Automatic Command in
-einen eigenen Tab (`tab: 'Diktate'`), statt verworfen zu werden: Die Haupt-Ablage bleibt
-sauber und der Text ist trotzdem noch da.
+**Nur `text/plain`, sonst nichts.** Kein `application/x-copyq-owner-window-title`, kein
+Hinweis auf die Quelle. CopyQ filtert Automatic Commands über genau diesen Fenstertitel,
+und selbst wenn er da wäre, trüge er das **Ziel** des Einfügens (VS Code, Browser), nicht
+Wispr Flow. Ein Filter nach Herkunft ist damit ausgeschlossen, unabhängig von der Bauform.
+
+**Und an der Quelle gibt es keinen Schalter.** Alle 145 Benutzer-Einstellungen in
+`AppData\Roaming\Wispr Flow\config.json` durchgesehen: keine Option, ohne Zwischenablage
+einzufügen. `typingLocations` klingt danach, ist aber nur ein Onboarding-Profil
+(`coding_with_ai`, `drafting_emails`, …). `polishAutoPaste` betrifft nur die Politur.
+
+**Die Konsequenz: nicht filtern.** Das Problem war nie, dass Diktate im Verlauf stehen,
+sondern dass sie bei 25 Plätzen alles andere **verdrängt** haben. Bei 10000 verdrängen sie
+nichts mehr, und `ablage.py suche` findet das Gesuchte in einer Sekunde. Ein Filter würde
+hier ein gelöstes Problem lösen und dabei riskieren, echtes Kopiergut zu verschlucken.
+
+*Sollte Wispr Flow eines Tages ein eigenes Clipboard-Format setzen, wäre der Weg wieder
+offen: Automatic Command mit `tab: 'Diktate'`, damit die Diktate umziehen statt verworfen
+zu werden.*
 
 ## Nachweise
 
