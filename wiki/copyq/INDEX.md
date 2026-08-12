@@ -29,7 +29,8 @@ python ~/.claude/bin/ablage.py --tab Diktate liste
 gerade kopiert hat, und das ist ein Eingriff in seine laufende Arbeit. `merke` legt nur
 ab. Im Zweifel `merke`.
 
-**Für Max am Rechner:** `Strg+Umschalt+V` (von Max bestätigt am 12.08.2026) oder `Win+V`.
+**Für Max am Rechner:** `Win+V` oder `Strg+Umschalt+V`, **beide von Max bestätigt am
+12.08.2026**, `Win+V` um 11:34 nach den zwei Registry-Eingriffen unten.
 
 **`Win+V` musste Windows erst abgenommen werden.** Die Shell hält die Kombination für den
 eigenen Verlauf, ein Programm bekommt sie nicht, solange sie belegt ist. Am 12.08. zeigte
@@ -93,7 +94,15 @@ eine Datei und `eval -- "$(cat datei.js)"` schicken.
 | `autostart` | true | `copyq.lnk` im Autostart-Ordner, geprüft |
 | `check_clipboard` | true | Standard, sonst fängt es gar nichts |
 | `clipboard_notification_lines` | 0 | kein Popup bei jedem Kopieren, siehe `keine-artefakte-auf-max-bildschirm.md` |
+| `close_on_unfocus` | **false** | siehe unten, sonst ist das Fenster beim Screenshot weg |
+| `activate_closes` | true | nach der Auswahl geht es weiter von selbst zu |
 | globales Kürzel | `meta+v`, `ctrl+shift+v` | Befehl „Verlauf anzeigen" |
+
+**Zu `close_on_unfocus`:** Ab Werk schließt CopyQ sein Fenster, sobald ein anderes den
+Fokus nimmt. Das Snipping-Werkzeug tut genau das, ein Screenshot des Verlaufs war deshalb
+unmöglich (Max, 12.08.2026: „beim Screenshot rückt die Zwischenablage in den
+Hintergrund"). Mit `false` bleibt das Fenster stehen. Es geht weiterhin von selbst zu,
+sobald ein Eintrag gewählt wird (`activate_closes`), sonst mit `Esc`.
 
 Ändern per `copyq config <name> <wert>`, alle 192 Optionen zeigt `copyq config`.
 
