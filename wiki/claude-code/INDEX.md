@@ -21,7 +21,7 @@ zeigen dasselbe Verhältnis, hier steht die reproduzierbare.)*
 
 **Stand der Umgebung** [B: 11.08.2026]: CLI 2.1.181, VS-Code-Extension 2.1.227, Modell
 `opus[1m]`, `defaultMode: acceptEdits`. Max arbeitet **ausschließlich im VS-Code-Panel**,
-nie im Terminal ([[feedback_panel_only]]); Terminal-Lösungen sind hier keine Lösungen.
+nie im Terminal ([[max-nutzt-claude-nur-im-vs-code-panel]]); Terminal-Lösungen sind hier keine Lösungen.
 
 ---
 
@@ -38,7 +38,7 @@ Das ist die wichtigste Zahl im ganzen Handbuch, weil sie jede Kontextentscheidun
 | Werkzeug- und Skill-Beschreibungen, MCP-Definitionen | der Skill-Inhalt selbst (erst bei Aufruf) |
 
 **Es gibt keine globale MEMORY.md-Mutter, die mitlädt.** `~/.claude/memory/MEMORY.md`,
-`MAX.md`, `MAXONE.md` sind reine Nachschlage-Ablage. Volltext: [[reference-kontext-ladeverhalten]].
+`MAX.md`, `MAXONE.md` sind reine Nachschlage-Ablage. Volltext: [[kontext-ladeverhalten]].
 
 **Der Sockel ist der eigentliche Posten** [B: gemessen 08.08.2026]: System-Prompt, globale
 CLAUDE.md, `rules/`, Werkzeugbeschreibungen, Skill-Liste und MCP-Definitionen belegen
@@ -126,7 +126,7 @@ Prompt erneut**, und die Ausgabe bleibt im Verlauf liegen. Über neun Prompts ka
 Die Kürzung von Ortszeit und Kontextstand sparte 166 Tokens je Prompt.
 
 **Die Regel daraus: Ein Hook sagt die Zahl, die Regel sagt das Warum.** Und: Ein Hook
-schweigt, wenn er nichts zu sagen hat. Volltext: [[reference-hook-kosten]].
+schweigt, wenn er nichts zu sagen hat. Volltext: [[hook-kosten]].
 
 ### Die Windows-Falle, die einen Monat gekostet hat
 
@@ -149,7 +149,7 @@ Der zweite Fall war teuer: Das akustische „Claude wartet auf dich" war von Anf
 zum 05.08.2026 stumm, eine Berechtigungsfrage wartete 15 Stunden unbemerkt, `/gute-nacht`
 lief nie an. **Weil das Skript still ausstieg.** Daraus die zweite Regel: **Jeder Ausstieg
 eines Wächters wird protokolliert, auch das Durchwinken.** Volltext:
-[[reference-hook-kommandos-posix-shell]], [[reference-windows-fallen-claude-code]].
+[[hook-kommandos-posix-shell]], [[windows-fallen-claude-code]].
 
 ### Und die Falle darunter: PowerShell-Logik gehört in eine `.ps1`
 
@@ -168,6 +168,35 @@ Messung vorher und nachher.** Ein Hook, der nur „läuft", beweist nichts.
 **Wie sie geladen werden:** Von Skills lädt automatisch nur **Name plus `description`** aus
 dem YAML-Kopf. Der Inhalt kostet erst beim Aufruf. Die Beschreibung ist damit kein
 Beiwerk, sondern das Einzige, woran ich erkenne, dass es den Skill gibt.
+
+**Skills werden zur LAUFZEIT nachgeladen, nicht nur beim Sessionstart** [B: zweimal
+gemessen am 12.08.2026]. Wandert ein Skill-Verzeichnis in `skills/`, steht es Sekunden
+später in der Liste, ohne Neustart. **Die Gegenrichtung gilt nicht:** Ein Skill, der beim
+Start registriert war, bleibt in dieser Sitzung aufrufbar, auch wenn seine Datei
+verschwindet; der Aufruf lief über den Start-Cache und meldete sogar einen Pfad, den es in
+dem Moment nicht mehr gab. Wer prüfen will, ob eine Auslagerung wirklich greift, braucht
+dafür eine neue Sitzung.
+
+**Darauf beruht die Wegweiser-Bauform** (Max' Hydra-Prinzip): 177 Skills liegen außerhalb
+von `skills/` in vier Sammlungen, erreichbar über wenige Wegweiser, die den passenden bei
+Bedarf **holen** statt nur auf ihn zu zeigen.
+
+| Sammlung | Inhalt | Zugang |
+|---|---|---|
+| `gsd-skills/` | 65 GSD-Skills | die sechs `gsd-ns-*`, holen per `bin/gsd-holen.py` |
+| `marketing-skills/` | 51 | die sechs `mkt-*`, per Datei-Lesen |
+| `seo-skills/` + `seo-agents/` | 26 + 18 | `LIESMICH.md` dort |
+| `product-skills/` | 17 | `nachfrage-vor-bau` |
+
+**Sie stehen nur durch ausdrückliche `!`-Freigaben in der `.gitignore` im Repo.** Wer eine
+davon entfernt, löscht die Sammlung beim nächsten Pull am anderen Gerät. `/driftglobal`
+Schritt 4a3 zählt sie deshalb, 4a4 prüft die Hol-Anweisung der GSD-Wegweiser.
+
+**Und was ausgelagert ist, findet niemand von allein.** `seo-skills/` lag am 12.08.2026
+zwei Tage lang ohne Wegweiser da; eine Session hat an diesem Abend eine Stunde damit
+verbracht, genau diese Auslagerung ein zweites Mal zu bauen, weil ein `ls` auf einen
+geratenen Pfadnamen negativ war. **Ein Vermerk in einer Datei ist kein Zugang, nur ein
+Skill in der Liste ist einer.**
 
 ### Das Fehlerbild, das lautlos alles kippt
 
@@ -227,7 +256,7 @@ akzeptiert Datei-Änderungen und einfache Dateibefehle automatisch, **aber nur f
 Arbeitsverzeichnis oder in `permissions.additionalDirectories`**.
 
 > **Damit ist `additionalDirectories` der Hebel, nicht Kosmetik, und eine alte Regel dazu
-> ist überholt.** [[feedback_additional_directories]] verlangt „genau ein Eintrag", aus
+> ist überholt.** [[additional-directories-steuert-rueckfragefreiheit]] verlangt „genau ein Eintrag", aus
 > einer Zeit, in der das Array nur Kontext-Overhead erzeugte. Seit dem 05.08.2026 bestimmt
 > es, wo ohne Rückfrage gearbeitet wird; real stehen acht Einträge drin
 > [B: `settings.json`, 11.08.2026]. **Die Sparsamkeit gilt weiter dem Zweck, nicht der
@@ -241,7 +270,7 @@ trifft das die Werkzeugpflege, nicht den Alltag.
 **`bypassPermissions` ist der falsche Weg.** Die Doku empfiehlt ihn nur für Container und
 VMs, weil er auch Schreibzugriffe auf `.git`, `.claude`, `.vscode` und `.idea` durchwinkt.
 
-Volltext: [[reference-permission-modell-claude-code]].
+Volltext: [[permission-modell-claude-code]].
 
 ---
 
@@ -267,7 +296,7 @@ als `customTitle`. Es gibt **kein** `/rename` [B: Issues #24472, #29895]. Der Pi
 ursprünglich nach Datei-mtime statt nach dem letzten Nachrichten-Zeitstempel, was durch
 Panel-Metadaten wildfremde Sessions gleich alt aussehen ließ; behoben durch einen eigenen
 Extension-Patch (`patch-extension-mtime.ps1`, Run-Key-Wächter, re-patcht nach Updates).
-Volltext: [[reference_session_picker_mtime]], [[reference_session_rename]].
+Volltext: [[picker-zeitstempel-ist-die-datei-mtime]], [[sessions-umbenennen-geht-nur-per-hover]].
 
 ### Der Pool: Sessions reden miteinander
 
@@ -298,7 +327,7 @@ Pool-Nachricht, die darauf zeigt** (`rules/handoff-geht-ueber-den-pool.md`).
 voll, wird trotzdem zugestellt, das Projekt landet auf der Weckliste.
 
 Bauform, Grenzen und alle Messungen: `~/.claude/pool/README.md`. Kurzfassung:
-[[reference-pool-session-kommunikation]].
+[[pool-session-kommunikation]].
 
 ---
 
@@ -323,7 +352,7 @@ seinen acht Stunden. Es ist eine abgelehnte Erneuerung ohne Wiederholung, kein A
 vier GitHub-Meldungen (#68660, #61923, #22602, #34306) sind geschlossen, drei davon von
 einem Staleness-Bot ohne Fix. **Gegen den Eigenbau spricht die Token-Rotation:** Extension
 und CLI halten getrennte Kopien desselben Refresh-Tokens, ein dritter Nutzer würde die
-Abmeldungen vermehren. Volltext: [[reference-vscode-relogin-ursache]].
+Abmeldungen vermehren. Volltext: [[woechentliche-abmeldung-ist-ein-extension-fehler]].
 
 ---
 
@@ -340,7 +369,7 @@ Abmeldungen vermehren. Volltext: [[reference-vscode-relogin-ursache]].
 - **`CLAUDE.md`, `AGENTS.md` und `.claude/` werden nie committet.** Sie stehen in
   `~/.gitignore_global`, nicht in projektlokalen `.gitignore`.
 - **Modellwahl ausschließlich manuell per `/model`**, keine Verkleidung übers Environment.
-  Drei Automatisierungsversuche sind gescheitert ([[historie_modellwahl_automatisierung]]).
+  Drei Automatisierungsversuche sind gescheitert ([[modellwahl-automatisierung]]).
   Fable 5 nur für Strategiearbeit, sonst Opus.
 - **`settings.json` ist gitignored.** Skripte wandern über Git mit, ihre **Verdrahtung
   nicht**. Wer auf dem zweiten Gerät arbeitet, trägt Hook-Einträge nach; für den Pool gibt
