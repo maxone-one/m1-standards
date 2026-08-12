@@ -29,10 +29,26 @@ python ~/.claude/bin/ablage.py --tab Diktate liste
 gerade kopiert hat, und das ist ein Eingriff in seine laufende Arbeit. `merke` legt nur
 ab. Im Zweifel `merke`.
 
-**Für Max am Rechner:** `Win+V` oder `Strg+Umschalt+V`. Beide Kürzel liegen auf demselben
-Befehl „Verlauf anzeigen". `[?]` Ob Windows `Win+V` wirklich durchlässt, kann nur Max
-prüfen, das System reserviert diese Kombination für seinen eigenen Verlauf. Klappt sie
-nicht, ist `Strg+Umschalt+V` der sichere Weg.
+**Für Max am Rechner:** `Strg+Umschalt+V` (von Max bestätigt am 12.08.2026) oder `Win+V`.
+
+**`Win+V` musste Windows erst abgenommen werden.** Die Shell hält die Kombination für den
+eigenen Verlauf, ein Programm bekommt sie nicht, solange sie belegt ist. Am 12.08. zeigte
+`Win+V` deshalb weiter den alten 25er-Verlauf, obwohl CopyQ längst lief. Zwei Eingriffe
+lösen das, beide in `HKCU`:
+
+| Schlüssel | Wert | Wirkung |
+|---|---|---|
+| `Software\Microsoft\Clipboard\EnableClipboardHistory` | `0` | Windows' eigener Verlauf aus |
+| `…\Explorer\Advanced\DisabledHotkeys` | `V` | die Shell gibt `Win+V` an Anwendungen frei |
+
+Danach **Explorer neu starten** (sonst greift `DisabledHotkeys` nicht) und **CopyQ neu
+starten** (es registriert den Hotkey nur beim Start). Vorher prüfen, ob Explorer-Fenster
+offen sind, die gehen dabei zu. Die alten Werte liegen in
+`~/.claude/state/winv-backup.txt`.
+
+**Vor dem Abschalten prüfen, ob im Windows-Verlauf etwas angeheftet ist**
+(`%LOCALAPPDATA%\Microsoft\Windows\Clipboard\Pinned`), das wäre sonst weg. Am 12.08. war
+dort nichts.
 
 ## Windows-Fallen, alle am 12.08.2026 gemessen
 
