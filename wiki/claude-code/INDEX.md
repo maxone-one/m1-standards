@@ -232,6 +232,33 @@ einen erlaubten Schreib-Ausnahme: `rules/commands-immer-projektbezogen.md`.
 und Playwright-Server mit der Hauptsession und reißen sonst deren angemeldeten Tab mit.
 Rechercheaufträge auf `curl` festlegen, mit ausdrücklichem Browser-Verbot im Prompt.
 
+**Wie sie laden:** wie bei Skills nur `name` plus `description` aus dem YAML-Kopf, der Rest
+erst beim Aufruf. Gemessen für die 34 GSD-Agenten [B: 12.08.2026]: **6.323 Zeichen
+Beschreibung plus 603 Zeichen Namen, rund 1.900 Tokens** je Session, also knapp 1 Prozent
+des Sockels.
+
+#### Warum die 34 GSD-Agenten trotzdem bleiben (geprüft und verworfen, 12.08.2026)
+
+Der offene Punkt aus der Skill-Auslagerung ist damit geschlossen. **Beide denkbaren Wege
+tragen nicht:**
+
+**Verschieben wie bei den Skills** scheitert am Aufrufweg. Ein Agent wird nie von mir
+ausgewählt, sondern von einem GSD-Orchestrator **namentlich** per `subagent_type` gerufen
+(jede Beschreibung sagt es selbst: „Spawned by /gsd-plan-phase orchestrator"). Fehlt er,
+bricht ein laufender Durchgang mittendrin. Dass Agenten zur **Laufzeit** nachladen, ist
+anders als bei Skills **nicht belegt** `[?]`, und der Beleg kostet einen echten
+Agent-Aufruf. Ein Bruchrisiko in einem teuren Lauf gegen 1 Prozent Sockel ist kein Handel.
+
+**Die Beschreibungen kürzen** wäre risikofrei (niemand liest sie, `grep` über alle GSD-Skills
+und Commands: keine einzige Stelle) und brächte rund 1.300 Tokens. Es scheitert am Ort:
+`.gitignore` Zeile 148 nimmt `agents/gsd-*` ausdrücklich aus, denn **das GSD-Framework wird
+per `npx` in gepinnter Version installiert und nie gespiegelt**. Eine Änderung dort wäre
+nicht versioniert, am anderen Gerät nicht vorhanden und beim nächsten Installationslauf weg.
+
+**Die Lehre über GSD hinaus:** In einem Verzeichnis, das eine Installation jederzeit
+neu schreibt, wird nichts von Hand verbessert. Dort gilt nur Verschieben, und Verschieben
+setzt voraus, dass es einen Weg zurück gibt, den ein laufender Vorgang selbst gehen kann.
+
 ---
 
 ## 4. Berechtigungen, und warum trotz Allowlist gefragt wird
