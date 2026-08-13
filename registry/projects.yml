@@ -174,12 +174,23 @@ projects:
         reviewed_at: "2026-04-27"
     notes: "Split in repivot-backend + repivot-frontend (beide Blue/Green via Profiles). Server-Pfad /opt/repivot (nicht /opt/repivot.me — alter Pfad ist Ghost-Dir mit nur HANDOFF.md, korrigiert 2026-04-29)."
 
+  # KORREKTUR 2026-08-13: container und path_server waren falsch, drei FAILs entstanden daraus,
+  # ohne dass am Projekt etwas defekt war. Am laufenden System erhoben:
+  #   - der App-Container heisst venfree-app-blue, ein vanfree-app-{blue,green} existiert nicht
+  #     (FAIL 007-container-running)
+  #   - deployt wird aus /opt/venfree, dort liegen deploy.sh UND HANDOFF.md. /opt/vanfree traegt
+  #     nur zwei .env-Dateien und zwei leere Ordner (FAIL 006-handoff-md, FAIL 033-warmup)
+  #   - Traefik: Host(`venfree.de`) ist die Hauptregel, vanfree.de laeuft ueber den Router
+  #     "venfree-old-de", ist also die alte Domain
+  # Die Felder name und domain sind BEWUSST unveraendert: der Produktname ist eine Entscheidung
+  # des Projekts, nicht eine Messung, und die notes unten behaupten das Gegenteil. Gemeldet an
+  # venfree am 13.08.2026, siehe auch die notes am Ende dieses Blocks.
   - name: vanfree
     workspace: venfree
     domain: vanfree.de
     server: maxone-prod
     deploy: blue-green
-    container: vanfree-app
+    container: venfree-app
     supabase_url: https://api.vanfree.de
     compose_file: ops/docker-compose.app.yml
     status: live
@@ -205,7 +216,7 @@ projects:
         avv_status: account-enabled
         evidence: Brevo DPA im Account hinterlegt
         reviewed_at: "2026-04-27"
-    notes: "Aktueller kanonischer Produktname und Deploy-Stand: vanfree, Domain vanfree.de, Container vanfree-*."
+    notes: "KORREKTUR 2026-08-13: Der Satz 'Aktueller kanonischer Produktname und Deploy-Stand: vanfree, Domain vanfree.de, Container vanfree-*' ist am laufenden System widerlegt und stand hier, bis diese Zeile geschrieben wurde. Belegt auf maxone-prod: der Container heisst venfree-app-blue (ein vanfree-app existiert nicht), deployt wird aus /opt/venfree, und Traefik fuehrt Host(`venfree.de`) als Hauptregel, waehrend vanfree.de ueber den Router 'venfree-old-de' laeuft. Daneben bedient derselbe Container venfree.eu, knxets.maxone.one und vanfree.maxone.one, beide letzteren als legacy gelabelt. Der lokale Repo-Ordner heisst venfree. Korrigiert wurden nur container und path_server, also die messbaren Werte. Ob das Projekt in der Registry vanfree oder venfree heissen soll und welche Domain die kanonische ist, entscheidet das Projekt, gemeldet am 13.08.2026."
 
   - name: plansey-2026
     workspace: plansey-2026
