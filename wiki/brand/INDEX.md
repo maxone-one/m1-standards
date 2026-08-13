@@ -7,6 +7,7 @@ Markenrichtlinien und visuelle Standards fuer alle maxone-Properties.
 | Topic | Wann nutzen |
 |---|---|
 | [[visual-style]] | Foto-Setup, KI-Prompts, EXIF-Defaults, Bildsprache |
+| [[werbeprinzipien]] | Wirkprinzipien der Werbung: Long Copy und was noch dazukommt |
 | [[image-pipeline]] | Bild-Upload-Verarbeitung, AVIF/WebP-Auslieferung, SEO |
 
 ## Scope
