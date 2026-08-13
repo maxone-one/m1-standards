@@ -22,7 +22,7 @@ anderen Profile sind praktisch leer, dort scheitert jeder Login. Zweimal passier
 07.07. und 11.07.2026, beide Male bei der Arbeitsagentur, beide Male wurde das Profil
 geraten statt geprüft.
 
-**Aufgelöster Widerspruch, 11.08.2026:** `memory/reference_playwright_profile_per_project.md`
+**Aufgelöster Widerspruch, 11.08.2026:** `memory/playwright-profile-per-project.md`
 vom 30.05.2026 verlangt das Gegenteil („niemals das Default-Profil aktiv nutzen, jedes
 UI-Projekt bekommt sein eigenes"). **Diese Fassung ist überholt.** Sie löste ein anderes
 Problem, nämlich gegenseitige Sperren beim parallelen Arbeiten, und opferte dafür genau
@@ -35,36 +35,74 @@ nur noch in zwei Fällen: für ein zweites Konto (siehe oben) und für **Dauerbe
 **Vor jedem Öffnen zuerst prüfen, was schon offen ist** (`browser_tabs` mit `list`). Ein
 Fenster kann von einer früheren Sitzung bewusst offen gelassen worden sein.
 
-**Drei Klassen, die erste zutreffende gewinnt** (Volltext:
+**Vier Klassen, die erste zutreffende gewinnt** (Volltext:
 `rules/keine-artefakte-auf-max-bildschirm.md`):
 
 | Klasse | Was | Regel |
 |---|---|---|
-| **0 Dauerprofil** | trägt laufenden Betrieb (`repivot.me`) | nie schließen, nie als Befund melden |
-| **1 Dauertab** | WhatsApp Business, Kleinanzeigen gewerblich | bleibt offen, auch am Sitzungsende |
-| **2 Übergabetab** | wartet auf genau einen Klick von Max | bleibt bis Sitzungsende, **mit Übergabesatz UND Markierung** |
+| **0 Dauerprofil** | trägt laufenden Betrieb, Wahrheit ist `~/.claude/dauerbetrieb.json` | nie schließen, nie als Befund melden |
+| **1 Dauertab** | **derzeit leer** | – |
+| **2 Übergabetab** | wartet auf genau einen Klick von Max | bleibt bis `bis`, **mit Markierung UND Übergabesatz** |
 | **3 Arbeitstab** | alles andere | sofort schließen, wenn der Schritt fertig ist |
+
+**Jede Aufgabe öffnet einen neuen TAB, nie ein neues Fenster** (Max-Direktive 13.08.2026,
+sie hebt „eigenes Fenster pro Aufgabe" auf): `browser_tabs` mit `action: new`, und niemals
+eine zweite Browser-Instanz, solange eine passende läuft.
 
 **Innerhalb einer Aufgabe wird nicht zwischen Einzelschritten geschlossen.** Erst wenn die
 ganze Aufgabe fertig ist, nicht der Einzelschritt.
 
-**Ein Übergabetab ohne Eintrag in `~/.claude/state/uebergabe-tabs.json` stirbt**, und zwar
-beim nächsten Antwortende durch den Stop-Hook, auch durch den einer fremden Sitzung.
-Ansage und Markierung sind ein Vorgang, und die Markierung kommt zuerst:
+### Dauerdienste: Wahrheit ist die Datei, nicht diese Seite
 
-```json
-[{ "titel": "<Regex auf den Fenstertitel>", "wofuer": "<was Max dort tut>",
-   "bis": "<ISO-Zeitstempel>" }]
+| Profil | Dienst | Port | Zustand |
+|---|---|---|---|
+| `dauerbetrieb` | **WhatsApp Business** | 9223 | Dauerbetrieb, Wächter stellt ihn wieder her |
+| `repivot.me` | RePivot-Autopilot | 9222 | pausiert seit 13.08.2026 |
+
+```bash
+powershell -File ~/.claude/bin/dauerbetrieb.ps1 -NurPruefen   # meldet nur
+powershell -File ~/.claude/bin/dauerbetrieb.ps1               # stellt her
 ```
 
-Der Titel ist ein **Regex und muss die Navigation überleben**: Max klickt weiter, der Titel
-ändert sich, ein exakter Treffer wäre nach dem ersten Klick tot.
+**Ein weiterer Kanal kommt als Tab ins bestehende Profil** (`"profil": "dauerbetrieb"`,
+gleicher Port), nicht in ein eigenes. Ein eigenes Profil bekommt nur, was zwingend getrennt
+sein muss: ein zweites Konto beim selben Dienst, oder ein Betrieb mit eigenem Zeitplan.
+Kleinanzeigen ist seit dem 12.08.2026 stillgelegt, eingemottet in `dauerbetrieb.json`: Es
+wird *bearbeitet*, nicht nur *gesichtet*, und braucht dafür ohnehin ein MCP-Fenster.
 
-**Die Markerdatei wird nie mit PowerShell geschrieben.** `ConvertTo-Json` wickelt ein Array
-in `{"value":[…],"Count":n}`, der Hook liest danach null Muster, und jeder Schutz ist weg,
-auch der fremder Sitzungen. Python oder `Edit`, nichts sonst.
+### Markieren: nur mit dem Werkzeug
 
-**Vor jedem scharfen Aufräumlauf ein Trockenlauf:**
+```bash
+python ~/.claude/bin/uebergabe-tab.py merken --titel "(?i)visiotalent" \
+    --wofuer "Max nimmt das Videointerview auf, Frist heute"
+python ~/.claude/bin/uebergabe-tab.py liste
+python ~/.claude/bin/uebergabe-tab.py entfernen --titel "(?i)visiotalent"
+```
+
+**Ein Übergabetab ohne Eintrag in `~/.claude/state/uebergabe-tabs.json` stirbt**, und zwar
+beim nächsten Antwortende durch den Stop-Hook, auch durch den einer fremden Sitzung.
+
+**Das Muster ist ein Regex und wird gegen Titel UND URL geprüft** (seit 13.08.2026, nur
+tab-genau über CDP; auf Fensterebene gibt es keine URL). **Nimm das Wort, das die Navigation
+überlebt, und das steht fast immer in der Adresse:** Max klickt weiter, der Titel ändert
+sich. Ohne `--bis` gilt der Schutz bis zum Arbeitstagsende um 04:00.
+
+**Von Hand in die Datei schreiben ist ein Fehler**, auch vorsichtig: Sie hat viele
+Schreiber, und ohne Sperre gehen bei acht gleichzeitigen drei von acht Markern verloren
+(`werkstatt/BUGS.md` F-9). **Nie mit PowerShell:** `ConvertTo-Json` wickelt ein Array in
+`{"value":[…],"Count":n}`, der Hook liest danach null Muster, und jeder Schutz ist weg, auch
+der fremder Sitzungen.
+
+### Wann der Schließ-Hook läuft, und was dann fällt
+
+| Wann | Modus | Was fällt |
+|---|---|---|
+| `SessionStart` | `--nur-leere` | nur Fenster ohne Inhalt (Titel leer oder `about:blank`) |
+| `Stop`, nach jeder fertigen Antwort | `--nur-markierte` | **alles**, außer es steht irgendein Marker, dann gar nichts |
+| `SessionEnd` | `--ausser-dauertabs` | alles außer Klasse 0 und gültig markierten Tabs |
+
+Getroffen wird ausschließlich `chrome.exe` mit `--user-data-dir` auf `.playwright-profiles`
+oder `.playwright-mcp-profile`. **Vor jedem scharfen Aufräumlauf ein Trockenlauf:**
 
 ```bash
 bash ~/.claude/hooks/playwright-close.sh --nur-markierte --trockenlauf
