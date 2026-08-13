@@ -56,7 +56,7 @@ projects:
     server: maxone-prod
     deploy: blue-green
     container: maxone-v2
-    supabase_url: https://panel.maxone.one
+    supabase_url: https://auth.maxone.one  # 13.08.2026 korrigiert, stand seit dem Cutover vom 23.06.2026 auf panel; gemessen an maxone-v2-blue
     dockerfile_path: apps/umbrella/Dockerfile
     compose_file: apps/umbrella/docker-compose.yml
     status: live
@@ -93,7 +93,7 @@ projects:
     server: maxone-prod
     deploy: blue-green
     container: slf-app
-    supabase_url: http://slf-kong:8000
+    supabase_url: https://api.stadtlahnflow.de  # 13.08.2026 korrigiert, gemessen an slf-app-blue; intern liegt slf-kong:8000 dahinter
     status: live
     tags: customer
     external_subscriptions:
@@ -157,7 +157,7 @@ projects:
     server: maxone-prod
     deploy: blue-green
     container: repivot-backend
-    supabase_url: https://panel.maxone.one  # VIOLATION-051: teilt maxone.one Supabase — Migration ausstehend
+    supabase_url: http://pivotin-api:8080  # 13.08.2026 korrigiert: VIOLATION-051 ist ERLEDIGT, repivot hat eine eigene Instanz (pivotin-api, pivotin-postgrest); gemessen an repivot-backend-green
     dockerfile_path: backend/Dockerfile
     compose_file: docker-compose.prod.yml
     status: live
@@ -420,8 +420,8 @@ projects:
     domain: zentinel.maxone.one
     server: maxone-prod
     deploy: null
-    container: null
-    supabase_url: null  # nutzt maxone.one Supabase via Monorepo-Kopplung — wird nach Entkopplung eigene Instanz brauchen
+    container: zentinel-app  # 13.08.2026: laeuft, war als null eingetragen
+    supabase_url: https://panel.maxone.one  # 13.08.2026 gefuellt, gemessen an zentinel-app. Der Wert war null, waehrend der Kommentar daneben schon das Gegenteil sagte. VIOLATION-051 offen: teilt die maxone-Instanz, braucht nach der Entkopplung eine eigene
     compose_file: zentinel/vigil/docker-compose.yml
     status: dev
     tags: product
