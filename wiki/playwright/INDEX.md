@@ -108,6 +108,43 @@ oder `.playwright-mcp-profile`. **Vor jedem scharfen Aufräumlauf ein Trockenlau
 bash ~/.claude/hooks/playwright-close.sh --nur-markierte --trockenlauf
 ```
 
+## Tab-Herkunft: wer hat diesen Tab geöffnet
+
+Die CDP-Tabliste liefert nur `id`, `title`, `url` und `type`, also **kein Herkunftsfeld**.
+Der Schließ-Hook kann deshalb nicht sehen, ob ein Tab von dieser Session stammt oder von
+einer Nachbarsession, die auf Max' Klick wartet. Genau daran gingen am 12. und 13.08.2026
+Vorgänge verloren (`werkstatt/BUGS.md` F-15, F-16).
+
+**Rückblickend** beantwortet das seit dem 12.08.2026 `bin/browser-forensik.py` aus den
+Session-JSONL, in denen Claude Code jeden Tool-Aufruf mitschreibt.
+
+**Laufend** schreibt seit dem 13.08.2026 ein PostToolUse-Hook mit, wer einen Tab öffnet:
+
+```bash
+python ~/.claude/hooks/tab-herkunft.py     # als Hook registriert, nicht von Hand rufen
+cat ~/.claude/state/tab-herkunft.ndjson    # eine Zeile je Öffnung
+```
+
+Matcher `mcp__.*__browser_(navigate|tabs)`, registriert in `settings/base.json`, gilt damit
+auf beiden Geräten. Protokolliert werden Zeit, Session, Projekt, URL und MCP-Server, gedeckelt
+auf 400 Zeilen. **Als Hook und nicht als Schritt in meinem Ablauf**, weil eine Annahme über
+mein Verhalten keine Absicherung ist; **nicht aus den JSONL**, weil ein Scan darüber Sekunden
+kostet und der Schließ-Hook nach jeder Antwort läuft.
+
+**Was es noch nicht tut: den Schließ-Hook steuern.** Der entscheidet weiter wie bisher
+(steht ein Marker, schließt er gar nichts). Erst wenn das Protokoll belegt gefüllt ist, lohnt
+der Umbau auf „nur eigene Tabs anfassen", und der ist ein scharfer Eingriff in ein System,
+das Max' befüllte Formulare trägt.
+
+> **Offen `[?]`: Der Matcher ist noch nicht am lebenden Aufruf belegt.** Der Testaufruf am
+> 13.08.2026 um 16:5x scheiterte, weil eine Nachbarsession das MCP-Profil hielt
+> (`Browser is already in use`), und der Hook schrieb nichts. Zwei Erklärungen sind
+> möglich und keine ist belegt: Ein neu registrierter Hook greift womöglich erst nach dem
+> nächsten Session-Start, oder `PostToolUse` feuert bei fehlgeschlagenen Aufrufen nicht.
+> **Der Probemarker `state/tab-herkunft.probe` liegt deshalb noch**, er lässt auch harmlose
+> Aufrufe protokollieren. Wer die erste Zeile im Protokoll sieht, hat den Beleg und
+> **löscht dann den Marker**, sonst rauscht das Protokoll dauerhaft mit.
+
 ## Werkzeugwahl: Node oder Browser
 
 Der häufigste Denkfehler, und er kostet jedes Mal einen ganzen Block:
