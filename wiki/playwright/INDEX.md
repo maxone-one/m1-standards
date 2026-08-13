@@ -131,19 +131,34 @@ auf 400 Zeilen. **Als Hook und nicht als Schritt in meinem Ablauf**, weil eine A
 mein Verhalten keine Absicherung ist; **nicht aus den JSONL**, weil ein Scan darüber Sekunden
 kostet und der Schließ-Hook nach jeder Antwort läuft.
 
-**Was es noch nicht tut: den Schließ-Hook steuern.** Der entscheidet weiter wie bisher
-(steht ein Marker, schließt er gar nichts). Erst wenn das Protokoll belegt gefüllt ist, lohnt
-der Umbau auf „nur eigene Tabs anfassen", und der ist ein scharfer Eingriff in ein System,
-das Max' befüllte Formulare trägt.
+**Der Matcher ist belegt** (13.08.2026, 17:15): sieben Zeilen aus zwei fremden Sessions,
+darunter echte `navigate`-Aufrufe ohne Probemodus. Der Probemarker ist damit entfernt.
 
-> **Offen `[?]`: Der Matcher ist noch nicht am lebenden Aufruf belegt.** Der Testaufruf am
-> 13.08.2026 um 16:5x scheiterte, weil eine Nachbarsession das MCP-Profil hielt
-> (`Browser is already in use`), und der Hook schrieb nichts. Zwei Erklärungen sind
-> möglich und keine ist belegt: Ein neu registrierter Hook greift womöglich erst nach dem
-> nächsten Session-Start, oder `PostToolUse` feuert bei fehlgeschlagenen Aufrufen nicht.
-> **Der Probemarker `state/tab-herkunft.probe` liegt deshalb noch**, er lässt auch harmlose
-> Aufrufe protokollieren. Wer die erste Zeile im Protokoll sieht, hat den Beleg und
-> **löscht dann den Marker**, sonst rauscht das Protokoll dauerhaft mit.
+### Was der Schließ-Hook daraus macht (seit 13.08.2026, `BUGS.md` F-19)
+
+**Ein Tab, dessen HOST in keiner Protokollzeile steht, hat keine Session geöffnet, gehört
+also Max und bleibt stehen.** Das ist die dritte Klasse neben „markiert" und „Arbeitstab",
+und ohne sie fiel alles Unbekannte in die Restklasse, die geräumt wird. Dreimal am
+13.08.2026 hat das Max' eigenen Kleinanzeigen-Tab gekostet.
+
+Drei Dinge, die man beim Anfassen wissen muss:
+
+- **Verglichen wird der Host, nicht die volle Adresse.** Ein Vorgang navigiert (das
+  DAK-Postfach stand an einem Nachmittag unter drei Adressen). Bei Gleichheitsvergleich
+  gälte nach dem ersten Klick jeder Tab als fremd, und ein Schutz, der alles schützt, lässt
+  die Fensterzahl wieder wachsen.
+- **Die Klammer:** Ist die erste Protokollzeile jünger als der Browserstart, kann das
+  Protokoll über ältere Tabs dieses Fensters nichts sagen, und die Prüfung fällt aus. Ohne
+  sie wäre der Hook nach der Einführung lautlos wirkungslos gewesen.
+- **Sie kann nur behalten, nie schließen.** Ein Tab, der ohne sie gefallen wäre, fällt
+  schlimmstenfalls weiter.
+
+Testbar über `CLAUDE_TAB_HERKUNFT=<pfad>` mit `-NurProfil` und eigener `-MarkerDatei`, wie
+`CLAUDE_DAUERBETRIEB` es für die Dienstliste vormacht. **Ein `about:blank`-Tab hat keinen
+Host und fällt weiter**, das ist Absicht.
+
+**Das Schließ-Protokoll trägt seit demselben Tag `session`**, also welcher Hook geschlossen
+hat. Vorher war das nur über Transkript-Zeitstempel zu erschließen.
 
 ## Werkzeugwahl: Node oder Browser
 
