@@ -114,6 +114,19 @@ das kein Fehler, dann steht nichts drin.
 ein Abbruch. Wer eine Abmeldung an einer Aufräumarbeit scheitern lässt, hinterlässt eine
 Karteileiche, die dauerhaft einen Slot belegt.
 
+**Ein neu registrierter Hook greift SOFORT, nicht erst nach dem nächsten Session-Start**
+[B: gemessen 13.08.2026, `hooks/regel-groesse.py` als `PostToolUse` auf `Write|Edit`
+eingetragen und im selben Lauf viermal gefeuert]. Die gegenteilige Vermutung stand seit dem
+17:00-Lauf desselben Tages als offene Frage im Raum, entstanden aus einem Testaufruf, der
+aus einem anderen Grund scheiterte. Wer einen Hook einträgt, kann ihn also im selben Zug
+scharf prüfen.
+
+**Registriert wird in BEIDEN Schichten, sonst ist er halb tot.** `settings/base.json`
+repliziert auf das andere Gerät, `settings.json` ist die lokal wirksame und ist
+**gitignored**. Ein Eintrag nur in `base.json` tut hier gar nichts und fällt erst am
+anderen Gerät auf; einer nur in `settings.json` verschwindet beim nächsten Wipe.
+`python ~/.claude/bin/hooks-ernten.py` meldet, was nur lokal steht.
+
 ### Was ein Hook kostet [B: gemessen 10.08.2026]
 
 **Zeit ist fix: 200 bis 280 ms je Hook**, egal ob er redet. Der Löwenanteil ist der
