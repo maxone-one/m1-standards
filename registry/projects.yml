@@ -527,3 +527,83 @@ projects:
     external_subscriptions: []  # geplant Hetzner (vps-hosting), sobald deployed
     data_processors: []  # Pflicht vor Live-Gang; Telegram + Mollie folgen bei Deploy
     notes: "Koppelt Telegram-Gruppenbeitritt (chat_join_request) automatisiert an eine Mollie-Zahlung, ohne Telegrams eigene Stars-Zahlungsschiene zu nutzen (ToS-Recherche: zulässig, weil physical statt digital service). Entstanden aus einer Marek-Session (marek/.planning/SESSION-LOG.md Session 16), bewusst als eigenständiges, wiederverwendbares Repo angelegt, kein Teil des Marek-Kernsystems. Gate 1 durchlaufen, lokal gebaut und getestet. Noch offen: echtes Bot-Konto, echter Mollie-Key, Prod-Deploy (eigenes Gate)."
+
+  # Eingetragen 2026-08-13 aus der liegengebliebenen Übergabe HANDOFF-griddone-registry.md
+  # (vorbereitet 25.07.2026 im Repo griddone, 19 Tage unbearbeitet).
+  # last_review_date fehlt bewusst: ein Gate-3-Review hat nie stattgefunden, das Audit
+  # meldet dafür FAIL. Ein erfundenes Datum wäre ein geschöntes Register.
+  - name: griddone
+    workspace: griddone
+    domain: griddone.de  # Einzelwert; daneben leben demo.griddone.de und app.griddone.de
+    server: maxone-prod
+    deploy: single
+    container: griddone-portal  # daneben laufen griddone-demo, griddone-backend, griddone-worker, griddone-portal-db
+    compose_file: vorausfuellung/docker-compose.portal.yml  # am Server belegt: /opt/griddone-portal/docker-compose.portal.yml
+    supabase_url: null  # nacktes Postgres 16 im eigenen Container griddone-portal-db, kein Supabase (am 13.08.2026 an DATABASE_URL erhoben)
+    status: live
+    tags: product
+    external_subscriptions:
+      - service: INWX
+        reason: domain-registrar
+        cost_per_month_eur: variabel
+        sunset_plan: keiner - Domain-Registry ist strukturell notwendig
+      - service: Hetzner
+        reason: vps-hosting
+        cost_per_month_eur: variabel
+        sunset_plan: keiner - VPS-Hosting ist strukturell notwendig
+    deploy_pipeline: manual  # Standard 027: kein .github/workflows/ im Repo, am 13.08.2026 nachgemessen
+    data_processors:
+      - service: Hetzner
+        purpose: VPS-Hosting (maxone-prod)
+        personal_data: IP-Adressen, Log-Daten
+        region: EU (Deutschland)
+        avv_status: standard-terms
+        evidence: Hetzner AV-Vertrag automatisch per DSGVO/AGB
+        reviewed_at: "2026-07-25"
+      - service: OCR.space
+        purpose: Texterkennung aus hochgeladenen Fotos und Scans
+        personal_data: Inhalte hochgeladener Dokumente, darin Betreiber- und Anlagendaten
+        region: unbekannt
+        avv_status: missing
+        evidence: kein belegter EU-Serverstandort im Free-Tier, offen als RV-003 im Projekt griddone
+        reviewed_at: "2026-07-25"
+      - service: Anthropic (Claude Code CLI)
+        purpose: KI-Vorausfüllung der Antragsfelder aus den extrahierten Dokumentdaten
+        personal_data: Inhalte hochgeladener Dokumente, darin Betreiber- und Anlagendaten
+        region: unbekannt
+        avv_status: missing
+        evidence: Aufruf läuft über die Consumer-CLI, kein Vertrag nach Artikel 28 DSGVO, offen als RV-001
+        reviewed_at: "2026-07-25"
+    notes: "GridDone, Produktname netzanmelder. Drei Domains: griddone.de (Landing, trägt Impressum und Datenschutz), demo.griddone.de (offene Demo), app.griddone.de (eingeloggtes Portal). Container am 13.08.2026 am Server erhoben: griddone-portal (Portal), griddone-demo (Demo), griddone-backend (Umfrage-Backend), griddone-worker, griddone-portal-db. Kein test/smoke.mjs, kein /api/version nach Standard 042; das Portal beantwortet /health mit {ok:true}. Die beiden avv_status: missing sind bewusst so eingetragen (Projekt-Entscheidung D16, akzeptiert bis zum ersten zahlenden Kunden)."
+
+  # Eingetragen 2026-08-13 aus der liegengebliebenen Übergabe HANDOFF-maxone-pilots-registry.md
+  # (vorbereitet 06.08.2026 im Repo maxone-pilots). last_review_date fehlt bewusst, siehe oben.
+  - name: maxone-pilots
+    workspace: maxone-pilots
+    domain: pilots.maxone.one
+    server: maxone-prod
+    deploy: single
+    container: maxone-pilots
+    compose_file: ops/docker-compose.yml  # im Repo unter ops/, am Server als /opt/maxone-pilots/docker-compose.yml
+    supabase_url: null  # kein Backend, reiner nginx ohne jede DB-Variable (am 13.08.2026 am Container erhoben)
+    status: live
+    tags: internal
+    external_subscriptions:
+      - service: INWX
+        reason: domain-registrar
+        cost_per_month_eur: variabel
+        sunset_plan: keiner - Domain-Registry ist strukturell notwendig
+      - service: Hetzner
+        reason: vps-hosting
+        cost_per_month_eur: variabel
+        sunset_plan: keiner - VPS-Hosting ist strukturell notwendig (geteilt mit maxone-prod)
+    deploy_pipeline: manual  # kein .github/workflows/ im Repo, ausgeliefert wird per ops/deploy.sh
+    data_processors:
+      - service: Hetzner
+        purpose: VPS-Hosting (maxone-prod)
+        personal_data: IP-Adressen, Log-Daten
+        region: EU (Deutschland)
+        avv_status: standard-terms
+        evidence: Hetzner AV-Vertrag automatisch per DSGVO/AGB
+        reviewed_at: "2026-08-06"
+    notes: "Ablage für unbezahlte Arbeitsproben, ein Ordner je Pilot unter piloten/, ausgeliefert wird per Whitelist nur dessen site/. Eigener nginx-Container statt Erweiterung von static-sites, damit ein Pilot nie die zwölf fremden Seiten dort mitreißt (DECISIONS.md 001). Kein Auth, kein Backend, nur statische Dateien. X-Robots-Tag noindex und sperrende robots.txt, die Wurzelseite listet bewusst keinen Piloten auf. Gemessen wird über self-hosted Umami (analytics.maxone.one, Website-ID d739e8b3-d88a-4cef-9277-e1bea2134712), eingegebene Sehwerte werden nie übertragen, das sind Gesundheitsdaten. Kein test/smoke.mjs und kein /api/version nach Standard 042, das Projekt liefert nur statisches HTML; ops/deploy.sh prüft stattdessen nach jedem Ausliefern den Statuscode der Pilot-URL."
