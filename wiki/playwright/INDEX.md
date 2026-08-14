@@ -64,6 +64,37 @@ powershell -File ~/.claude/bin/dauerbetrieb.ps1 -NurPruefen   # meldet nur
 powershell -File ~/.claude/bin/dauerbetrieb.ps1               # stellt her
 ```
 
+#### Nach jedem Neustart entsteht ein Leseauftrag
+
+**Herstellen ist nicht Nutzen** (Max, 14.08.2026,
+`rules/dauerbetrieb-heisst-lesen-nicht-nur-laufen.md`). Macht der Wächter einen Kanal neu
+auf, hat der Kanal ungelesene Verläufe, und ein offener Kanal, den niemand liest, ist von
+außen dasselbe wie ein geschlossener, nur teurer: Die Zeile darüber meldet „ok".
+
+Der Wächter stößt das selbst an, von Hand braucht es nur den Abschluss:
+
+```bash
+python ~/.claude/bin/dauerbetrieb-leseauftrag.py offen      # Exit 1, wenn einer offen ist
+python ~/.claude/bin/dauerbetrieb-leseauftrag.py erledigt --dienst whatsapp \
+    --befund "10 Verlaeufe, 2 neu: Meier fragt nach Termin, Ruth hat abgesagt"
+```
+
+**Zwei Felder in `dauerbetrieb.json` steuern das**, und ihr Unterschied ist der Kern:
+`lesbar` sagt, ob hier jemand hineinschreiben kann (ein Autopilot kann es nicht),
+`leser` nennt das Projekt, das die Verläufe liest. Das ist bewusst nicht
+`verantwortlich`: Der Zugang gehört werkstatt, der Inhalt dem Projekt, das den Kanal
+fachlich führt, bei WhatsApp Business also erfolgsfahrplan.
+
+Der Auftrag geht als Pool-Post an den `leser` **und** bleibt in
+`state/dauerbetrieb-leseauftraege.json` offen stehen, bis ihn jemand mit einem Befund
+schließt. Beides zusammen, weil eine gelesene Pool-Nachricht nach dem nächsten `/clear`
+nirgends mehr steht. Stürzt der Kanal wiederholt ab, kommt trotzdem nur alle sechs
+Stunden eine Erinnerung: Eine Meldung im Fünf-Minuten-Takt wird ignoriert, und dann ist
+sie schlechter als keine. `bin/verantwortung-pruefen.py --dienste` zeigt offene Aufträge
+neben dem Laufzustand.
+
+**Der Befund ist eine Aussage, keine Zahl.** „Zehn Verläufe geprüft" wird abgewiesen.
+
 **Ein weiterer Kanal kommt als Tab ins bestehende Profil** (`"profil": "dauerbetrieb"`,
 gleicher Port), nicht in ein eigenes. Ein eigenes Profil bekommt nur, was zwingend getrennt
 sein muss: ein zweites Konto beim selben Dienst, oder ein Betrieb mit eigenem Zeitplan.
