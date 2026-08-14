@@ -79,6 +79,19 @@ python ~/.claude/bin/dauerbetrieb-leseauftrag.py erledigt --dienst whatsapp \
     --befund "10 Verlaeufe, 2 neu: Meier fragt nach Termin, Ruth hat abgesagt"
 ```
 
+Gelesen wird mit dem fertigen Werkzeug, nicht mit handgeschriebenem JavaScript:
+
+```bash
+python ~/.claude/bin/whatsapp-verlaeufe.py               # letzte 10 Verläufe als JSON
+python ~/.claude/bin/whatsapp-verlaeufe.py --nur-liste   # nur Namen, öffnet nichts
+```
+
+Es liefert je Verlauf Zeit, Absender, **Richtung** und `ball_bei`. Die Richtung ist aus
+der Chatliste nachweislich nicht ablesbar, deshalb muss jeder Verlauf geöffnet werden,
+und das setzt ihn auf gelesen. Wer nur Namen braucht, nimmt `--nur-liste`. Das Werkzeug
+stellt die vorher offene Ansicht wieder her und bricht ab, wenn im Eingabefeld Text
+steht.
+
 **Zwei Felder in `dauerbetrieb.json` steuern das**, und ihr Unterschied ist der Kern:
 `lesbar` sagt, ob hier jemand hineinschreiben kann (ein Autopilot kann es nicht),
 `leser` nennt das Projekt, das die Verläufe liest. Das ist bewusst nicht
