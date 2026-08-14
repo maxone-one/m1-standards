@@ -70,22 +70,51 @@ sein muss: ein zweites Konto beim selben Dienst, oder ein Betrieb mit eigenem Ze
 Kleinanzeigen ist seit dem 12.08.2026 stillgelegt, eingemottet in `dauerbetrieb.json`: Es
 wird *bearbeitet*, nicht nur *gesichtet*, und braucht dafür ohnehin ein MCP-Fenster.
 
-### Markieren: nur mit dem Werkzeug
+### Markieren: nur mit dem Werkzeug, und `--tab` ist der bessere Weg
 
 ```bash
+# EMPFOHLEN seit 14.08.2026: merkt sich die Identitaet des Tabs, nicht seinen Inhalt
+python ~/.claude/bin/uebergabe-tab.py merken --tab "my\.fyrst\.de" \
+    --wofuer "Max prueft die vorbereitete Ueberweisung und sendet sie ab"
+
+# der alte Weg, weiterhin gueltig: ein Muster auf Titel oder URL
 python ~/.claude/bin/uebergabe-tab.py merken --titel "(?i)visiotalent" \
     --wofuer "Max nimmt das Videointerview auf, Frist heute"
+
 python ~/.claude/bin/uebergabe-tab.py liste
 python ~/.claude/bin/uebergabe-tab.py entfernen --titel "(?i)visiotalent"
+python ~/.claude/bin/uebergabe-tab.py entfernen --tab-id <ID aus der Liste>
 ```
 
 **Ein Übergabetab ohne Eintrag in `~/.claude/state/uebergabe-tabs.json` stirbt**, und zwar
 beim nächsten Antwortende durch den Stop-Hook, auch durch den einer fremden Sitzung.
 
-**Das Muster ist ein Regex und wird gegen Titel UND URL geprüft** (seit 13.08.2026, nur
-tab-genau über CDP; auf Fensterebene gibt es keine URL). **Nimm das Wort, das die Navigation
-überlebt, und das steht fast immer in der Adresse:** Max klickt weiter, der Titel ändert
-sich. Ohne `--bis` gilt der Schutz bis zum Arbeitstagsende um 04:00.
+**Der Unterschied zwischen den beiden Ankern, und er kostet Vorgänge:**
+
+| | `--tab` (Identität) | `--titel` (Muster) |
+|---|---|---|
+| Navigation **innerhalb** eines Vorgangs (Bank, Unterseite) | überlebt | überlebt, wenn das Muster in der Adresse steht |
+| Navigation **weg** vom Ziel (Bank → Rechnung, im selben Tab) | **überlebt** | **stirbt** |
+| Browser-Neustart | stirbt (Tab ist ohnehin weg) | überlebt |
+| ein Vorgang über mehrere Tabs | je Tab einer nötig | ein Muster reicht |
+
+**Nimm `--tab`, wenn Max in genau diesem einen Tab etwas vorbereitet hat** (Formular,
+Überweisung, Bewerbung). **Nimm `--titel`, wenn ein Vorgang mehrere Tabs oder mehrere
+Fenster berührt** oder wenn der Tab erst noch entstehen soll: `--tab` braucht ihn offen.
+
+**`--tab` bricht ab, wenn mehrere Tabs passen**, und listet sie. Das ist Absicht: Ein falsch
+gemerkter Tab fällt erst auf, wenn der richtige weg ist.
+
+**Das Muster bei `--titel` ist ein Regex und wird gegen Titel UND URL geprüft** (seit
+13.08.2026, nur tab-genau über CDP; auf Fensterebene gibt es keine URL). **Nimm das Wort,
+das die Navigation überlebt, und das steht fast immer in der Adresse.** Ohne `--bis` gilt
+der Schutz bis zum Arbeitstagsende um 04:00.
+
+**Warum es `--tab` gibt** (`werkstatt/BUGS.md` F-21): Am 14.08.2026 um 10:05 fiel ein
+korrekt markierter Tab, weil er von `my.fyrst.de` auf `accounts.hetzner.com` navigierte. Er
+war der letzte Tab seines Fensters und nahm es mit, samt vorbereiteter Überweisung. Die
+CDP-`targetId` überlebt so einen Wechsel, gemessen an einem Tab, der Titel und URL
+vollständig tauschte und seine Identität behielt.
 
 **Von Hand in die Datei schreiben ist ein Fehler**, auch vorsichtig: Sie hat viele
 Schreiber, und ohne Sperre gehen bei acht gleichzeitigen drei von acht Markern verloren
