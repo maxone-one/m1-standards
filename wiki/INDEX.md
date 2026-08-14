@@ -9,6 +9,13 @@ Narratives Betriebswissen und Domain-Kontext für Claude-Sessions. Ergänzt die 
 
 **Faustregel:** Standards sagen WAS Pflicht ist. Die maxone wiki sagt WARUM und WIE es in der Praxis funktioniert.
 
+> **Committet wird hier in `maxone-standards`, nicht in `~/.claude`.** Dieser Baum liegt
+> physisch unter `maxone-standards/wiki/` und ist nur per Junction als
+> `~/.claude/maxone-wiki/` erreichbar. Ein `git add` aus `~/.claude` heraus findet die
+> Änderung deshalb nicht und der Commit läuft ins Leere, ohne Fehlermeldung (passiert am
+> 14.08.2026). Und weil dort mehrere Sessions schreiben: **nur die eigene Datei adden**, nie
+> `git add -A`.
+
 ## Scopes
 
 | Scope | Thema | Wann lesen |
