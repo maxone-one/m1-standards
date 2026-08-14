@@ -2079,6 +2079,67 @@ const localChecks = {
     return PASS(`eigene DB: ${String(url).split('#')[0].trim()}`);
   },
 
+  // Standard 008 — Gate 1: kein Code ohne CONCEPT.md
+  //
+  // WARUM ES DIESEN CHECK GIBT (14.08.2026, gemeldet von maxone-pilots): Standard 008
+  // steht seit Monaten und traegt OBERSTE PRIORITAET, hatte aber niemanden, der ihn
+  // herstellt. Gemessene Abdeckung an diesem Tag: CONCEPT.md bei 11 von 19 dev/live-
+  // Projekten, DECISIONS.md bei 4, BUGS.md bei 11 — und genau BUGS.md ist die einzige
+  // mit einem Audit-Check. Der Zusammenhang ist der Befund: Was gemessen wird, ist da.
+  // Siehe ~/.claude/rules/aufgaben-haben-immer-einen-verantwortlichen.md, "Bewahren ist
+  // nicht Herstellen".
+  //
+  // WARUM WARN UND NICHT FAIL, obwohl der Standard "kein Code ohne" sagt: Der Check
+  // deckt einen historisch gewachsenen Bestand auf, den niemand an einem Tag aufloest.
+  // Acht sofortige FAILs waeren ein Alarm, den nach zwei Tagen niemand mehr liest, und
+  // damit schlechter als keiner (rules/bezugsgroesse-aendern-heisst-waechter-nachziehen.md).
+  // Gleiche Stufe wie der Schwester-Check 050. Auf FAIL heben, sobald der Rueckstand
+  // abgearbeitet ist.
+  '008-concept-gate': (project) => {
+    if (project.status !== 'live' && project.status !== 'dev') return SKIP(`status=${project.status ?? 'null'}`);
+    if (!project.path_local) return SKIP('kein path_local');
+    const conceptPath = join(project.path_local, 'CONCEPT.md');
+    if (!existsSync(conceptPath)) {
+      // PRD.md gilt als gleichwertig: Standard 008 nennt beide Wege, und ein Projekt,
+      // das ueber ein PRD gestartet ist, hat das Gate durchlaufen, nur unter anderem
+      // Namen. Ohne diese Zeile meldet der Check Projekte rot, die alles richtig
+      // gemacht haben.
+      const prdPath = join(project.path_local, 'PRD.md');
+      if (existsSync(prdPath)) return PASS('PRD.md ✓ (gleichwertig zu CONCEPT.md)');
+      return WARN('CONCEPT.md fehlt im Repo-Root (Gate 1, Standard 008)');
+    }
+    const text = readFileSync(conceptPath, 'utf8');
+    // Nur der Kern wird geprueft, nicht die volle Gliederung: Ein Check, der neun
+    // Abschnittsueberschriften erzwingt, erzeugt Formalismus statt Klarheit.
+    if (text.trim().length < 400) return WARN('CONCEPT.md ist ein Rumpf (unter 400 Zeichen)');
+    return PASS('CONCEPT.md ✓');
+  },
+
+  // Standard 050 — Irrtuemer-Registry, das Gegenstueck zur BUGS.md
+  //
+  // Dieselbe Luecke wie oben, nur juenger: Die globale CLAUDE.md fuehrt IRRTUEMER.md
+  // seit dem 05.08.2026 als Pflicht "in JEDEM Projekt", und auch sie hatte keinen
+  // Waechter. BUGS.md sammelt, was an einem SYSTEM kaputt war, IRRTUEMER.md, was im
+  // Kopf falsch war. Ohne die zweite wiederholt sich dieselbe Fehlannahme in jedem
+  // Projekt neu, und das ist teurer als ein wiederholter Bug, weil niemand danach sucht.
+  //
+  // WARUM 050 UND NICHT 025, obwohl der Standard fuer die Bug-Registry 025 heisst:
+  // Die Ausnahmen in registry/exceptions.yml greifen ueber die NUMMER, nicht ueber den
+  // Check-Namen. Die erste Fassung hiess '025-irrtuemer-registry' und erbte damit
+  // sofort zwei voellig unverwandte Ausnahmen (maxone.one und repivot, beide zur
+  // LLM-Approval-Queue), die das Audit prompt als "unnoetig, Eintrag entfernen"
+  // meldete. Der Schwester-Check fuer BUGS.md heisst im Audit ebenfalls 050, also
+  // steht dieser daneben. LEHRE: Ein neuer Check-Name erbt die Ausnahmen seiner
+  // Nummer. Vor dem Benennen in exceptions.yml nachsehen, sonst winkt eine fremde
+  // Ausnahme den neuen Check still durch.
+  '050-irrtuemer-registry': (project) => {
+    if (project.status !== 'live' && project.status !== 'dev') return SKIP(`status=${project.status ?? 'null'}`);
+    if (!project.path_local) return SKIP('kein path_local');
+    const pfad = join(project.path_local, 'IRRTUEMER.md');
+    if (!existsSync(pfad)) return WARN('IRRTUEMER.md fehlt im Repo-Root (Gegenstueck zur BUGS.md)');
+    return PASS('IRRTUEMER.md ✓');
+  },
+
   // Standard 050 — Bug Registry
   '050-bug-registry': (project) => {
     if (project.status !== 'live' && project.status !== 'dev') return SKIP(`status=${project.status ?? 'null'}`);
