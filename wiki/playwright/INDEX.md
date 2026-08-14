@@ -271,6 +271,19 @@ wird **nie** beendet, er gehört Claude Code.
 kleinen Server davorstellen; dessen Prozess heißt `python3.13`, ein Kill auf `python.exe`
 trifft ihn nicht.
 
+> **Und der eigene Serverstart scheitert still, wenn der Port schon belegt ist**
+> (14.08.2026). `python -m http.server 8899` mit `>/dev/null 2>&1` verschluckt das
+> „Address already in use", der folgende `curl` antwortet trotzdem, und man hält den
+> **fremden** Server für den eigenen. Aufgefallen an einem fremden `<title>Heute</title>`;
+> ein Kill hätte die Nachbarsession getroffen. **Also nach dem Start prüfen, ob wirklich
+> die eigene Seite antwortet**, nicht nur, ob irgendetwas antwortet. Beendet wird über den
+> Port, nie über den Prozessnamen:
+>
+> ```powershell
+> Get-NetTCPConnection -LocalPort 8931 -State Listen |
+>   ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -Confirm:$false }
+> ```
+
 **Autofill lässt sich nicht transplantieren.** Seit Chrome 127 sind Passwörter mit
 App-Bound Encryption zweifach DPAPI-gewickelt und werden über einen SYSTEM-Dienst
 entschlüsselt. Datei-Kopie zwischen Profilen, externer CDP-Chrome und `--isolated` sind
