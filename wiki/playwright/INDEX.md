@@ -83,14 +83,21 @@ Gelesen wird mit dem fertigen Werkzeug, nicht mit handgeschriebenem JavaScript:
 
 ```bash
 python ~/.claude/bin/whatsapp-verlaeufe.py               # letzte 10 Verläufe als JSON
-python ~/.claude/bin/whatsapp-verlaeufe.py --nur-liste   # nur Namen, öffnet nichts
+python ~/.claude/bin/whatsapp-verlaeufe.py --chat "Ehrensberger" --nachrichten 20
+python ~/.claude/bin/whatsapp-verlaeufe.py --dom         # Rückfallweg
 ```
 
-Es liefert je Verlauf Zeit, Absender, **Richtung** und `ball_bei`. Die Richtung ist aus
-der Chatliste nachweislich nicht ablesbar, deshalb muss jeder Verlauf geöffnet werden,
-und das setzt ihn auf gelesen. Wer nur Namen braucht, nimmt `--nur-liste`. Das Werkzeug
-stellt die vorher offene Ansicht wieder her und bricht ab, wenn im Eingabefeld Text
-steht.
+**Es liest das Datenmodell, nicht den Bildschirm.** `window.require` ist im Tab
+verfügbar, damit stehen `id.fromMe` (die Richtung), `unreadCount`, der Nachrichtentyp
+und die Länge einer Sprachnachricht direkt zur Verfügung. **Es öffnet dabei keinen
+Verlauf und schickt deshalb keine Lesebestätigung** — der frühere Bildschirmweg musste
+jeden Verlauf öffnen und meldete damit zehn Menschen, jemand habe gelesen, obwohl nur
+eine Maschine hingesehen hat.
+
+**Modulnamen sind keine API.** Bricht das Modell, sagt das Werkzeug das und fällt nicht
+von selbst auf `--dom` zurück, denn der Rückfallweg kostet eben jene Bestätigungen. Die
+gemessene Fassung steht als `whatsapp_version` in der Ausgabe, damit ein Bruch datierbar
+ist. Details und Modultabelle: `memory/dauerbetrieb-fenster-lesen.md`.
 
 **Zwei Felder in `dauerbetrieb.json` steuern das**, und ihr Unterschied ist der Kern:
 `lesbar` sagt, ob hier jemand hineinschreiben kann (ein Autopilot kann es nicht),
