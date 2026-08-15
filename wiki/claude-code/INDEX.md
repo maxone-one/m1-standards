@@ -371,11 +371,39 @@ Bauform, Grenzen und alle Messungen: `~/.claude/pool/README.md`. Kurzfassung:
 
 ---
 
+## 5b. GSD bedienen: drei Stellen, an denen es anders läuft als angekündigt
+
+*Erhoben am 15.08.2026 beim ersten vollständigen GSD-Lauf in `maxone-vera` (ingest-docs plus
+plan-phase). Alle drei sind gemessen, nicht vermutet.*
+
+**`gsd-ingest-docs` findet deutsche Dateinamen nicht.** Seine Verzeichnis-Discovery sucht nach
+`*/adr/*`, `ADR-*.md`, `*/prd/*`, `SPEC-*.md` und `*/docs/*`. Ein Ordner mit Dateien wie
+`entscheidungen.md` oder `stimme-und-ton.md` liefert **null Treffer**, ohne Fehlermeldung. Der
+vorgesehene Ausweg ist ein Manifest (`--manifest <datei>`), das Pfad, Typ und Rangfolge je
+Dokument festlegt und die Heuristik vollständig ersetzt. **Das ist ohnehin die bessere Wahl,
+wenn die Rangfolge schon irgendwo geschrieben steht**: sie wird dann übernommen statt geraten.
+
+**`planning_exists` heißt nur „der Ordner existiert", nicht „es gibt eine Planung".** Liegt in
+`.planning/` irgendetwas, und sei es nur ein migrierter Vorarbeit-Ordner, meldet
+`query init ingest-docs` bereits `planning_exists: true`, und die Auto-Erkennung wählt
+`MODE=merge`. Gemergt würde dann in eine `ROADMAP.md`, die es gar nicht gibt. **Das
+entscheidende Feld ist `project_exists`** (also ob `PROJECT.md` da ist); steht es auf `false`,
+ist `--mode new` richtig, egal was die Auto-Erkennung sagt.
+
+**Die Slug-Bildung wirft Umlaute weg, statt sie zu übertragen.** Aus „Startblocker lösen" wird
+das Verzeichnis `01-startblocker-l-sen-…`, aus „Das Gespräch" `das-gespr-ch-…`. Betroffen war
+mehr als die Hälfte der Phasennamen. Rein kosmetisch, aber die Verzeichnisse bleiben für die
+Lebensdauer des Projekts stehen. Wer es vermeiden will, hat nur zwei Wege: umlautfreie
+Phasennamen, oder ein Eingriff in `gsd-core` (fremder Code, wird beim nächsten Update
+überschrieben). **Bewusst nicht gefixt.**
+
 ## 6. Bekannte Fehlerbilder
 
 | Symptom | Ursache | Was hilft |
 |---|---|---|
 | Skill wird nie ausgewählt, keine Fehlermeldung | YAML-Kopf bricht (Doppelpunkt im unquoted Scalar) oder `description` fehlt | `frontmatter-pruefen.py`, Kopf quoten |
+| GSD-Ingest findet keine Dokumente, meldet aber keinen Fehler | Die Discovery kennt nur ADR/PRD/SPEC-Namensmuster, deutsche Dateinamen fallen durch | `--manifest` mit Pfad, Typ und Rangfolge je Dokument, siehe 5b |
+| Ein Befehl mit führendem `/` wird zu `C:/Program Files/Git/…` | MSYS-Pfadmapping in Git Bash schreibt den Schrägstrich in einen Windows-Pfad um | denselben Aufruf über PowerShell, oder `MSYS_NO_PATHCONV=1` voranstellen |
 | Hook tut nichts, kein Fehler | `$`-Variable im Kommando (bash frisst sie) oder Quoting-Bruch zwischen bash und PowerShell | Logik in eine `.ps1`, Hook ruft nur den absoluten Pfad |
 | Hook-Pfad „ist nicht vorhanden" | `%USERPROFILE%` wird nie expandiert | absoluter Pfad mit Vorwärtsslashes, oder `bash ~/…` |
 | Kontextbalken zeigt 0 % | liest nur `input_tokens`, der Verlauf steckt in `cache_read_input_tokens` | Summe der drei Felder bilden |
