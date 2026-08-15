@@ -618,3 +618,44 @@ projects:
         evidence: Hetzner AV-Vertrag automatisch per DSGVO/AGB
         reviewed_at: "2026-08-06"
     notes: "Ablage für unbezahlte Arbeitsproben, ein Ordner je Pilot unter piloten/, ausgeliefert wird per Whitelist nur dessen site/. Eigener nginx-Container statt Erweiterung von static-sites, damit ein Pilot nie die zwölf fremden Seiten dort mitreißt (DECISIONS.md 001). Kein Auth, kein Backend, nur statische Dateien. X-Robots-Tag noindex und sperrende robots.txt, die Wurzelseite listet bewusst keinen Piloten auf. Gemessen wird über self-hosted Umami (analytics.maxone.one, Website-ID d739e8b3-d88a-4cef-9277-e1bea2134712), eingegebene Sehwerte werden nie übertragen, das sind Gesundheitsdaten. Kein test/smoke.mjs und kein /api/version nach Standard 042, das Projekt liefert nur statisches HTML; ops/deploy.sh prüft stattdessen nach jedem Ausliefern den Statuscode der Pilot-URL."
+
+  # Eingetragen 2026-08-15 von werkstatt, beauftragt vom erfolgsfahrplan (Pool 10:47).
+  # Das Projekt wurde am 15.08.2026 um 10:44 gegruendet und an GSD uebergeben; CONCEPT.md,
+  # BUGS.md und IRRTUEMER.md entstehen dort im GSD-Lauf, nicht hier.
+  - name: maxone-vera
+    workspace: maxone-vera
+    domain: null  # tritt unter maxone.work auf, noch keine eigene Adresse
+    server: null  # Ziel ist LiveKit Cloud, nicht maxone-prod
+    deploy: null
+    container: null
+    supabase_url: null
+    status: dev
+    tags: product
+    # ACHTUNG, Standard 026: Keiner der fuenf Dienste faellt unter die erlaubten
+    # reason-Werte (payment-processor, domain-registrar, tls-ca, vps-hosting). Das Audit
+    # wird sie deshalb als WARN melden. Das ist hier bewusst so eingetragen statt eine
+    # falsche Kategorie zu waehlen: Eine Falschangabe in der SSoT waere teurer als ein
+    # sichtbarer WARN. Standard 026 braucht eine Kategorie fuer zugekaufte Laufzeit-
+    # Dienste (Telefonie, Sprachmodelle), gemeldet an maxone.one am 15.08.2026.
+    external_subscriptions:
+      - service: Zadarma
+        reason: telephony
+        cost_per_month_eur: 2.00
+        sunset_plan: Rufnummer ist beworben, ein Wechsel kostet die Nummer - erst mit dem Produkt
+      - service: LiveKit Cloud
+        reason: realtime-media
+        cost_per_month_eur: variabel
+        sunset_plan: Gratis-Tarif, waechst mit der Nutzung - Umzug auf eigene Infra moeglich
+      - service: Deepgram
+        reason: speech-to-text
+        cost_per_month_eur: variabel
+        sunset_plan: nach Verbrauch, austauschbar gegen anderen Anbieter
+      - service: Fish Audio oder Cartesia
+        reason: text-to-speech
+        cost_per_month_eur: variabel
+        sunset_plan: Anbieterwahl noch offen, siehe .planning/vorarbeit/stimme-und-ton.md
+    # Pflicht VOR dem Live-Gang, und hier schwerer als sonst: Vera nimmt Anrufe fremder
+    # Menschen an, es fallen Stimme, Gespraechsinhalt und Rufnummer an. Alle vier
+    # Laufzeitdienste oben sind damit Auftragsverarbeiter nach Standard 041.
+    data_processors: []
+    notes: "Vera Frankenstein, KI-Telefonassistentin fuer maxone.work: nimmt Anrufe unter einer eigenen beworbenen Rufnummer an, klaert das Anliegen und bucht einen Termin. Zugleich Max' eigener Anschluss und verkaufbares Produkt (249 EUR Einrichtung, 79 EUR im Monat). Sagt frueh und beilaeufig, dass sie eine KI ist. Bindender Schutzzweig: steigt bei Verfahrensthemen aus, das ist Abnahmebedingung und kein Feature. Wahrheit ueber das WAS ist .planning/vorarbeit/entscheidungen.md (zwanzig Entscheidungen aus Max' Grill vom 15.08.), ueber das WIE .planning/vorarbeit/stand-bei-der-uebergabe.md; bei Widerspruch gewinnt entscheidungen.md. Die erste Bauform ueber FRITZ!Box und NUC ist gefallen und eingemottet, siehe rules/was-den-plan-traegt-wird-zuerst-geprueft.md."
