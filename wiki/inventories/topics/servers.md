@@ -48,9 +48,23 @@ Alle Hetzner-Cloud-Server unter Max' Kontrolle, ihre SSH-Zugaenge, Container-Auf
 | Mail             | Stalwart          | nein            | nein            | Stalwart         | nein          |
 | GitHub Runner    | ja (Org-Level)    | **ja** (maxone-staging) | nein   | ja               | nein          |
 | Kuma             | nein              | nein            | **ja**          | nein             | nein          |
-| Hardware         | CX41, fsn1        | cpx32, fsn1     | CX22, fsn1      | (Hetzner)        | (Hetzner)     |
+| Hardware         | **cpx32** (4C/8GB) | cpx32 (4C/8GB) | **cax11** (2C/4GB) | (Hetzner)        | (Hetzner)     |
 
 > _vybora-prod historisch: Caddy-RP, manuell orchestriert, eigene aeltere Supabase, kein Stalwart, eigener Runner. Stand 2026-05-02 abgeschaltet._
+
+> **KORREKTUR 16.08.2026 an der Hardware-Zeile, gemessen an der Cloud-API des eigenen Kontos**
+> (`/v1/servers`, aus einer Vera-Kostenrechnung heraus). Dort stand `CX41` fuer maxone-prod und
+> `CX22` fuer maxone-watchdog, beides falsch. Richtig sind **cpx32** (4 Kerne, 8 GB, AMD) und
+> **cax11** (2 Kerne, 4 GB, ARM). Das deckt sich mit dem Befund weiter unten, dass maxone-prod
+> auf der geteilten AMD-Linie laeuft, und widerlegt die Tabelle, nicht ihn.
+>
+> **Stolperstein fuer jede kuenftige Abfrage: maxone-prod heisst im Hetzner-Konto
+> `maxone-projekte`.** Wer nach dem Namen `maxone-prod` sucht, findet nichts.
+>
+> **Listenpreise am 16.08.2026, brutto im Monat:** cpx32 42,23 EUR (fsn1, hel1, nbg1),
+> cax11 7,13 EUR. Das sind die aktuellen Listenpreise, **nicht zwingend die gezahlten**: Ob eine
+> Maschine noch einen Altpreis traegt, zeigt nur die Rechnung im Konto (siehe Abschnitt
+> "Hetzner-Altpreise" weiter unten).
 
 ## Server-Infrastruktur (maxone-prod)
 
