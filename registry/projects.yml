@@ -70,6 +70,85 @@ projects:
         reason: vps-hosting
         cost_per_month_eur: variabel
         sunset_plan: keiner - VPS-Hosting ist strukturell notwendig
+
+  # Die fuenf weiteren Welten aus demselben Monorepo (Projects/maxone.one), aufgenommen
+  # am 16.08.2026. Sie liefen alle live und waren dem Audit trotzdem unsichtbar, weder
+  # gruen noch rot, weil nur maxone.one einen Eintrag hatte.
+  #
+  # WARUM EIGENSTAENDIGE EINTRAEGE und nicht Unterschluessel unter maxone.one:
+  # scripts/audit.mjs iteriert flach (`for (const p of projects)`), Unterschluessel
+  # saehe es nicht. Damit ist es keine Stilfrage, sondern die einzige Bauform, in der
+  # die domainbezogenen Checks (Domain-Policy, Impressum, Erreichbarkeit, Analytics)
+  # ueberhaupt je Domain laufen.
+  #
+  # DER PREIS, damit ihn niemand suchen muss: Die repobezogenen Checks (CONCEPT.md,
+  # BUGS.md, gitleaks, semgrep) laufen jetzt sechsmal ueber dasselbe Repo und melden
+  # denselben Befund sechsmal. Wer das stoert, loest es im Audit ueber path_local,
+  # nicht durch Loeschen dieser Eintraege.
+  #
+  # dockerfile_path fehlt bewusst bei allen fuenf: Keine der compose-Dateien baut ein
+  # Image, alle sechs Welten laufen auf `node:22-alpine` mit gemountetem Build-Ordner
+  # (./build-blue:/app/build:ro). Das Feld waere eine Behauptung ueber einen Bauweg,
+  # den es nicht gibt. Der Eintrag oben traegt es noch, gemessen am 16.08.2026 nutzt
+  # aber auch apps/umbrella/docker-compose.yml kein Dockerfile.
+
+  - name: maxone.work
+    workspace: maxone.one
+    domain: maxone.work
+    server: maxone-prod
+    deploy: blue-green
+    container: maxone-work
+    supabase_url: https://auth.maxone.one
+    compose_file: apps/work/docker-compose.yml
+    status: live
+    tags: brand
+
+  - name: maxone.pro
+    workspace: maxone.one
+    domain: maxone.pro
+    server: maxone-prod
+    deploy: blue-green
+    container: maxone-pro
+    supabase_url: https://auth.maxone.one
+    compose_file: apps/pro/docker-compose.yml
+    status: live
+    tags: brand
+
+  - name: maxone.studio
+    workspace: maxone.one
+    domain: maxone.studio
+    server: maxone-prod
+    deploy: blue-green
+    container: maxone-studio
+    supabase_url: https://auth.maxone.one
+    compose_file: apps/studio/docker-compose.yml
+    status: live
+    tags: brand
+
+  - name: maxone.tech
+    workspace: maxone.one
+    domain: maxone.tech
+    server: maxone-prod
+    deploy: blue-green
+    container: maxone-tech
+    supabase_url: https://auth.maxone.one
+    compose_file: apps/tech/docker-compose.yml
+    status: live
+    tags: brand
+
+  # giving stand in der Uebergabe nur als Randnotiz und fehlte genauso. Sie bleibt
+  # bewusst auf der .one-Subdomain (Max, 16.08.2026: .one ist das Auffangnetz fuer
+  # alles ohne feste Zuweisung, maxone.giving wird nicht gekauft).
+  - name: maxone-giving
+    workspace: maxone.one
+    domain: giving.maxone.one
+    server: maxone-prod
+    deploy: blue-green
+    container: maxone-giving
+    supabase_url: https://auth.maxone.one
+    compose_file: apps/giving/docker-compose.yml
+    status: live
+    tags: brand
     last_review_date: "2026-04-27"
     data_processors:
       - service: Hetzner
