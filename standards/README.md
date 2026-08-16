@@ -68,7 +68,7 @@ Wenn eine Datei fehlt, alle vier auf einmal anlegen, nicht nur die fehlende.
 - [030-manufacturer-assets.md](030-manufacturer-assets.md), Hersteller-Logos + Produktbilder: Bezugsreihenfolge (Pressematerial → Website-Inspektion → Playwright), Speicherort, URL-Muster KNX-Hersteller, Audit-Query
 
 **Sicherheit & Gates:**
-- [008-gates-review.md](008-gates-review.md), Gate 1 (Konzept) + Gate 3 (Launch-Review) + Pentest-Light + Re-Review alle 180 Tage
+- [008-gates-review.md](008-gates-review.md), Gate 1 (Konzept) + Gate 2 (erste Scheibe sichtbar) + Gate 3 (Launch-Review) + Pentest-Light + Re-Review alle 180 Tage
 - [009-compliance.md](009-compliance.md), Sunset-Prozess + AVV/DPA-Registry (beide DSGVO-Art.-28-Richtungen)
 - [010-stack-platform.md](010-stack-platform.md), Stack-Whitelist + Plattform-Blacklist (Lovable/Bolt/Base44 raus) + Self-Hosted-First
 - [011-live-domain-audit.md](011-live-domain-audit.md), DSGVO-Tracker-Audit + Bundle-Drift-Audit (beide Live-Domain-Probes)

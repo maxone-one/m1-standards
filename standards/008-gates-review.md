@@ -7,6 +7,7 @@
 ## Inhalt
 
 - [A] Gate 1: Konzept vor Code (CONCEPT.md)
+- [E] Gate 2: Die erste Scheibe ist sichtbar
 - [B] Gate 3: Launch-Gate (LAUNCH-REVIEW.md)
 - [C] Pentest-Light (defensive Außensicht)
 - [D] Re-Review-Reminder (alle 180 Tage)
@@ -38,6 +39,51 @@ Bevor die erste Code-Zeile geschrieben wird, MUSS im Repo-Root eine `CONCEPT.md`
 Bei Konzept-Änderungen (Datenmodell, Auth-Modell, externe Dienste): CONCEPT.md updaten + neuen Gate-1-Block anhängen.
 
 **Warum:** OWASP A04:2021 "Insecure Design" ist die Klasse die kein nachgelagertes Tool findet, fehlendes Auth-Modell, zu große Trust-Boundary, Lock-in durch proprietäre Plattform. Vibe-Coding zementiert Konzept-Lücken.
+
+---
+
+## E: Gate 2: Die erste Scheibe ist sichtbar
+
+**Seit:** 2026-08-16 (Max-Direktive). Die Gate-Nummer 2 war bis dahin unbesetzt, und
+die Lücke sitzt genau hier: zwischen dem freigegebenen Konzept und dem Launch.
+
+**Bevor ein Plan ausgeführt wird, MUSS seine erste Aufgabe etwas erzeugen, das Max
+öffnen und ansehen kann.** Nicht das Datenmodell, nicht die Anbindung, nicht das
+Gerüst darunter. Kein Sichtbares → keine Ausführung, der Plan wird umsortiert.
+
+**Die Prüffrage, wörtlich in den Plan:** *Was sieht Max nach dem ersten Schritt, und
+wo genau?* Lautet die Antwort „noch nichts, das kommt in Phase 3", ist der Plan falsch
+herum sortiert.
+
+| zählt als sichtbar | zählt NICHT |
+|---|---|
+| live auf Production (stärkste Form) | eine Datei im Repo |
+| eine lokal geöffnete Seite oder Oberfläche | ein grüner Testlauf |
+| eine Ausgabe, ein Bild, ein Klickpfad | ein Commit, ein fertiger Plan |
+| eine Attrappe mit erfundenen Daten | ein Bericht über Gebautes |
+
+**Attrappe ist ausdrücklich erlaubt** und kein Wegwerfprodukt: Sie ist das Gerüst, in
+das die echte Funktion einzieht, und sie holt die Abnahme von Wortlaut, Anordnung und
+Aufbau, bevor jemand sie zweimal baut.
+
+**Verhältnis zu Standard 001 (Langläufer zuerst anstoßen):** kein Widerspruch, sondern
+die Reihenfolge innerhalb desselben ersten Schritts. (1) Langläufer anstoßen, das
+kostet Minuten und läuft danach ohne uns. (2) Sichtbares bauen, während er reift, mit
+Attrappe an der wartenden Stelle. (3) Alles darunter zuletzt. Wer den Langläufer als
+Grund nimmt, zuerst Infrastruktur zu bauen, hat das Gate umgedreht.
+
+**Für die Phasenplanung (GSD):** Phase 1 einer Roadmap ist immer eine vertikale Scheibe
+quer durch den Stapel, nie eine Schicht. Die Bauform existiert als `gsd-mvp-phase`
+(SPIDR-Schnitt); durch dieses Gate wird sie der Standard statt einer Option.
+
+**Warum:** Was der Auftraggeber nicht sieht, kann er nicht korrigieren. Ein halber Tag
+Arbeit an der falschen Sache fällt erst auf, wenn sie fertig ist, und dann ist der Tag
+weg. Sichtbares früh ist kein Schaufenster, sondern die einzige Stelle, an der billig
+gesteuert werden kann. Dazu: Fortschritt, den nur der Bauende sieht, ist für den
+Zahlenden keiner.
+
+**Audit:** Ein `PLAN.md`, dessen erste Aufgabe kein ansehbares Ergebnis hat, ist ein
+Befund. Verhaltensfassung mit Anlass: `~/.claude/rules/erst-der-sichtbare-teil.md`.
 
 ---
 
