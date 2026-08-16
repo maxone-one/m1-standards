@@ -40,6 +40,104 @@ Das ist die wichtigste Zahl im ganzen Handbuch, weil sie jede Kontextentscheidun
 **Es gibt keine globale MEMORY.md-Mutter, die mitlädt.** `~/.claude/memory/MEMORY.md`,
 `MAX.md`, `MAXONE.md` sind reine Nachschlage-Ablage. Volltext: [[kontext-ladeverhalten]].
 
+### MCP-Server lassen sich mitten in der Session NICHT nachladen [B: Max, 17.08.2026]
+
+**Welche Server verfügbar sind, steht fest, bevor das erste Wort fällt.** Fehlt einer,
+hilft nur ein Neustart der Session, und der kostet den gesamten Kontext. Es gibt keinen
+Befehl, der einen Server in eine laufende Sitzung hineinholt.
+
+**Es gibt zwei Sorten Server, und sie werden über verschiedene Felder geschaltet.** Wer sie
+verwechselt, schreibt in ein Feld, das nichts bewirkt, und merkt es nie:
+
+| Sorte | wo definiert | an/aus je Projekt über |
+|---|---|---|
+| **user-scope** (alle 12 hier) | `~/.claude.json` → `mcpServers` | `~/.claude.json` → `projects[<pfad>].disabledMcpServers` |
+| **project-scope** | `.mcp.json` im Projektordner | `enabledMcpjsonServers` / `disabledMcpjsonServers` |
+
+> **KORREKTUR 17.08.2026, 02:35.** Hier stand, `enabledMcpjsonServers` und
+> `disabledMcpjsonServers` seien der Weg. **Das gilt nur für die zweite Zeile der Tabelle,
+> und `.mcp.json` gibt es im ganzen Bestand kein einziges Mal** — der beschriebene Weg wäre
+> also folgenlos geblieben. Auch `settings.json` ist der falsche Ort, das Feld sitzt in
+> `~/.claude.json` je Projekt. Beides scharf belegt: derselbe Tool-Aufruf im selben Ordner
+> antwortet „GEKLAPPT" mit leerem Feld und „FEHLT" mit dem Server darin, und zurückgesetzt
+> wieder „GEKLAPPT" [B: Läufe 17.08.2026, 02:01 bis 02:12].
+
+**Achtung, ein Projekt steht mehrfach in `~/.claude.json`.** Claude Code nimmt die rohe
+`cwd` als Schlüssel, ohne sie zu vereinheitlichen; je nach Startweg entsteht
+`C:\...`, `C:/...` oder `c:/...`. Gemessen am 17.08.2026: **80 Einträge für 47 echte
+Projekte, 25 davon mehrfach geführt.** Wer nur in einen davon schreibt, hat eine
+Einstellung, die je nach Startweg gilt oder nicht.
+
+**Daraus folgt die Arbeitsweise:** Die laufende Session setzt, was die nächste braucht,
+und zwar als Konfigurationsänderung, nicht als Notiz im Handoff. Eine Notiz greift nie,
+weil der Handoff Text ist, den die nächste Session erst nach ihrem Start liest. Werkzeug
+dafür: `python ~/.claude/bin/mcp-fuer-naechste.py --zeigen | --weg X | --dazu X`. Es
+schreibt in **alle** Schreibweisen eines Projekts und hält den Grundstock. Verankert in
+`commands/pre-clear.md` Schritt 5b.
+
+**Und der Grundstock muss großzügiger sein, als es die Tokenrechnung nahelegt.** Ein
+fehlender Server kostet einen verlorenen Kontext, ein zu viel geladener ein paar tausend
+Tokens. Die Asymmetrie ist deutlich, deshalb im Zweifel mitnehmen. Er steht in
+`~/.claude/mcp-grundstock.json` und ist gemessen, nicht geschätzt: `playwright`,
+`zentinel`, `gdrive`, `gmail`.
+
+**Stand 17.08.2026, gemessen über 2.065 Transkripte der letzten 14 Tage:**
+
+| Server | Aufrufe | Projekte | |
+|---|---:|---:|---|
+| `playwright` | 5.488 | 10 | Grundstock |
+| `playwright-privat` | 1.819 | 4 | zweites Kleinanzeigen-Konto |
+| `zentinel` | 1.312 | 9 | Grundstock |
+| `playwright-shared` | 680 | 3 | **eine eigene Regel verbietet den Gebrauch** |
+| `gdrive` | 239 | 8 | Grundstock |
+| `gmail` | 70 | 8 | Grundstock |
+| `windows-mcp` | 22 | 2 | |
+| `google-tasks` | 5 | 2 | |
+| `elster-mcp` | 1 | 1 | |
+| `context7`, `gdrive-sa`, `paperclip` | **0** | 0 | seit 17.08. überall abgeschaltet |
+
+Dazu kommen **sechs claude.ai-Connectors** (Figma, Slack, Google Drive verbunden; Linear,
+Notion, SketchUp nicht authentifiziert), die nicht aus `~/.claude.json` stammen, sondern am
+Konto hängen. Es sind also 18 Server, nicht 12. `enableAllProjectMcpServers` steht auf
+`true`.
+
+### Block-HTML-Kommentare kosten null Kontext, auch in `rules/` [B: gemessen 17.08.2026]
+
+Ein Kommentar auf eigener Zeile wird entfernt, **bevor** der Text in den Kontext geht, ist
+also beim automatischen Laden nicht vorhanden. Öffnet jemand die Datei später mit dem
+Read-Werkzeug, steht er vollständig da. Damit lässt sich der Nachweis-Teil einer Regel
+neben ihr aufbewahren, ohne ihn in jeder Session zu bezahlen.
+
+```markdown
+Hier steht die geltende Regel, sie lädt und wirkt.
+
+<!--
+Anlass, Fallgeschichte, Messungen. Kostet null, ist per Read jederzeit lesbar.
+-->
+```
+
+**Anthropic dokumentiert das nur für `CLAUDE.md`** ([Memory-Doku](https://code.claude.com/docs/en/memory),
+Abschnitt „How CLAUDE.md files load"). Der Test am 17.08.2026 zeigte, dass es **auch für
+`~/.claude/rules/` gilt**: Eine frische Session per `claude -p` kannte einen sichtbaren
+Anker aus einer Regeldatei, den Anker im Block-Kommentar derselben Datei nicht. Das ist die
+Seite mit dem Gewicht, dort liegen 167 KB gegen 67 KB in der `CLAUDE.md`.
+
+Drei Dinge, die dazugehören:
+
+- **Was im Kommentar steht, wirkt nicht.** Eine versehentlich einkommentierte Regel ist
+  abgeschafft, lautlos, und sieht dabei aus wie Aufräumen.
+- **Kommentare in Code-Blöcken werden nicht entfernt** und kosten weiter voll.
+- **Inline in Backticks zählt nicht als Block-Kommentar.** Der Kommentar muss auf einer
+  eigenen Zeile beginnen.
+
+**Offiziell empfohlen sind unter 200 Zeilen je `CLAUDE.md`** [B: dieselbe Doku, „Size:
+target under 200 lines per CLAUDE.md file"]. Die oft zitierten 40 KB stammen dagegen nicht
+von Anthropic, sondern vom fremden Prüfwerkzeug
+[claudelint](https://claudelint.com/rules/claude-md/claude-md-size), das keine Quelle dafür
+nennt. **Gekappt wird eine `CLAUDE.md` nie** („loaded in full regardless of length"), sie
+kostet nur Kontext und senkt die Befolgung. Eine echte Kappung trifft allein die
+Auto-Memory `MEMORY.md` bei 200 Zeilen bzw. 25 KB.
+
 **Der Sockel ist der eigentliche Posten** [B: gemessen 08.08.2026]: System-Prompt, globale
 CLAUDE.md, `rules/`, Werkzeugbeschreibungen, Skill-Liste und MCP-Definitionen belegen
 zusammen **über 400.000 Tokens, bevor ein Wort fällt**. Nach einem ganzen Arbeitstag war
