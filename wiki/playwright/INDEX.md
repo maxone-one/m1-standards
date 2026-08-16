@@ -255,6 +255,33 @@ DOM-Zugriff in `page.evaluate(…)`, `page.$eval` oder `page.$$eval` kapseln. Ei
 freies `document.body.innerText` im Node-Teil bricht den gesamten Block ab
 (`ReferenceError`), auch wenn die Aktionen davor schon gelaufen sind.
 
+## Einen Wert abfragen, ohne Playwright anzufassen: `bin/cdp.py`
+
+Für die häufigste Prüfung an einer ausgelieferten Seite (Tab auf, einen Wert lesen, Tab zu)
+braucht es keinen MCP-Server. Chrome hört auf denselben Debug-Ports, die schon in
+`dauerbetrieb.json` stehen, und `bin/cdp.py` spricht sie direkt an:
+
+```bash
+python ~/.claude/bin/cdp.py tabs                       # was auf 9222 und 9223 offen ist
+python ~/.claude/bin/cdp.py fragen --tab 8899 --js "document.title"
+python ~/.claude/bin/cdp.py fragen --url http://127.0.0.1:8899/index.html \
+    --js "JSON.stringify({takt: window.__reloadTakt, karten: document.querySelectorAll('section').length})"
+```
+
+**Der Unterschied zwischen `--url` und `--tab` ist der Besitz.** `--url` öffnet einen
+eigenen Tab und schließt ihn wieder, auch wenn der Ausdruck scheitert. `--tab` sucht einen
+bestehenden per URL- oder Titel-Teil und lässt ihn stehen, denn er gehört jemand anderem,
+oft Max. Nur `--offen-lassen` hält einen selbst geöffneten Tab, und dann sagt das Werkzeug
+den Schließbefehl dazu.
+
+**Wann trotzdem Playwright:** sobald geklickt, getippt oder auf ein Element gewartet werden
+muss. `cdp.py` fragt einen Wert ab, es bedient nichts.
+
+**Zwei Fallen, beide gemessen:** `/json/new` verlangt **PUT**, POST antwortet 405. Und
+`--warten` ist mit einer Sekunde vorbelegt, weil eine frisch geöffnete Seite ihr Skript noch
+nicht ausgeführt hat; ein Wert, den es erst setzt, wäre sonst schlicht `undefined`, und das
+sieht wie ein Befund aus.
+
 ## Bekannte Fehlerbilder
 
 **Ein Tab verschwindet, obwohl das Fenster lebt.** Nicht der Schließ-Hook, der kann nur
