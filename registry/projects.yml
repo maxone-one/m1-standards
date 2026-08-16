@@ -622,8 +622,15 @@ projects:
   # Eingetragen 2026-08-15 von werkstatt, beauftragt vom erfolgsfahrplan (Pool 10:47).
   # Das Projekt wurde am 15.08.2026 um 10:44 gegruendet und an GSD uebergeben; CONCEPT.md,
   # BUGS.md und IRRTUEMER.md entstehen dort im GSD-Lauf, nicht hier.
-  - name: maxone-vera
-    workspace: maxone-vera
+  #
+  # NAMENSAUSNAHME, bitte nicht "korrigieren": Standard 021 und die globale CLAUDE.md
+  # verlangen "maxone-<name>" in kebab-case. Max hat am 16.08.2026 um 12:52 ausdruecklich
+  # verfuegt: "Das gesamte Projekt soll aber Vera heissen und nicht maxone-vera."
+  # Umbenannt am 16.08.2026 von werkstatt: Ordner, Repo (maxone-one/vera), Workspace-Datei,
+  # Memory-Namespace und Pool-Postfaecher. Anzeigename ueberall "Vera", Pfade und Bezeichner
+  # klein wie bei den Nachbarprojekten.
+  - name: vera
+    workspace: vera
     domain: null  # tritt unter maxone.work auf, noch keine eigene Adresse
     server: null  # Ziel ist LiveKit Cloud, nicht maxone-prod
     deploy: null
