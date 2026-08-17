@@ -54,13 +54,13 @@ verwechselt, schreibt in ein Feld, das nichts bewirkt, und merkt es nie:
 | **user-scope** (alle 12 hier) | `~/.claude.json` → `mcpServers` | `~/.claude.json` → `projects[<pfad>].disabledMcpServers` |
 | **project-scope** | `.mcp.json` im Projektordner | `enabledMcpjsonServers` / `disabledMcpjsonServers` |
 
-> **KORREKTUR 17.08.2026, 02:35.** Hier stand, `enabledMcpjsonServers` und
+> **KORREKTUR 17.08.2026.** Hier stand, `enabledMcpjsonServers` und
 > `disabledMcpjsonServers` seien der Weg. **Das gilt nur für die zweite Zeile der Tabelle,
 > und `.mcp.json` gibt es im ganzen Bestand kein einziges Mal** — der beschriebene Weg wäre
 > also folgenlos geblieben. Auch `settings.json` ist der falsche Ort, das Feld sitzt in
 > `~/.claude.json` je Projekt. Beides scharf belegt: derselbe Tool-Aufruf im selben Ordner
 > antwortet „GEKLAPPT" mit leerem Feld und „FEHLT" mit dem Server darin, und zurückgesetzt
-> wieder „GEKLAPPT" [B: Läufe 17.08.2026, 02:01 bis 02:12].
+> wieder „GEKLAPPT" [B: drei Läufe mit echtem `claude`-Start, 17.08.2026].
 
 **Achtung, ein Projekt steht mehrfach in `~/.claude.json`.** Claude Code nimmt die rohe
 `cwd` als Schlüssel, ohne sie zu vereinheitlichen; je nach Startweg entsteht
