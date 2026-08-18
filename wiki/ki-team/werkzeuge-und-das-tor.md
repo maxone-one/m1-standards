@@ -17,17 +17,34 @@ das, wofür die Stelle da ist, nicht das einzige, das er anfassen darf.
 |---|---|---|---|
 | **Vera** | KI-Telefonassistentin | **das Telefon** | Kalender |
 | **Vigil** | Assistenz der Geschäftsführung | **Zentinel** | Kalender |
-| **Valor** | Vertrieb und Closing | **Faktura**, er schreibt die Angebote | Zentinel, Telefon |
+| **Valor** | Vertrieb und Closing | **das CRM** | Faktura für Angebote, Zentinel, Telefon |
 
 **Mitnutzung ist erlaubt, aber nicht beliebig.** Jeder kann unter Umständen auch die
 Werkzeuge der anderen mitnutzen, solange sie zu seiner Stellenbeschreibung passen.
 
-**Valor ist das lebende Beispiel dafür**, und deshalb steht er in dieser Tabelle: Er
-benutzt Zentinel, obwohl das Vigils Hauptwerkzeug ist, und das Telefon, obwohl das Veras
-Hauptwerkzeug ist. Beides trägt seine Stelle, denn ein Angebot wird verschickt und
-nachgefasst. Umgekehrt gilt es nicht automatisch: Vera darf in den Kalender, weil Termine
-buchen ihre Aufgabe ist, aber nicht ins Vorzimmer, weil der Posteingang nicht ihre Stelle
-ist.
+**Valor ist das lebende Beispiel dafür**, und deshalb steht er in dieser Tabelle: Sein
+Hauptwerkzeug ist das CRM, aber er benutzt Zentinel, obwohl das Vigils Hauptwerkzeug ist,
+und das Telefon, obwohl das Veras Hauptwerkzeug ist. Beides trägt seine Stelle, denn ein
+Angebot wird verschickt und nachgefasst. Umgekehrt gilt es nicht automatisch: Vera darf in
+den Kalender, weil Termine buchen ihre Aufgabe ist, aber nicht ins Vorzimmer, weil der
+Posteingang nicht ihre Stelle ist.
+
+## Woran man ein Hauptwerkzeug erkennt
+
+**Nicht am häufigsten Gebrauch, sondern an der Tiefe.** Max am 19.08.2026 über Valor und
+das CRM: „Er ist der einzige, der das CRM in- und auswendig kennt und es auf Herz und
+Nieren auslastet." Das ist die Definition, und sie hat zwei Hälften: **der einzige**, also
+Alleinstellung im Haus, und **auslasten**, also die Fähigkeiten wirklich ausreizen statt
+nur bedienen.
+
+Daraus folgt die Trennung zur Mitnutzung: Wer ein fremdes Werkzeug mitbenutzt, kann es
+bedienen. Wer sein Hauptwerkzeug führt, kennt seine Ecken. Deshalb kann eine Stelle nur ein
+Hauptwerkzeug haben, aber beliebig viele mitgenutzte.
+
+**Der Fehler, den ich beim ersten Anlauf dieser Seite gemacht habe:** Bei Valor stand
+„Faktura", weil er Angebote schreibt. Das war aus seiner Tätigkeit geschlossen und trotzdem
+falsch, denn ein Angebot ist ein Erzeugnis der Stelle, nicht ihr Ort. Ein Hauptwerkzeug
+wird benannt, nie erschlossen.
 
 **Der Prüfsatz vor jeder Zuweisung:** Trägt die Stellenbeschreibung dieses Werkzeug, oder
 ist es nur gerade praktisch? Ein Werkzeug, das nur praktisch ist, gehört jemand anderem.
