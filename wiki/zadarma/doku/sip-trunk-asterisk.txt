@@ -1,0 +1,1203 @@
+Gezogen am 19.08.2026 von https://zadarma.com/en/support/instructions/asterisk/trunk/
+
+Asterisk with authorization by IP address - Zadarma 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+ -->
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Services 
+ 
+ 
+ Pricing 
+ 
+ 
+ Solutions 
+ 
+ 
+ Resources 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Calls
+ 
+ 
+
+ 
+ 
+ 
+ Calling apps 
+ 
+ 
+ SIP-trunk 
+ 
+ 
+ Database actualization (HLR lookup) 
+ 
+ 
+ 
+ 
+ Phone numbers
+ 
+ 
+
+ 
+ 
+ 
+ Incoming calls forwarding 
+ 
+ 
+ Porting phone numbers 
+ 
+ 
+ 
+ 
+ SMS
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Business Phone System
+ 
+ 
+
+ A free solution that allows you to create a virtual office in 5 minutes 
+ 
+ 
+ 
+ 
+ 
+ CRM
+ 
+ 
+
+ Teamsale CRM is a multifunctional customer relationship management system 
+ 
+ 
+ 
+ 
+ 
+ eSIM for Internet
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ AI agent
+ 
+ 
+
+ The AI virtual operator is available 24/7 
+ 
+ 
+ 
+ 
+ 
+ AI Speech Analytics
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Click to Call
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Call Tracking
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Price plans
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Phone numbers
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Calls
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ SMS
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ VoIP for Business
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Become a partner
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Integrations
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ For whom
+ 
+ 
+
+ 
+ 
+ 
+ Small business 
+Call centers 
+Enterprise 
+ 
+ 
+ Remote work 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Setup guides
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ FAQ
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ API Documentation
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Online chat
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ Contact us
+ 
+ 
+ 
+ 
+ Contact us
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Blog
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Sign In
+ 
+ 
+ 
+ sign up
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ Email address
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Password
+ 
+ 
+ 
+ 
+
+ 
+ 
+ form_captcha: 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Forgot password?
+ 
+ 
+
+ Enter 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ Go to personal account
+ 
+ 
+ 
+ Logout
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ What are we looking for? 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Show all results 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Services 
+
+ 
+ 
+ 
+ 
+ Calls
+ 
+ 
+ 
+ 
+ 
+ Calling apps 
+ 
+ 
+ SIP-trunk 
+ 
+ 
+ Database actualization (HLR lookup) 
+ 
+ 
+ 
+ 
+ Phone numbers
+ 
+ 
+ 
+ 
+ 
+ Incoming calls forwarding 
+ 
+ 
+ Porting phone numbers 
+ 
+ 
+ 
+ 
+ SMS
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Business Phone System
+ 
+ 
+ A free solution that allows you to create a virtual office in 5 minutes 
+ 
+ 
+ 
+ 
+ 
+ CRM
+ 
+ 
+ Teamsale CRM is a multifunctional customer relationship management system 
+ 
+ 
+ 
+ 
+ 
+ eSIM for Internet
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ AI agent
+ 
+ 
+ The AI virtual operator is available 24/7 
+ 
+ 
+ 
+ 
+ 
+ AI Speech Analytics
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Click to Call
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Call Tracking
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Pricing 
+
+ 
+ 
+ 
+ 
+ Price plans
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Phone numbers
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Calls
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ SMS
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Solutions 
+
+ 
+ 
+ 
+ 
+ VoIP for Business
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Become a partner
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Integrations
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ For whom
+ 
+ 
+ 
+ 
+ 
+ Small business 
+Call centers 
+Enterprise 
+ 
+ 
+ Remote work 
+ 
+ 
+ 
+ 
+ 
+ 
+ Resources 
+
+ 
+ 
+ 
+ 
+ Setup guides
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ FAQ
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ API Documentation
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Online chat Online chat
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ &nbsp;Contact us
+ 
+ 
+ 
+ 
+ &nbsp;Contact us
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Blog
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Sign In
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Email address
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Password
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Forgot password?
+ 
+ 
+
+ 
+ 
+ form_captcha: 
+ 
+ 
+ 
+ 
+
+ Enter 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ sign up 
+ 
+ 
+ Go to personal account 
+ 
+ 
+ Logout 
+ 
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Instructions on how to configure VoIP equipment Asterisk with authorization by IP adress 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Setup guides &nbsp; / &nbsp; Asterisk &nbsp; / &nbsp;Asterisk trunk 
+ 
+ 
+
+ 
+ Example how to set Asterisk with Zadarma by authorization bu IP address. 
+
+ If the server running Asterisc is using a "white" IP address (not behind a router, but, for example, in a data center), outgoing calls can be made without a sip login and password, with IP authorization. Incoming calls can be received without registration with SIP URI. 
+
+ Key to the information which appears in the example: 
+
+ 
+ 15555555555 - Your Zadarma phone number. 
+
+ 2.20.190.41 - IP address of your Asterisk server. 
+
+ 101 - Asterisk's extension number to which softphone/IP-phone is connected in order to receive incoming calls and to make outgoing calls. 
+ In your personal account, under "Settings - Direct phone number" route calls from DID number to an external server (SIP URI) using the format 15555555555@2.20.190.41 
+
+ Adding SIP-trunk: 
+
+ In your personal account, under "Settings - SIP Connection", click on "Add SIP-trunk" (appears at the bottom of the page). 
+Set a name for the SIP-trunk and choose one of the exisiting sip logins. This will be the SIP-trunk identificator and will be unavailable for registration (receiving incoming calls ). 
+ Add your static IP address or several IP addresses (for example if your PBX is connected to 2 Internet channels: main and reserve). 
+In order to verify your IP address, it is necessary to route a call to the server sip.zadarma.com through the number 8888 After your IP address verification, you will be able to make outgoing calls by sending INVITE to us with your desired CallerID number in From: field. This makes the setup with multiple numbers significantly easier, and simplifies the understanding of the outgoing routing process. 
+
+ Edit sip.conf 
+
+ 
+ 
+[general]
+srvlookup=yes
+
+[zadarma]
+host=sip.zadarma.com
+fromdomain=sip.zadarma.com
+insecure=invite,port
+type=peer
+disallow=all
+allow=alaw&ulaw
+dtmfmode=auto
+context=zadarma-in
+directmedia=no
+
+[zadarma2]
+host=sipurifr.zadarma.com
+fromdomain=sip.zadarma.com
+type=peer
+insecure=port,invite
+context=zadarma-in
+disallow=all
+allow=alaw&ulaw
+dtmfmode = auto
+directmedia=no
+
+[zadarma3]
+host=sipde.zadarma.com
+fromdomain=sip.zadarma.com
+type=peer
+insecure=port,invite
+context=zadarma-in
+disallow=all
+allow=alaw&ulaw
+dtmfmode = auto
+directmedia=no
+
+[zadarma4]
+host=sipuriny.zadarma.com
+fromdomain=sip.zadarma.com
+type=peer
+insecure=port,invite
+context=zadarma-in
+disallow=all
+allow=alaw&ulaw
+dtmfmode = auto
+directmedia=no
+
+[101] 
+secret=password
+host=dynamic
+type=peer
+context=zadarma-out
+
+ 
+ 
+
+ Calls routing is set in file extensions.conf 
+ 
+ 
+[zadarma-in]
+exten => 15555555555,1, Dial(SIP/101) ;incoming calls are routed on extension number 101 
+
+[zadarma-out] 
+exten => _XXX,1,Dial(SIP/${EXTEN}) ;calls on 3-digit numbers of Asterisk 
+exten => _XXX.,1,Set(CALLERID(num)=15555555555) ;CallerID setup 15555555555
+same => n,Dial(SIP/zadarma/${EXTEN})
+
+ 
+ 
+ Setup is finished. 
+ 
+ 
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ +44 204 577 00 77 
+ +1 646 980 4741 
+ 
+ 
+ Contact us 
+ Contact us 
+ on-line chat &nbsp;on-line chat 
+ 
+ 
+ 
+ 
+ 
+ 
+ Zadarma apps 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Zadarma on Social Media 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ English
+ 
+ Español
+ 
+ Deutsch
+ 
+ Polski
+ 
+ Русский
+ 
+ Українська
+ 
+ Français
+ 
+ Português
+ 
+ Italiano
+ 
+ 
+ Change language 
+ 
+
+ 
+
+ 
+
+ 
+ US dollar 
+ 
+ euro 
+ 
+ hryvnia 
+ 
+ tenge 
+ 
+ pound 
+ 
+ złoty 
+ 
+ 
+ Change currency 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ Services 
+ 
+ 
+ Calls 
+ 
+ 
+ Calling apps 
+ 
+ 
+ AI Speech Analytics 
+ 
+ 
+ SIP-trunk 
+ 
+ 
+ Database actualization (HLR lookup) 
+ 
+ 
+ Phone numbers 
+ 
+ 
+ Incoming calls forwarding 
+ 
+ 
+ Porting phone numbers 
+ 
+ 
+ Business Phone System 
+ 
+ 
+ Click to Call 
+ 
+ 
+ Call Tracking 
+ 
+ 
+ eSIM for Internet 
+ 
+ 
+ SMS 
+ 
+ 
+ CRM 
+ 
+ 
+ 
+ 
+ 
+ 
+ Pricing 
+ 
+ 
+ Price plans 
+ 
+ 
+ Calls 
+ 
+ 
+ How to choose a plan? 
+ 
+ 
+ Standard 
+ 
+ 
+ Economy 
+ 
+ 
+ Phone numbers 
+ 
+ 
+ 800 numbers (Toll Free) 
+ 
+ 
+ SMS 
+ 
+ 
+ 
+ 
+ 
+ 
+ ABOUT ZADARMA 
+ 
+ 
+ About us 
+ 
+ 
+ News 
+ 
+ 
+ Zadarma Reviews 
+ 
+ 
+ VoIP for Business 
+ 
+ 
+ Become a partner 
+ 
+ 
+ Terms of Use 
+ 
+ 
+ Privacy Policy 
+ 
+ 
+ Service Level Agreement (SLA) 
+ 
+ 
+ 
+ 
+ 
+ 
+ Help 
+ 
+ 
+ How to pay 
+ 
+ 
+ Setup guides 
+ 
+ 
+ Integrations 
+ 
+ 
+ FAQ 
+ 
+ 
+ Online chat 
+ 
+ 
+ Contact us 
+ Contact us 
+ 
+ 
+ API Documentation 
+ 
+ 
+ Blog 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+ 
+ 
+ By continuing to use the site, you consent to the processing of Cookies and personal data. See more details in our Cookie рolicy page. If you do not want your data to be processed, please leave the site.
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ This website needs certain Cookies. These Cookies are technically necessary for website work. We’d also like to set optional Cookies to improve our service. We won’t set optional Cookies unless you enable them. You can change your choice at any time on our Cookie Policy page.
+ 
+ 
+ 
+ Only necessary cookies 
+ 
+ 
+ Accept all cookies

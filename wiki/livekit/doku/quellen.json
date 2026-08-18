@@ -1,0 +1,32 @@
+{
+  "agents-build-external-data.md": {
+    "url": "https://docs.livekit.io/agents/logic/external-data.md",
+    "sha256": "8cc7a4ec0b9d2e28",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "agents-build-sessions.md": {
+    "url": "https://docs.livekit.io/agents/logic/sessions.md",
+    "sha256": "eb58d1c0e7b1e6c4",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "agents-build-tools.md": {
+    "url": "https://docs.livekit.io/agents/logic/tools.md",
+    "sha256": "d8d7521ca5bf22fc",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "agents-logic-tools-async.md": {
+    "url": "https://docs.livekit.io/agents/logic/tools/async.md",
+    "sha256": "8cf90b47c7102989",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "agents-logic-tools-definition.md": {
+    "url": "https://docs.livekit.io/agents/logic/tools/definition.md",
+    "sha256": "6d1e719f285835e7",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  }
+}

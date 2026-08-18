@@ -1,0 +1,20 @@
+{
+  "api-reference-introduction.md": {
+    "url": null,
+    "sha256": "6dcda255bb0d721e",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "llms.txt": {
+    "url": null,
+    "vergleich": "aus",
+    "grund": "HTML-Abzug, rendert bei jedem Abruf anders. Von Hand nachsehen.",
+    "gezogen_am": "2026-08-19"
+  },
+  "text-to-speech.md": {
+    "url": null,
+    "sha256": "74234e98afe7498f",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  }
+}

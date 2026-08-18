@@ -1,0 +1,32 @@
+{
+  "endpointing.md": {
+    "url": "https://developers.deepgram.com/docs/endpointing.md",
+    "sha256": "619d451bd63ec068",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "flux-flux-nova-3-comparison.md": {
+    "url": "https://developers.deepgram.com/docs/flux/flux-nova-3-comparison.md",
+    "sha256": "16bd9534007ca6cc",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "interim-results.md": {
+    "url": "https://developers.deepgram.com/docs/interim-results.md",
+    "sha256": "fee047b5c2cdebe3",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "keyterm.md": {
+    "url": "https://developers.deepgram.com/docs/keyterm.md",
+    "sha256": "fbd183513298e8ec",
+    "vergleich": "pruefsumme",
+    "gezogen_am": "2026-08-19"
+  },
+  "llms.txt": {
+    "url": "https://developers.deepgram.com/llms.txt",
+    "vergleich": "aus",
+    "grund": "HTML-Abzug, rendert bei jedem Abruf anders. Von Hand nachsehen.",
+    "gezogen_am": "2026-08-19"
+  }
+}

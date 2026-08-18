@@ -1,0 +1,14 @@
+{
+  "api-uebersicht.txt": {
+    "url": "https://zadarma.com/en/support/api/",
+    "vergleich": "aus",
+    "grund": "HTML-Abzug, rendert bei jedem Abruf anders. Von Hand nachsehen.",
+    "gezogen_am": "2026-08-19"
+  },
+  "sip-trunk-asterisk.txt": {
+    "url": "https://zadarma.com/en/support/instructions/asterisk/trunk/",
+    "vergleich": "aus",
+    "grund": "HTML-Abzug, rendert bei jedem Abruf anders. Von Hand nachsehen.",
+    "gezogen_am": "2026-08-19"
+  }
+}
