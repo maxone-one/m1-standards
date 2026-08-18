@@ -154,6 +154,41 @@ Der entscheidende Unterschied zu einer Ankündigung durch das Modell: Dieser Sat
 Code, er kommt nur wenn es wirklich dauert, und er kann nicht dazu führen, dass das Modell
 seinen Zug nach der Ankündigung für beendet hält.
 
+## Zwei Regeln über das Werkzeug hinaus, beide am 19.08.2026 teuer gelernt
+
+**Ein Werkzeug ohne Argumente kann keine Frage beantworten, die Argumente braucht, und das
+Modell erfindet dann die Antwort.** In Vera nahm `termine_vorschlagen` keine Parameter, es
+lieferte immer nur die nächsten zwei freien Plätze. Nannte ein Anrufer selbst einen
+Zeitpunkt, gab es keinen Weg, ihn zu prüfen. Das Modell hat daraufhin fünfmal „Moment, ich
+schau mal kurz nach" gesagt, kein Werkzeug aufgerufen und fünfmal eine Absage erfunden.
+
+Der Fehler sieht im Protokoll aus wie eine Prompt-Schwäche und ist keine. **Prüfsatz: Wenn
+das Modell etwas behauptet, was ein Werkzeug messen müsste, sieh zuerst nach, ob es dafür
+überhaupt ein Werkzeug mit den nötigen Argumenten gibt.** Ein Prompt-Satz behebt eine
+fehlende Fähigkeit nie, er verlagert die Erfindung nur an eine andere Stelle.
+
+**Ein Systemprompt muss den heutigen Tag nennen, sonst ist jede relative Zeitangabe
+geraten.** Das Sprachmodell kennt das Datum nicht, und keine der Bibliotheken setzt es von
+sich aus ein. Ohne diese Zeile kann es „morgen", „Freitag" oder „nächste Woche" nicht in
+ein Datum auflösen und damit auch kein Werkzeug damit aufrufen. In Vera stand der
+Systemprompt drei Tage lang vollständig statisch da, und zwei Defekte hingen daran.
+
+Der Prompt wird deshalb je Gespräch gebaut, nicht einmal als Konstante:
+
+```python
+def systemprompt(jetzt: datetime) -> str:
+    return f"Heute ist {tag_als_text(jetzt.date())}.\n{SYSTEMPROMPT}"
+```
+
+Der Zeitpunkt wird **übergeben und nicht in der Funktion geholt**, sonst ist der Prompt nur
+an dem Tag prüfbar, an dem der Test gerade läuft.
+
+**Und wenn das Modell doch einen Zeitpunkt bilden muss, gib ihm kein Feld für eine
+Zeitzone.** Ein ISO-Zeitstempel als Werkzeugargument lädt den Fehler ein: In Vera schrieb
+das Modell `2026-08-20T13:00:00Z`, also die Ortszeit als UTC, und der Anrufer bekam einen
+Termin zwei Stunden später. Zwei getrennte Felder für Datum und Uhrzeit, beide festgelegt
+als Ortszeit, machen denselben Fehler bauartbedingt unmöglich.
+
 ## Was uns das gekostet hat
 
 Von einundzwanzig Defekten im Projekt `vera` wären drei durch dieses Handbuch verhindert worden,
