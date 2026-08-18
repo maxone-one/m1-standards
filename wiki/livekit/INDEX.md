@@ -189,40 +189,9 @@ das Modell `2026-08-20T13:00:00Z`, also die Ortszeit als UTC, und der Anrufer be
 Termin zwei Stunden später. Zwei getrennte Felder für Datum und Uhrzeit, beide festgelegt
 als Ortszeit, machen denselben Fehler bauartbedingt unmöglich.
 
-## Was uns das gekostet hat
+## Wo die Belege stehen
 
-Von einundzwanzig Defekten im Projekt `vera` wären drei durch dieses Handbuch verhindert worden,
-und es waren die teuersten:
-
-- **BUG-011**, die Tonspur wurde nie an ein Audio-Element gehängt. Steht wörtlich in der
-  Anleitung unter „Receiving tracks".
-- **Der Klon-Zwang bei `createAudioAnalyser`**: Ohne `cloneTrack: true` liefert Chrome für eine
-  ferne Spur dauerhaft Nullen. Ein Pegelbalken zeigt dann ewig Stille.
-- **BUG-007**, Verstummen beim Zwischenergebnis der Erkennung. Bekanntes Muster, und das
-  Framework meldet den Fall selbst über `user_transcription_timeout`.
-
-Die anderen achtzehn hätte keine LiveKit-Recherche verhindert: leere Guthaben beim
-Stimmanbieter, eigene Testfehler, Prompt-Verhalten und die Betriebsbauform.
-
-## Vier gemeldete Fehler der Community, alle vier in 1.6.10 bereits behoben
-
-Wer eines dieser Fehlerbilder sieht, sucht die Ursache **nicht** hier, sondern bei sich. Alle
-vier sind geschlossen und der Fix steht im installierten Code.
-
-| Nummer | Fehlerbild |
-|---|---|
-| [#3702](https://github.com/livekit/agents/issues/3702) | Werkzeugergebnisse gingen bei Unterbrechung verloren, Werkzeuge liefen doppelt |
-| [#3407](https://github.com/livekit/agents/issues/3407) | Ein Satz neben einem Werkzeugaufruf fehlte im Verlauf, das Modell wiederholte ihn |
-| [#5009](https://github.com/livekit/agents/issues/5009) | Keine Schlussantwort, wenn `max_tool_steps` erreicht war |
-| [#5150](https://github.com/livekit/agents/issues/5150) | Übergabe an einen anderen Agenten scheiterte bei parallelen Werkzeugaufrufen |
-
-**Die verschluckte Folgeantwort nach Unterbrechung ist davon nicht abgedeckt und steht offen.**
-
-## Nachweise
-
-Alles oben ist am 18.08.2026 im installierten Paket gelesen, Fassung `livekit-agents 1.6.10`
-`[B: site-packages/livekit/agents]`. Die Stellen: `voice/turn.py` für alle Vorgaben,
-`voice/agent_activity.py` Zeilen 3467 bis 3565 für die Werkzeugschleife und die verschluckte
-Antwort, `voice/events.py` Zeile 45 folgende für den `RunContext`, `voice/generation.py`
-Zeile 1038 für `reply_required`, `llm/tool_context.py` für `ToolError` und `StopResponse`,
-`voice/background_audio.py` für die mitgelieferten Klänge.
+Die Faelle, aus denen diese Regeln stammen, die vier bereits behobenen
+Community-Fehler und die genauen Quellstellen im installierten Paket stehen in
+[`vorfaelle-und-nachweise.md`](vorfaelle-und-nachweise.md). **Hier steht nur, was man
+wissen muss, bevor man baut.**
