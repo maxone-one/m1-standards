@@ -34,4 +34,5 @@ Narratives Betriebswissen und Domain-Kontext für Claude-Sessions. Ergänzt die 
 | [deploy-prod](deploy-prod/INDEX.md) | Deploy auf maxone-prod: Blue/Green, die zwei Traefik-Netze, Traefik-Probe, Platz schaffen, Fehlerbilder | Vor jedem Deploy, vor jedem Griff an Traefik, und bei „die Seite antwortet nicht" |
 | [google-cloud](google-cloud/INDEX.md) | Welcher Google-Zugang haengt an welchem Cloud-Projekt, was gesperrt ist und warum, die drei Fallen | Wenn ein Google-Zugang ausfaellt, und vor jedem neuen Cloud-Projekt |
 | [conventions](conventions/INDEX.md) | Umgebungs-Terminologie, Cross-Cutting Concepts | Bei terminologischen Fragen |
+| [livekit](livekit/INDEX.md) | Sprachagenten: `RunContext`, Unterbrechungen, die verschluckte Folgeantwort, Wartesignal, Vorgaben | Vor jedem Griff an einen LiveKit-Agenten, und bei „der Agent schweigt nach dem Werkzeug" |
 | [vanfree](vanfree/INDEX.md) | vanfree Projektkontext | Bei Arbeit an vanfree |
