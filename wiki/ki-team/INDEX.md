@@ -40,10 +40,10 @@ beschriftet nur seine Mail.
 
 | Wer | Rolle laut System-Prompt | Macht konkret |
 |---|---|---|
-| **Vortex** | Lead-Generierung und Outreach | Erstansprache, Kontakte finden, in die Pipeline bringen, **bis Valor übernimmt** |
+| **Vortex** | Lead-Generierung | Kontakte **finden** und anreichern, mit Scraper und Crawler. **Nicht die Erstansprache**, korrigiert 19.08.2026, ruht vorerst |
 | **Valor** | Vertrieb und Closing | qualifiziert, erstellt Angebote, fasst nach, „holt das Ja" |
 | **Vigil** (Jill) | **Assistenz der Geschäftsführung** | Vorzimmer, Posteingang, Auftragsabwicklung, Rechnung, Mahnung, Bestandskunden |
-| **Vera** | KI-Telefonassistentin, **„du bist die Stimme"** | Telefon, qualifizieren, **buchen**, nachfassen, erinnern. Zugleich verkaufbares Produkt |
+| **Vera** | KI-Telefonassistentin, **„du bist die Stimme"** | Telefon, **Erstkontakt**, qualifizieren, **buchen**, nachfassen, erinnern. Zugleich verkaufbares Produkt |
 | **Vantage** | CMO, „für seine Kunden sein verlängerter Arm" | Positionierung, Paket, Preis, Kampagne, **und wie das Haus klingt** |
 | **Vega** | Videoproduktion | Videos für Max und für Kunden |
 
@@ -69,8 +69,12 @@ beschriftet nur seine Mail.
 | **Vox** | **freie Mitarbeiterin**, Strategic Observer. „Du löst keine Probleme, du erkennst sie." Ausdrücklich **nicht operativ**, kein festes Terrain |
 | **Andreas Baulig** | **externer Unternehmensberater**, kein Mitglied. Siehe eigener Abschnitt unten |
 
-**Merkform:** Vortex geht raus, Valor macht den Preis, Vigil führt das Büro, Vera nimmt das
-Telefon, Viper rechnet nach.
+**Merkform:** Vortex findet, Vera öffnet, Valor macht den Preis, Vigil führt das Büro,
+Viper rechnet nach.
+
+**Wer welchen Schritt eines Verkaufs macht** (Opener, Setter, Übergabe, Closer), und warum
+der Erstkontakt nach Wärme besetzt wird statt nach Vertriebsstärke:
+[vertriebskette.md](vertriebskette.md) (Max, 19.08.2026).
 
 ## Zwei Abweichungen der Registry, entschieden am 14.08.2026
 
