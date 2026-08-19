@@ -201,6 +201,17 @@ Näherungswerts.
 Ausführlich, mit Code und dem Prüfsatz gegen die nie verdrahtete Prüfung:
 [`sip-anrufer.md`](sip-anrufer.md).
 
+## Den Agenten bei LiveKit Cloud betreiben statt auf eigenem Blech
+
+Neun Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
+19.08.2026 beim Umzug von Veras Agent: warum LiveKit selbst baut (ein fertiges Abbild
+darf nur Enterprise hochladen), wo das Dockerfile liegen muss, wie Zugangsdaten
+hereinkommen, und **die eine Stelle, an der ein Umzug lautlos scheitert**, nämlich der
+Agentenname und der automatische Dispatch. Dazu der billige Gegentest ohne Telefon und
+zwei Fehlerseiten der offiziellen Doku.
+
+[`cloud-agents.md`](cloud-agents.md).
+
 ## Wo die Belege stehen
 
 Die Faelle, aus denen diese Regeln stammen, die vier bereits behobenen
