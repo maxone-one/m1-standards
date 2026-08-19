@@ -189,6 +189,18 @@ das Modell `2026-08-20T13:00:00Z`, also die Ortszeit als UTC, und der Anrufer be
 Termin zwei Stunden später. Zwei getrennte Felder für Datum und Uhrzeit, beide festgelegt
 als Ortszeit, machen denselben Fehler bauartbedingt unmöglich.
 
+## Wer anruft: die Nummer des SIP-Anrufers
+
+**Das SDK kennt sie nicht, der Server setzt sie**, deshalb findet ein Grep über das Paket
+keinen einzigen SIP-Attributnamen. Erkannt wird der Anrufer an
+`rtc.ParticipantKind.PARTICIPANT_KIND_SIP`, die Nummer steht in seinen `attributes` und
+zusätzlich im Raumnamen. **Jede Quelle wird gegen dieselbe Plausibilitätsprüfung gehalten,
+keine wird geraten**, und liefert keine etwas, ist None die richtige Antwort statt eines
+Näherungswerts.
+
+Ausführlich, mit Code und dem Prüfsatz gegen die nie verdrahtete Prüfung:
+[`sip-anrufer.md`](sip-anrufer.md).
+
 ## Wo die Belege stehen
 
 Die Faelle, aus denen diese Regeln stammen, die vier bereits behobenen
