@@ -1,6 +1,6 @@
 # Brevo-Accounts pro maxone-Projekt
 
-**Last updated:** 2026-05-31
+**Last updated:** 2026-08-19 (Nachtrag aus Postfach-Belegen, siehe unten)
 **Coverage:** vollständige Account-Trennung am 2026-05-31 durchgezogen — alle Welle-1-bis-8-Domains aus dem Karastoni-Hauptaccount migriert, Per-Domain-Routing in `maxone.sponsored_customers` aktiv
 **Source-Briefing:** `c:/Users/max/Projects/Zentinel/briefings/BRIEF-BREVO-MULTIACCOUNT-2026-05-22.md`
 
@@ -25,11 +25,12 @@ an `@maxone.one`.
 | Brevo-Account | Owner-Login | user_id | Domains | Send-Routing | Secret-Store-Pfad |
 |---|---|---|---|---|---|
 | **Karastoni (Haupt)** | `karastoni@googlemail.com` | 10621970 (maxone.studio) | `maxone.studio`, `maxone.one`, `repivot.me` | Default (Env-Var `BREVO_API_KEY`) | `/opt/secrets/global/brevo.env` |
-| **karastelev.de** | `karastoni+karastelev@googlemail.com` | 11311384 | `karastelev.de`, `snapflow.one`, `vybora.dev` | `sponsored_customers.brevo_api_key` per Domain | `/opt/secrets/karastelev/brevo.env` |
+| **karastelev.de** | `max@karastelev.de` (seit 02.06.2026, vorher `karastoni+karastelev@googlemail.com`) | 11311384 | `karastelev.de`, `snapflow.one`, `vybora.dev` | `sponsored_customers.brevo_api_key` per Domain | `/opt/secrets/karastelev/brevo.env` |
 | **Venfree** | `mail@venfree.de` | 11289010 | `venfree.de` | `sponsored_customers.brevo_api_key` | `/opt/secrets/vanfree/brevo.env` |
 | **Stadt Lahn Flow** (SLF) | `mail@stadtlahnfluss.de` | 11288725 | `stadtlahnflow.de`, `stadtlahnfluss.de` | `sponsored_customers.brevo_api_key` | `/opt/secrets/slf/keys.env` |
 | **Voltfair** | `inbox@voltfair.de` | 11289276 | `voltfair.de` | `sponsored_customers.brevo_api_key` | `/opt/secrets/voltfair/keys.env` |
-| **Viktoria From Fotografie** | `mail@viktoria-from.de` | 11288841 | `viktoria-from.de` | `sponsored_customers.brevo_api_key` (PLUS Sponsor-Footer aus DB) | `/opt/secrets/viktoria-from/keys.env` |
+| **Viktoria From Fotografie** | `max+viktoria@maxone.one` (seit 11.06.2026, vorher `mail@viktoria-from.de`) | 11288841 | `viktoria-from.de` | `sponsored_customers.brevo_api_key` (PLUS Sponsor-Footer aus DB) | `/opt/secrets/viktoria-from/keys.env` |
+| **GridDone** | `hallo@griddone.de` | `[?]` nicht erhoben | `griddone.de` `[A:]` | `[?]` nicht erhoben, vermutlich noch kein Routing-Eintrag | `[?]` nicht erhoben |
 
 ### Was 2026-05-31 passierte (Domain-Trennung)
 
@@ -39,6 +40,32 @@ Vor heute hostete der **Karastoni-Hauptaccount alle 11 Domains** — Alt-Setup v
 2. **6 Domains aus Karastoni-Hauptaccount via `DELETE /v3/senders/domains/<domain>` entfernt** — karastelev.de, snapflow.one, vybora.dev, venfree.de, stadtlahnflow.de, voltfair.de. Sie sind alle in ihren eigenen Accounts authenticated+verified, der Routing-Eintrag schickt Sends dorthin.
 3. **stadtlahnfluss.de + viktoria-from.de in eigene Accounts migriert** — DNS-Brevo-Code-TXT bei INWX via `updateRecord` aktualisiert (DKIM-CNAMEs + DMARC bleiben identisch, weil Brevo-Plattform-Standard), `PUT /v3/senders/domains/<domain>/authenticate` triggert auth, dann aus Hauptaccount gelöscht.
 4. **Live-Smoke-Tests grün:** max@karastelev.de, max@stadtlahnfluss.de, hey@viktoria-from.de — alle gesendet von Zentinel, in Gmail innerhalb 15-20s angekommen, jeweils über den korrekten Brevo-Account.
+
+### Nachtrag 19.08.2026 — drei Abweichungen, aus Postfach-Belegen erhoben
+
+Gefunden beim DOPPELKONTEN-SCAN der Werkstatt, nicht bei einer Brevo-Prüfung. Alles
+Folgende stammt aus Mails in Max' Postfächern, **nicht aus der Brevo-Oberfläche oder der
+API**; wer den Bestand hart braucht, prüft gegen `/v3/account` mit dem jeweiligen Key.
+
+**GridDone ist ein siebtes Konto und war hier nicht geführt.** `[B:` vollständige Kette im
+Postfach `hallo@griddone.de` am 29.06.2026: „Complete your registration" 19:52, „Welcome to
+Brevo!" 19:55, „Your account is validated" 20:00, „A new API key has been created in your
+account" 20:02`]`. Es folgt der Konvention dieses Dokuments, es fehlte nur, weil der Stand
+hier der 31.05. war und das Konto vier Wochen später entstand. Offen bleiben user_id,
+Secret-Store-Pfad und ob `griddone.de` einen Routing-Eintrag in `sponsored_customers` hat.
+
+**Zwei Owner-Logins sind gewechselt worden, beide im Juni.** `[B:` Brevo-Mails „Confirm
+your new login email" mit Wortlaut „You have requested to change your Brevo login email
+address to …" — an `max@karastelev.de` am 02.06.2026, viermal zwischen 22:15 und 23:17, und
+an `max+viktoria@maxone.one` am 11.06.2026, zweimal`]`. Die Tabelle oben trägt jetzt die
+neuen Adressen und die alten in Klammern daneben.
+
+**Und eine Warnung an alle, die dieses Dokument für einen Doppelkonten-Verdacht heranziehen:**
+Am 18.06.2026 um 07:57 ging an `max@maxone.one` eine Brevo-Sicherheitswarnung, „ein anderes
+Brevo-Konto hat versucht, den SMS-Newsletter-Opt-in mit der Telefonnummer zu aktivieren, die
+mit Ihrem Konto verknüpft ist". **Das ist keine Kollision, sondern die erwartbare Folge
+dieses Modells:** sieben Konten teilen eine Telefonnummer. Die Meldung ist am 19.08.2026
+einmal als Beleg für ein Doppelkonto gelesen worden, und das war falsch.
 
 ### repivot.me — bewusste Ausnahme
 
