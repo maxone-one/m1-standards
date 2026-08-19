@@ -9,6 +9,7 @@
 - [A] Spec-Archiv: PRD/TODO/DONE-Lifecycle
 - [B] Tech-Stack-Currency: Dependencies aktuell halten
 - [C] Cross-Project Incident Broadcast (CPIB)
+- [D] Projektregel gehört ins Repo, persönliche Ausnahme nie
 
 ---
 
@@ -99,23 +100,29 @@ fix(<projekt>): resolve BCAST-YYYY-MM-DD-<slug>
 
 **Warum:** Drift entsteht wenn Änderung in A still B-N bricht. Vorfall 2026-04-22: `maxone.studio`→`maxone.one`-Wechsel, hardkodierte Studio-URLs in mehreren Projekten, Entdeckung Wochen später.
 
-## D: Claude-Artefakte — niemals in Repos (OBERSTE PRIORITÄT, 2026-06-04)
+## D: Projektregel gehört ins Repo, persönliche Ausnahme nie (2026-06-04, neu gefasst 2026-08-19)
 
-Claude-Konfigurationsdateien sind rein lokal und dürfen in keinem Git-Repository auftauchen — weder committed noch in einer projekt-lokalen `.gitignore` referenziert.
+Die Linie verläuft **nicht** zwischen Claude und Nicht-Claude, sondern zwischen dem, was ein Projekt auf einem zweiten Rechner zum Laufen braucht, und dem, was nur an einem Rechner gilt.
 
-**Betroffene Dateien:** `CLAUDE.md`, `AGENTS.md`, `.claude/`, `.clinerules`, `.cursorrules`, `.antigravityrules`, `*.session`
+**Gehört ins Repo:** `CLAUDE.md`, `AGENTS.md`, `.claude/settings.json`
 
-**Durchsetzung:** Globale Git-Excludes-Datei (`~/.gitignore_global`), konfiguriert via `git config --global core.excludesfile ~/.gitignore_global`. Rein maschinenlokal, wird nie gepusht.
+**Gehört nie ins Repo:** `.claude/settings.local.json`, `*.session`, dazu die Umgebungsdateien fremder Werkzeuge (`.clinerules`, `.cursorrules`, `.antigravityrules`)
 
-**Verboten:** `git add CLAUDE.md`, Einträge für Claude-Artefakte in projekt-lokalen `.gitignore`-Dateien.
+**Durchsetzung:** Globale Git-Excludes-Datei (`~/.gitignore_global`), konfiguriert via `git config --global core.excludesfile ~/.gitignore_global`. Rein maschinenlokal, wird nie gepusht. Die Zeile `**/.claude/settings.local.json` steht dort mit Begründung und außerhalb des Geheimnis-Blocks, damit der nächste sie nicht wegräumt.
+
+**Verboten:** `git add .claude/settings.local.json`. Ebenso ein Eintrag für `CLAUDE.md` oder `AGENTS.md` in einer projekt-lokalen `.gitignore` — die beiden sollen ja mitwandern.
 
 **Bestehende Repos bereinigen:**
 ```bash
-git rm --cached CLAUDE.md AGENTS.md
-git commit -m "chore: Claude-Artefakte aus Git-Tracking entfernen"
+git rm --cached .claude/settings.local.json
+git commit -m "chore: persoenliche Ausnahme aus dem Tracking nehmen"
 ```
 
-**Warum:** Claude-Dateien enthalten Geschäftsstrategie und interne KI-Konfiguration. Sie gehören nicht in Versionsgeschichten, auch nicht in private Repos. Die Extension-Strategie erfordert zusätzlich, dass kein venfree-Kontext in unabhängige Repos leckt.
+**Warum:** `settings.json` ist die Projektregel, `settings.local.json` die persönliche Ausnahme eines Menschen an einem Rechner. Wer die zweite teilt, teilt nicht Architektur, sondern die Dauererlaubnisse, die jemand irgendwann weggeklickt hat. Claude Code trennt die beiden Dateien selbst; der Standard folgt dieser Trennung nur.
+
+**Der Beleg für die Neufassung** lag in `vera`: Die dort getrackte `.claude/settings.local.json` enthielt `{"permissions": {"allow": []}}`, also nichts. Eine geteilte Datei ohne Inhalt zeigt am deutlichsten, dass sie den Zweck nicht erfüllt, für den sie geteilt wurde.
+
+**Wortlaut der alten Fassung, bis 2026-08-19 gültig:** „Claude-Konfigurationsdateien sind rein lokal und dürfen in keinem Git-Repository auftauchen", betroffen waren `CLAUDE.md`, `AGENTS.md` und `.claude/` vollständig. Sie widersprach seit dem 18.08.2026 dem Leitsatz, dass alles, was die Architektur braucht, auch auf einem anderen Rechner funktionieren muss, und erzeugte im Hygiene-Check von `/drift` täglichen Fehlalarm. Gemeldet von `werkstatt` am 19.08.2026, entschieden von `vera` um 14:17 (dort TODO 44). Der Leitsatz verlangt, dass die Architektur mitwandert, nicht dass jede Datei mitwandert.
 
 ---
 
