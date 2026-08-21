@@ -203,14 +203,41 @@ Ausführlich, mit Code und dem Prüfsatz gegen die nie verdrahtete Prüfung:
 
 ## Den Agenten bei LiveKit Cloud betreiben statt auf eigenem Blech
 
-Neun Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
+Zehn Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
 19.08.2026 beim Umzug von Veras Agent: warum LiveKit selbst baut (ein fertiges Abbild
 darf nur Enterprise hochladen), wo das Dockerfile liegen muss, wie Zugangsdaten
 hereinkommen, und **die eine Stelle, an der ein Umzug lautlos scheitert**, nämlich der
-Agentenname und der automatische Dispatch. Dazu der billige Gegentest ohne Telefon und
-zwei Fehlerseiten der offiziellen Doku.
+Agentenname und der automatische Dispatch. Dazu zwei Fehlerseiten der offiziellen Doku
+und der Gegentest ohne Telefon: **Er muss dem Raum selbst beitreten**, denn ein leerer
+Raum löst keinen Job aus, und als wiederkehrende Wache braucht er einen eigenen Zweig im
+Agenten (LKC-10), sonst schreibt jede Messung in die echten Daten.
 
 [`cloud-agents.md`](cloud-agents.md).
+
+## Zwei Regeln zum Testen mit echtem Ton, beide am 22.08.2026 gemessen
+
+### LK-20 — Das eingebaute Test-Framework kennt keinen Ton, für Audio gibt es `lk room join --publish`
+`AgentSession`-Tests laufen **ausdrücklich im Textmodus** („The test framework and agent
+simulations both run in text mode"), und für die volle Audiokette verweist die Doku auf
+Fremdanbieter (Bluejay, Cekura, Coval, Hamming). Wer eine Aufnahme durch die echte Kette
+schicken will, braucht sie nicht: `lk room join --publish datei.ogg --exit-after-publish`
+spielt eine Tonspur als Teilnehmer in einen Raum. Formate: `.ogg` (Opus), `.h264`, `.ivf`,
+auch aus einem Socket.
+*Lehre:* Vera, TODO 56. Die Messstrecke für Sprachverständlichkeit unter Lärm wäre sonst als
+Eigenbau entstanden.
+
+### LK-21 — Die adaptive Unterbrechungserkennung geht bei LiveKit Cloud VON SELBST an
+`_resolve_interruption_detection()` schaltet den `AdaptiveInterruptionDetector` ein, sobald
+`is_hosted()` gilt, und das prüft nur, ob `LIVEKIT_REMOTE_EOT_URL` gesetzt ist — LiveKit
+Cloud setzt sie selbst. **Wer den Schalter als Lösung einbaut, legt womöglich einen um, der
+längst steht.** Woran man es am Protokoll erkennt: Das Ereignis `overlapping_speech` samt
+`total_duration` entsteht an genau einer Stelle im Paket, nämlich in diesem Erkenner, und
+wird nur weitergereicht, wenn er aktiv ist. Voraussetzung sind eine STT mit
+`aligned_transcript` und Streaming (Deepgram erfüllt beides) sowie eine VAD. Für Agenten bei
+LiveKit Cloud ist der Dienst **gebührenfrei**, selbst gehostet 40.000 Anfragen im Monat. Die
+eigentlichen Regler heißen `threshold` und `min_interruption_duration` (Vorgabe 50 ms).
+*Lehre:* Vera, BUG-051. Drei Unterbrechungen von 31 bis 64 Millisekunden kamen durch,
+**während der adaptive Erkenner lief**.
 
 ## Wo die Belege stehen
 
