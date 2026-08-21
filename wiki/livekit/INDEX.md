@@ -235,9 +235,24 @@ längst steht.** Woran man es am Protokoll erkennt: Das Ereignis `overlapping_sp
 wird nur weitergereicht, wenn er aktiv ist. Voraussetzung sind eine STT mit
 `aligned_transcript` und Streaming (Deepgram erfüllt beides) sowie eine VAD. Für Agenten bei
 LiveKit Cloud ist der Dienst **gebührenfrei**, selbst gehostet 40.000 Anfragen im Monat. Die
-eigentlichen Regler heißen `threshold` und `min_interruption_duration` (Vorgabe 50 ms).
-*Lehre:* Vera, BUG-051. Drei Unterbrechungen von 31 bis 64 Millisekunden kamen durch,
-**während der adaptive Erkenner lief**.
+Die eigentlichen Regler heißen `threshold` und `min_interruption_duration` (Vorgabe 50 ms),
+**und über die Session sind sie nicht erreichbar**: `mode` ist ein
+`Literal["adaptive","vad"]`, und `_resolve_interruption_detection()` baut den Detector ohne
+ein einziges Argument. Nur `update_options()` auf der fertigen Instanz ändert sie.
+*Lehre:* Vera, BUG-051. Der Erkenner lief die ganze Zeit, ohne in einer Zeile Code
+vorzukommen. **Setz `mode` ausdrücklich** — nicht um ihn einzuschalten, sondern damit das
+Verhalten dir gehört und nicht der Umgebung des Anbieters.
+
+### LK-22 — `total_duration` im `overlapping_speech` ist eine LATENZ, keine Dauer
+Wörtlich im Paket: „RTT (Round Trip Time) time taken to perform the inference"
+(`inference/interruption.py:104`), gerechnet über den Zeitstempel, den der Client selbst
+beim Absenden in den 8-Byte-Kopf packt. Werte um 30 bis 60 ms sind eine **gute
+Antwortzeit** und sehen nur aus wie kurze Störgeräusche. Die Dauer der Überlappung steht
+unter `detection_delay`, die Sicherheit des Erkenners unter `probability`.
+*Lehre:* Vera, 22.08.2026. Diese eine Fehllesung trug eine ganze Nacht Diagnose, stand in
+vier Wahrheitsquellen und begründete eine Aufgabe, die es nie gab. **Verallgemeinert: Bevor
+eine Zahl aus einem fremden System eine Handlung trägt, lies ihre Definition im Quelltext.
+Ein Feldname beschreibt keine Größe, er beschreibt eine Hoffnung.**
 
 ## Wo die Belege stehen
 
