@@ -130,11 +130,23 @@ nie ins Repo. Ihr Beleg war ihr eigenes Repo, wo die getrackte Datei
 leeren Datei folgt, dass SIE DORT nichts trug, nicht dass sie ueberall nichts traegt.
 
 Zwei Fehler trug diese Fassung ausserdem mit sich. Erstens hat eine KI-Session eine Regel
-gegen Max' vier Tage alten Leitsatz gesetzt, ohne ihn zu fragen. Zweitens behauptete der
-Absatz „Durchsetzung", die Zeile **/.claude/settings.local.json stehe in
-~/.gitignore_global. Sie stand dort nie. Der Kopf jener Datei sagt seit dem 18.08. das
-Gegenteil und schliesst unter .claude/ nur Laufzeit-Artefakte aus. Der Standard hat also
-eine Durchsetzung behauptet, die es nicht gab, und drei Tage lang hat niemand nachgesehen.
+gegen Max' vier Tage alten Leitsatz gesetzt, ohne ihn zu fragen. Zweitens berief sich der
+Absatz „Durchsetzung" auf die Zeile **/.claude/settings.local.json in ~/.gitignore_global,
+ohne sie je geprueft zu haben.
+
+KORREKTUR 22.08.2026, 15:0x, und sie betrifft meinen eigenen Korrekturtext: Hier stand bis
+eben „Sie stand dort nie." Das war falsch, `vera` hat um 14:00 widersprochen und die Zeile
+mit `git check-ignore -v` belegt. Nachgeprueft stimmen BEIDE Messungen, denn es gibt zwei
+Dateien dieses Namens. Wirksam ist C:/Users/max/.gitignore_global (`git config --get
+core.excludesfile`), dort stand sie in Zeile 52 und wirkte. Versioniert ist
+~/.claude/homefiles/.gitignore_global, dort gab es sie nie, bestaetigt per `git log -S` ueber
+die ganze Historie. Die eine Seite sah in die Quelle, die andere in die wirksame Datei.
+
+Dahinter steckt ein groesserer Befund, am 22.08. um 15:03 als Aushang im Pool und bewusst
+der Werkstatt ueberlassen: Die versionierte Fassung ist 25 Zeilen und sperrt weiterhin
+CLAUDE.md, AGENTS.md und .claude/, die wirksame ist 58 Zeilen und tut das seit dem 18.08.
+nicht mehr. bootstrap/install.ps1 ueberschreibt vorhandene Ziele nie, deshalb faellt es auf
+keinem eingerichteten Rechner auf. Ein neuer Rechner bekaeme den aufgehobenen Stand.
 
 AUFGEFALLEN am 22.08.2026 im /drift von `vector`: Der Lauf meldete die dort getrackte
 settings.local.json als Befund, Max widersprach („das hat alles schon seine Richtigkeit"),
@@ -145,7 +157,15 @@ SSH-Keys. Damit fiel der letzte Einwand, und Max hat entschieden.
 
 DIE LEHRE, die ueber diesen Fall hinausgeht: Ein Standard, der eine Durchsetzung behauptet,
 muss sie belegen koennen. Steht in einer Regel „liegt in Datei X", dann ist Datei X die
-haerteste Quelle und die Regel nur ihre Beschreibung. -->
+haerteste Quelle und die Regel nur ihre Beschreibung.
+
+UND DIE LEHRE EINE EBENE DARUEBER, aus der Korrektur vom 22.08.: Es reicht nicht, Datei X zu
+oeffnen. Zuerst ist zu klaeren, WELCHE Datei X ueberhaupt wirkt. Bei einer globalen
+gitignore ist das `git config --get core.excludesfile` und nicht der Pfad, den ein Kommentar
+nennt. Hier sagt der Kopf der versionierten Datei sogar ausdruecklich „Aenderungen gehoeren
+HIER hin, nicht in die Kopie unter ~/.gitignore_global" — wer dieser Anweisung folgt, misst
+korrekt und bekommt trotzdem das falsche Bild, weil die Datei, die sich fuer die Quelle
+haelt, der aeltere Stand ist. -->
 
 **Bestehende Repos:** nichts zu tun. Repos, die die Datei nach der zweiten Fassung entfernt haben, nehmen sie mit `git add -f .claude/settings.local.json` wieder auf, sofern die Geheimnis-Prüfung oben sauber ist.
 
