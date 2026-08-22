@@ -155,6 +155,31 @@ Geprueft wurden daraufhin die 69 Erlaubnis-Muster der Datei gegen Token-, Key- u
 Passwortmuster: null Treffer, der einzige Schluessel darin ist der oeffentliche Teil eines
 SSH-Keys. Damit fiel der letzte Einwand, und Max hat entschieden.
 
+DIESE PRUEFUNG WAR FALSCH, festgestellt am 22.08.2026 um 15:1x, und der Satz bleibt hier nur
+stehen, damit die Korrektur ihn findet. In sechs der 69 Muster stand das Token von
+@hey_vectorbot im Klartext, in vollstaendigen curl-Kommandos gegen api.telegram.org, seit dem
+05.04.2026 in fuenf Commits. Per getMe geprueft: gueltig. Angestossen hat den Blick ein
+Hinweis von `vera`, deren eigene settings.json einen deny-Block trug, den zwei erlaubte
+Muster aushebelten.
+
+WARUM DIE PRUEFUNG DURCHRUTSCHTE: Gesucht wurde nach Feldnamen wie token= oder secret. Ein
+Telegram-Token traegt keinen Feldnamen, es steht mitten in einer URL direkt hinter dem Wort
+bot. Wer nach FORMEN sucht statt nach Namen, findet es sofort:
+bot\d{8,12}:[A-Za-z0-9_-]{30,}
+
+DIE LEHRE FUER JEDEN, DER DIESE PRUEFUNG NACHMACHT, und sie ist die eigentliche: Ein
+„geprueft, nichts gefunden" ist eine Behauptung wie jede andere und muss seinen Beleg
+mitliefern, naemlich WOMIT geprueft wurde. Steht der Suchausdruck daneben, faellt seine
+Luecke beim Lesen auf. Ein Negativbefund ohne Methode ist keine Messung. Zweitens: Nicht nur
+pruefen, ob ein Muster ein Geheimnis TRAEGT, sondern auch, ob ein erlaubtes Kommando ein
+anderes STARTEN kann (timeout, find -exec, xargs, env, sh -c). Ein deny-Block, den ein
+erlaubtes Muster umgehen kann, ist keiner.
+
+WAS IN vector GESCHAH: Die sechs Muster sind entfernt, 69 auf 63, keins trug eine Faehigkeit.
+Die Rotation des Tokens hat Max entschieden und fuehrt sie selbst bei BotFather aus. Am
+Entscheid, dass settings.local.json ins Repo gehoert, aendert das nichts: Der Fund belegt
+gerade, dass die Datei gelesen werden muss, und im Repo wird sie gelesen.
+
 DIE LEHRE, die ueber diesen Fall hinausgeht: Ein Standard, der eine Durchsetzung behauptet,
 muss sie belegen koennen. Steht in einer Regel „liegt in Datei X", dann ist Datei X die
 haerteste Quelle und die Regel nur ihre Beschreibung.
