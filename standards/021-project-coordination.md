@@ -100,29 +100,54 @@ fix(<projekt>): resolve BCAST-YYYY-MM-DD-<slug>
 
 **Warum:** Drift entsteht wenn Änderung in A still B-N bricht. Vorfall 2026-04-22: `maxone.studio`→`maxone.one`-Wechsel, hardkodierte Studio-URLs in mehreren Projekten, Entdeckung Wochen später.
 
-## D: Projektregel gehört ins Repo, persönliche Ausnahme nie (2026-06-04, neu gefasst 2026-08-19)
+## D: Was das Projekt auf einem zweiten Rechner braucht, gehört ins Repo (2026-06-04, neu gefasst 2026-08-22 von Max)
 
-Die Linie verläuft **nicht** zwischen Claude und Nicht-Claude, sondern zwischen dem, was ein Projekt auf einem zweiten Rechner zum Laufen braucht, und dem, was nur an einem Rechner gilt.
+Die Linie verläuft **nicht** zwischen Claude und Nicht-Claude, und auch **nicht** zwischen Projektregel und persönlicher Ausnahme, sondern allein am Leitsatz vom 18.08.2026: **„Alles, was ich lokal ändere und für meine Architektur benötige, muss auch auf einem anderen Rechner funktionieren."** Bedienung ist Teil der Architektur.
 
-**Gehört ins Repo:** `CLAUDE.md`, `AGENTS.md`, `.claude/settings.json`
+**Gehört ins Repo:** `CLAUDE.md`, `AGENTS.md`, `.claude/settings.json`, **`.claude/settings.local.json`**
 
-**Gehört nie ins Repo:** `.claude/settings.local.json`, `*.session`, dazu die Umgebungsdateien fremder Werkzeuge (`.clinerules`, `.cursorrules`, `.antigravityrules`)
+**Gehört nie ins Repo:** Laufzeit-Artefakte, die auf jeder Maschine neu entstehen (`*.session`, `.claude/*.lock`, `.claude/shell-snapshots/`, `.claude/todos/`, `.claude/statsig/`, `.claude/projects/`), alles mit einem Geheimnis darin (`.env`, `*.pem`, Schlüssel, Recovery-Codes), dazu die Umgebungsdateien fremder Werkzeuge (`.clinerules`, `.cursorrules`, `.antigravityrules`).
 
-**Durchsetzung:** Globale Git-Excludes-Datei (`~/.gitignore_global`), konfiguriert via `git config --global core.excludesfile ~/.gitignore_global`. Rein maschinenlokal, wird nie gepusht. Die Zeile `**/.claude/settings.local.json` steht dort mit Begründung und außerhalb des Geheimnis-Blocks, damit der nächste sie nicht wegräumt.
+**Durchsetzung:** allein `~/.gitignore_global`, konfiguriert via `git config --global core.excludesfile ~/.gitignore_global`. Sie ist die harte Quelle, dieser Standard beschreibt sie nur. Wer beide gegeneinander liest und einen Widerspruch findet, korrigiert den Standard, nicht die Datei.
 
-**Verboten:** `git add .claude/settings.local.json`. Ebenso ein Eintrag für `CLAUDE.md` oder `AGENTS.md` in einer projekt-lokalen `.gitignore` — die beiden sollen ja mitwandern.
+**Verboten:** ein Eintrag für `CLAUDE.md`, `AGENTS.md` oder `.claude/settings*.json` in einer projektlokalen `.gitignore` — sie sollen ja mitwandern.
 
-**Bestehende Repos bereinigen:**
-```bash
-git rm --cached .claude/settings.local.json
-git commit -m "chore: persoenliche Ausnahme aus dem Tracking nehmen"
-```
+**Die eine Prüfung vor dem Committen der `settings.local.json`:** Steht in einem der Erlaubnis-Muster ein Geheimnis, also ein Token, ein Key, ein Passwort in einem einmal freigegebenen Kommando? Dann kommt das Muster raus, nicht die Datei. Ein öffentlicher SSH-Key ist keines.
 
-**Warum:** `settings.json` ist die Projektregel, `settings.local.json` die persönliche Ausnahme eines Menschen an einem Rechner. Wer die zweite teilt, teilt nicht Architektur, sondern die Dauererlaubnisse, die jemand irgendwann weggeklickt hat. Claude Code trennt die beiden Dateien selbst; der Standard folgt dieser Trennung nur.
+**Warum:** `settings.local.json` trägt die Dauererlaubnisse, die ein Mensch über Monate weggeklickt hat. Sie sind kein Beiwerk der Bedienung, sie **sind** die Bedienung. Ein frischer Rechner mit Code ohne sie fragt bei jedem Handgriff neu; in `vector` wären das 69 Rückfragen für ein einziges Projekt.
 
-**Der Beleg für die Neufassung** lag in `vera`: Die dort getrackte `.claude/settings.local.json` enthielt `{"permissions": {"allow": []}}`, also nichts. Eine geteilte Datei ohne Inhalt zeigt am deutlichsten, dass sie den Zweck nicht erfüllt, für den sie geteilt wurde.
+<!-- FALLGESCHICHTE, kostet nichts im Kontext.
 
-**Wortlaut der alten Fassung, bis 2026-08-19 gültig:** „Claude-Konfigurationsdateien sind rein lokal und dürfen in keinem Git-Repository auftauchen", betroffen waren `CLAUDE.md`, `AGENTS.md` und `.claude/` vollständig. Sie widersprach seit dem 18.08.2026 dem Leitsatz, dass alles, was die Architektur braucht, auch auf einem anderen Rechner funktionieren muss, und erzeugte im Hygiene-Check von `/drift` täglichen Fehlalarm. Gemeldet von `werkstatt` am 19.08.2026, entschieden von `vera` um 14:17 (dort TODO 44). Der Leitsatz verlangt, dass die Architektur mitwandert, nicht dass jede Datei mitwandert.
+ERSTE FASSUNG, bis 2026-08-19: „Claude-Konfigurationsdateien sind rein lokal und duerfen in
+keinem Git-Repository auftauchen", betroffen waren CLAUDE.md, AGENTS.md und .claude/
+vollstaendig. Sie widersprach seit dem 18.08.2026 dem Leitsatz und erzeugte im
+Hygiene-Check von /drift taeglichen Fehlalarm. Gemeldet von `werkstatt` am 19.08.2026.
+
+ZWEITE FASSUNG, 2026-08-19 bis 2026-08-22, gesetzt von `vera` um 14:17 (dort TODO 44): Die
+Linie verlaufe zwischen Projektregel und persoenlicher Ausnahme, settings.local.json gehoere
+nie ins Repo. Ihr Beleg war ihr eigenes Repo, wo die getrackte Datei
+{"permissions":{"allow":[]}} enthielt, also nichts. Der Schluss war zu breit: Aus einer
+leeren Datei folgt, dass SIE DORT nichts trug, nicht dass sie ueberall nichts traegt.
+
+Zwei Fehler trug diese Fassung ausserdem mit sich. Erstens hat eine KI-Session eine Regel
+gegen Max' vier Tage alten Leitsatz gesetzt, ohne ihn zu fragen. Zweitens behauptete der
+Absatz „Durchsetzung", die Zeile **/.claude/settings.local.json stehe in
+~/.gitignore_global. Sie stand dort nie. Der Kopf jener Datei sagt seit dem 18.08. das
+Gegenteil und schliesst unter .claude/ nur Laufzeit-Artefakte aus. Der Standard hat also
+eine Durchsetzung behauptet, die es nicht gab, und drei Tage lang hat niemand nachgesehen.
+
+AUFGEFALLEN am 22.08.2026 im /drift von `vector`: Der Lauf meldete die dort getrackte
+settings.local.json als Befund, Max widersprach („das hat alles schon seine Richtigkeit"),
+und seine Sorge galt nicht dem Befund, sondern der Frage, warum das System es nicht wusste.
+Geprueft wurden daraufhin die 69 Erlaubnis-Muster der Datei gegen Token-, Key- und
+Passwortmuster: null Treffer, der einzige Schluessel darin ist der oeffentliche Teil eines
+SSH-Keys. Damit fiel der letzte Einwand, und Max hat entschieden.
+
+DIE LEHRE, die ueber diesen Fall hinausgeht: Ein Standard, der eine Durchsetzung behauptet,
+muss sie belegen koennen. Steht in einer Regel „liegt in Datei X", dann ist Datei X die
+haerteste Quelle und die Regel nur ihre Beschreibung. -->
+
+**Bestehende Repos:** nichts zu tun. Repos, die die Datei nach der zweiten Fassung entfernt haben, nehmen sie mit `git add -f .claude/settings.local.json` wieder auf, sofern die Geheimnis-Prüfung oben sauber ist.
 
 ---
 
