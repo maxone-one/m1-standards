@@ -164,6 +164,9 @@ Daneben nimmt `generation_config` `emotion` (genau **eine** aus einer festen Lis
 ein Parameter annimmt, dann messen. Eine Messung über einen ungültigen Wert misst die
 Verwerfung, nicht den Regler.
 
+**CAR-03: Ein ungültiger `emotion`-Wert wird wortlos verworfen**, HTTP 200 und die
+Aufnahme ohne Emotion: [klangwerte.md](klangwerte.md)
+
 
 
 ### Interpunktion ist ein Hebel, aber ein kleiner
