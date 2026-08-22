@@ -140,6 +140,20 @@ python ~/.claude/bin/uebergabe-tab.py entfernen --tab-id <ID aus der Liste>
 **Ein Übergabetab ohne Eintrag in `~/.claude/state/uebergabe-tabs.json` stirbt**, und zwar
 beim nächsten Antwortende durch den Stop-Hook, auch durch den einer fremden Sitzung.
 
+**Vor dem Übergabetab steht eine Frage, die ihn oft ausschließt: Kann der Zustand, den ich
+erzeuge, den Ort überleben, an dem ich ihn erzeuge?** Bei einem angemeldeten Fremdsystem
+lautet die Antwort meistens nein, und zwar aus einer Zange heraus: Die Anmeldungen liegen
+im **Hauptprofil**, dessen MCP-Fenster mit der Verbindung stirbt. Das **Dauerprofil** auf
+Port 9223 überlebt, trägt aber keine Anmeldung, weil dort jeder Login scheitert (siehe
+Serverwahl oben). Ein ausgefülltes Formular kann deshalb nicht von Claude zu Max wandern.
+
+Gemessen am 22.08.2026 bei der Einrichtung eines Google-Ads-Verwaltungskontos: Formular
+vorbereitet, Max sollte nur noch das reCAPTCHA setzen, neun Minuten später stand der Tab
+auf `about:blank` und das Konto unverändert. **Wo ein reCAPTCHA oder ein anderer Bot-Schutz
+im Weg steht, ist die Aufgabe ohnehin nicht teilbar**: Dann macht Max den ganzen Vorgang in
+seinem eigenen Browser, und Claude liefert die Angaben zum Abtippen. Fall:
+`maxone-pilots/irrtuemer/irrtum-021.md`.
+
 **Der Unterschied zwischen den beiden Ankern, und er kostet Vorgänge:**
 
 | | `--tab` (Identität) | `--titel` (Muster) |
