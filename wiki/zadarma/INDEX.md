@@ -51,11 +51,38 @@ ohnehin (`sip server required auth`), weil LiveKit sich bei einem Provider **nic
 registrieren kann**.
 *Lehre:* 18.08.2026, eine halbe Stunde.
 
+**Korrekturvermerk 22.08.2026:** Der Satz stimmt weiter, aber er wurde vier Tage lang zu
+weit gelesen, nämlich als „ausgehend geht deshalb **nur** über die IP-Freigabe". **Das ist
+falsch, und es wäre eine Sackgasse gewesen:** Die IP-Bestätigung geht bei uns ja gerade
+nicht. Ausgehend läuft über ZAD-09.
+
+### ZAD-09 — Ausgehend geht über Zugangsdaten, nicht über die IP-Freigabe
+**Registrierung und Authentifizierung sind zwei verschiedene Dinge.** LiveKit meldet sich
+bei keinem Anbieter per `REGISTER` an (ZAD-06, bleibt richtig), weist sich aber bei jedem
+einzelnen Anruf per Digest-Auth aus. Der ausgehende Trunk trägt dafür genau zwei Felder,
+`auth_username` (die SIP-Kontonummer, bei uns `507247`) und `auth_password` (das Passwort
+**dieses SIP-Kontos**, nicht das Konto-Passwort aus `zadarma.env`). LiveKits eigene Doku
+empfiehlt diesen Weg **vor** der IP-Freigabe: „Prefer username and password authentication
+on your SIP trunk provider", und schlägt für den Fall ohne feste IP-Bereiche sogar
+`0.0.0.0/0` vor `[B: docs.livekit.io/sip/trunk-outbound/, gelesen 22.08.2026]`.
+*Lehre:* Vera, TODO 58, 22.08.2026. **Verallgemeinert: Aus einer belegten Aussage über
+einen Mechanismus wird leicht eine unbelegte Folgerung über einen anderen, und die
+Belegmarke wandert stillschweigend mit.** Prüffrage: Steht hinter dem `[B:]` der Satz, der
+dort steht, oder der Schluss, den ich daraus gezogen habe?
+
 ### ZAD-07 — Eine Rufnummer an der Cloud-PBX kennt keinen externen Server
 Der Reiter erscheint erst, wenn die Nummer von der PBX gelöst und einem eigenen SIP-Konto
 zugeordnet ist. Solange sie dort hängt, gibt es kein Feld für eine SIP-Adresse und kein
 freies Konto für einen Trunk.
 *Lehre:* 18.08.2026.
+
+### ZAD-08 — Ein zweites Klingeln ist kein Agent-Sleep
+Wer vor einer KI zwei Freizeichen will, braucht den Hebel **vor** der angenommenen Leitung.
+Beim direkten Weg `Rufnummer -> SIP URI` ist in der API kein Zeitparameter belegt:
+`/v1/direct_numbers/set_sip_id/` setzt nur die Zuordnung, und die gefundenen Delay-Felder
+gehören zu PBX-IVR-Szenarien. Im Agenten zu warten erzeugt dagegen nur Stille nach dem
+Annehmen.
+*Lehre:* 19.08.2026, Vera TODO 49. Wurzel: `vera/docs/zweimal-klingeln.md`.
 
 ---
 
