@@ -21,15 +21,15 @@ verstreuten Memory-Einträgen lag.
 - `/opt/secrets/global/telegram.consumers.md` (Bot-Token-Konsumenten-Inventar, unvollständig)
 - `/opt/slf-mail-bridge/.env` (slf-mail-bridge Token + Chat)
 - `/opt/zentinel-vigil/.env` (zentinel-vigil — wiederverwendet slf-bridge-Token)
-- `~/.claude/memory/feedback_telegram_kunden_kopie_an_max.md` (chat_id 8029592472 explizit)
+- `~/.claude/memory/telegram-kunden-kopie-an-max.md` (chat_id 8029592472 explizit)
 
 **Output:**
 - 1 Topic: `telegram` (Bots, Chat-IDs, User-IDs, Konsumenten)
 - 0 Concepts (kein Cross-Cutting nötig bei einem Topic)
 
 **Outcomes:**
-- Memory-Einträge `reference_telegram_ids_inventory.md` und
-  `feedback_vigil_pronoun.md` bleiben (das eine ist Pointer, das andere
+- Memory-Einträge `telegram-ids-inventory.md` und
+  `vigil-ist-weiblich-anrede.md` bleiben (das eine ist Pointer, das andere
   reine Verhaltensregel).
 - Architektur-Lücke dokumentiert: keine zentrale `telegram.directory.md`
   im Secret-Store; `consumers.md` veraltet.

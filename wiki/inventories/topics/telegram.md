@@ -110,4 +110,4 @@ inventarisiert — bei Bedarf via Bot mit `getForumTopicIconStickers`/Web-UI pr�
 - `/opt/slf-mail-bridge/.env` — slf-mail-bridge wiederverwendet VECTOR-Bot
 - `/opt/zentinel-vigil/.env` — zentinel-vigil wiederverwendet VECTOR-Bot
 - `watchdog-kuma:/app/data/kuma.db` (notification table, id=1) — Kuma Telegram-Notification-Config (Falkenstein)
-- `~/.claude/memory/feedback_telegram_kunden_kopie_an_max.md` — Verhaltensregel: Bot-Nachrichten an Kunden gehen Kopie an User-ID `8029592472`
+- `~/.claude/memory/telegram-kunden-kopie-an-max.md` — Verhaltensregel: Bot-Nachrichten an Kunden gehen Kopie an User-ID `8029592472`
