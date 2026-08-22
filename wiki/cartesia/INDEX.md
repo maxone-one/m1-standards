@@ -17,8 +17,8 @@ wurden. Wo etwas aus der Doku stammt und nicht selbst nachgemessen ist, steht es
 Das Aussprachewörterbuch **kann Lautschrift**, aber nur in einer bestimmten Syntax, und wer
 sie nicht kennt, hält es für reine Textersetzung. Der Abgleich trifft **ausschließlich ganze
 Wörter**, ein Eintrag `Mail` wirkt also nie in `Mailadresse`. Und die Sprechgeschwindigkeit
-lässt sich **nur nach oben** regeln, während dieselbe Eingabe zwischen zwei Generierungen um
-bis zu 15 Prozent schwankt.
+ist bei `sonic-3` ein **Float zwischen 0,6 und 2,0**, der in beide Richtungen wirkt, während
+dieselbe Eingabe zwischen zwei Generierungen um bis zu 15 Prozent schwankt.
 
 ## Das Aussprachewörterbuch
 
@@ -46,6 +46,21 @@ mit Abstand längste. Damit ist belegt, dass die Syntax verstanden und nicht vor
 
 Neben der Lautschrift gibt es die einfachere Form, eine Aussprachehilfe in normaler Schrift
 („VAH-pee") `[B: Cartesia-Doku]`. Beide stehen im selben Feld.
+
+**Veras aktuelles Wörterbuch seit 21.08.2026:** `pdict_JNMCWKyQvKjCSgy7cFtnt1` (davor
+`pdict_CDWFi97vyNedquHH3bzgSV`). Sechs Einträge, am 22.08.2026 an der API ausgelesen:
+`Karastelev` → `<<k|a|ʁ|a|s|t|ɛ|l|ə|v>>` (Max' Vorgabe: der letzte Teil klingt wie
+„Television", nicht wie „Thelen"), `Max` → `<<m|a|k|s>>`, `maxone` und `Maxone` →
+„Mex Sown", `vera` und `Vera` → „Wera".
+
+> **CAR-02, gelernt am 22.08.2026 und teuer bezahlt: Ein Ausspracheproblem ist nicht immer
+> ein Ausspracheproblem.** Vera sprach „Max" viermal als „Mex", und drei Anläufe drehten am
+> Wörterbuch. Gemessen: Der Eintrag griff, und der Name klang isoliert sogar **ohne**
+> Wörterbuch sauber. Falsch klang er nur im langen Satz, der im Ganzen **eine** Pause von
+> 0,12 s trug; Cartesia verschluckte darin den Vokal. Ein Punkt statt eines Kommas gibt
+> 0,56 s und behebt es, ohne ein Wort zu ändern. **Vor jedem Eintrag also erst das Wort
+> allein hören.** Klingt es allein richtig, liegt es am Satz, und ein Wörterbucheintrag
+> macht es nur unübersichtlicher.
 
 ### Der Abgleich trifft nur ganze Wörter
 
@@ -103,19 +118,53 @@ Ein Eintrag trägt die Felder `text`, `pronunciation` und `alias`. **`pronunciat
 
 ## Sprechgeschwindigkeit
 
-### Der Regler geht nur nach oben
+### CAR-01: Bei sonic-3 ist `speed` eine Zahl, kein Wort
 
-**Gemessen am 18.08.2026**, drei Läufe je Einstellung, identischer Text, Stimme Marlene:
+> **KORREKTUR vom 22.08.2026.** Hier stand bis heute „Der Regler geht nur nach oben" mit dem
+> Schlusssatz „Wer eine Ausgabe langsamer braucht, bekommt sie von Cartesia nicht." **Das war
+> falsch verallgemeinert.** Die Messung darunter benutzte die **Strings** `slow` und
+> `slowest`, und die gelten bei `sonic-3` nicht. Die alte Tabelle bleibt als Beleg stehen,
+> ihre Deutung fällt.
+>
+> **Was es die Projekte gekostet hat:** In `vera` stand daraufhin in `TODO.md` Punkt 14
+> („Vera liest zu schnell zurück") die Zeile „Cartesia lässt sich nicht langsamer stellen",
+> und der Punkt wechselte die Richtung auf „Struktur statt Synthese", also auf einen Umbau
+> des Gesprächsablaufs. Der Regler lag die ganze Zeit da.
 
-| Einstellung | Median |
-|---|---|
-| ohne `speed` | 7,76 s |
-| `speed: "slow"` | 7,90 s |
-| `speed: "fastest"` | **5,02 s** |
+**Für `sonic-3` ist `speed` ein Float zwischen 0,6 und 2,0**, und er geht in ein eigenes
+Objekt `generation_config`, nicht mehr in `__experimental_controls`
+`[B: livekit-plugins-cartesia, tts.py, `_check_generation_config` und `_to_cartesia_options`,
+Quelltext gelesen 22.08.2026]`. Ein String löst dort ausdrücklich
+`ValueError("speed must be a float for sonic-3")` aus.
 
-Dass der Parameter überhaupt ankommt, belegt die Gegenprobe nach oben. Nach unten bewegt sich
-nichts: **die Vorgabe ist bereits das langsame Ende.** Wer eine Ausgabe langsamer braucht,
-bekommt sie von Cartesia nicht.
+```json
+{"model_id": "sonic-3", "generation_config": {"speed": 0.85, "emotion": "Content"}}
+```
+
+**Gemessen am 22.08.2026**, drei Läufe je Fall, identischer Satz, Stimme Marlene:
+
+| Einstellung | Median | |
+|---|---|---|
+| ohne Angabe | 6,41 s | Bezugspunkt |
+| `speed: 0.7` | **8,55 s** | 33 Prozent langsamer |
+| `speed: 0.85` | 7,43 s | 16 Prozent langsamer |
+| `speed: 1.3` | 4,88 s | 24 Prozent schneller |
+| `speed: "slow"` (String) | 6,04 s | wirkungslos |
+
+**Die Falle liegt in der API-Version, und sie ist lautlos:** `generation_config` wird erst ab
+einer Version **über** `2024-11-13` gelesen. Wer wie früher `Cartesia-Version: 2024-11-13`
+schickt, bekommt keinen Fehler, sondern eine Aufnahme ohne jede Wirkung. Das Plugin nutzt von
+sich aus `2025-04-16`. Gegengeprobt: Ein Float als **Top-Level**-Feld `speed` wirkt auch unter
+`2024-11-13` (8,41 s), das Objekt dagegen nicht.
+
+Daneben nimmt `generation_config` `emotion` (genau **eine** aus einer festen Liste, siehe
+`models.py` im Plugin) und `volume` (0,5 bis 2,0).
+
+**Die Lehre ist die Reihenfolge:** Erst am installierten Quelltext nachsehen, welche Typen
+ein Parameter annimmt, dann messen. Eine Messung über einen ungültigen Wert misst die
+Verwerfung, nicht den Regler.
+
+
 
 ### Interpunktion ist ein Hebel, aber ein kleiner
 
