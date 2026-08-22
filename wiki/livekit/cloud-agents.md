@@ -69,6 +69,50 @@ Steht der Agent binnen Sekunden im Raum, greift der automatische Dispatch. Koste
 angefangene Agent-Session-Minute und erzeugt ein Gesprächsprotokoll, weil der Agent seine
 Begrüßung spricht.
 
+> **Korrektur vom 19.08.2026, 17:5x: So allein reicht der Gegentest nicht.** Bei einer
+> Wiederholung blieb der Agent aus, und im Log stand dafür **kein** `received job
+> request`, während beim echten Anruf derselben Stunde genau diese Zeile stand. **Ein
+> leerer Raum löst keinen Job aus, der Beitritt eines Teilnehmers tut es.** Die Doku sagt
+> dazu nichts: „When `agent_name` is not set, an agent is automatically dispatched to each
+> new room" nennt kein Ereignis `[B: docs.livekit.io/agents/worker/agent-dispatch/,
+> gelesen 19.08.2026]`.
+>
+> **Der belastbare Gegentest tritt deshalb selbst bei**, mit einem Zugangstoken ohne
+> Sende- und Empfangsrecht:
+>
+> ```python
+> zugang = (api.AccessToken().with_identity("wache")
+>           .with_grants(api.VideoGrants(room_join=True, room=raum,
+>                                        can_publish=False, can_subscribe=False)).to_jwt())
+> await rtc.Room().connect(wss_adresse, zugang)   # legt den Raum zugleich an
+> ```
+>
+> So gemessen war der Agent nach **3,2 Sekunden** im Raum. Der Weg misst außerdem mehr:
+> nicht nur, dass ein Worker registriert ist, sondern dass für einen neuen Raum wirklich
+> ein **Job-Prozess** entsteht. Genau dort riss es am 19.08.2026 um 16:01, während jede
+> andere Anzeige grün stand.
+
+## LKC-10: Ein wiederkehrender Erreichbarkeitstest braucht einen eigenen Zweig im Agenten
+
+Der Test aus LKC-05 ist als einmalige Probe gedacht. Wer ihn zur Wache macht, muss den
+Agenten unterscheiden lassen, sonst bezahlt jede Messung mit einer Spur in den echten
+Daten: In `vera` hat der Umzugstest ein Gesprächsprotokoll geschrieben, auf der
+öffentlichen Testseite mitgezählt und eine gesprochene Begrüßung erzeugt, die niemand
+gehört hat.
+
+**Die Grenze gehört an den Raumnamen**, weil sie dann ohne mitgeführten Zustand
+ablesbar ist: Ein Präfix (`wache-`) führt in einen Zweig, der **vor** dem Aufbau der
+Session steht, `ctx.connect()` aufruft, ein paar Sekunden stehen bleibt und wieder geht.
+Kein Sprachmodell, keine Stimme, keine Erkennung, keine Protokollierung. Umgekehrt gilt:
+Ein Raum ohne lesbaren Namen ist **kein** Wachraum, sonst verliert ein echtes Gespräch im
+Fehlerfall seine Aufzeichnung.
+
+**Und der Zweig braucht `ctx.connect()` ausgeschrieben.** Ein Job betritt seinen Raum
+nicht von selbst; die Verbindung hängt sonst an `session.start()`, das sie über die
+Raum-Ein-/Ausgabe anstößt `[B: voice/agent_session.py:1044 und job.py:596, Paket 1.6.10]`.
+Fehlt die Zeile, meldet die Wache „nicht erreichbar", obwohl der Job-Prozess einwandfrei
+entstanden ist.
+
 ## LKC-06: `lk agent logs` folgt dem Strom und ist keine verlässliche Quelle
 
 Der Befehl hat kein `--no-follow`; ohne `timeout` hängt er. Und er greift auf den

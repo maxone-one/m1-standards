@@ -57,6 +57,14 @@ zugeordnet ist. Solange sie dort hängt, gibt es kein Feld für eine SIP-Adresse
 freies Konto für einen Trunk.
 *Lehre:* 18.08.2026.
 
+### ZAD-08 — Ein zweites Klingeln ist kein Agent-Sleep
+Wer vor einer KI zwei Freizeichen will, braucht den Hebel **vor** der angenommenen Leitung.
+Beim direkten Weg `Rufnummer -> SIP URI` ist in der API kein Zeitparameter belegt:
+`/v1/direct_numbers/set_sip_id/` setzt nur die Zuordnung, und die gefundenen Delay-Felder
+gehören zu PBX-IVR-Szenarien. Im Agenten zu warten erzeugt dagegen nur Stille nach dem
+Annehmen.
+*Lehre:* 19.08.2026, Vera TODO 49. Wurzel: `vera/docs/zweimal-klingeln.md`.
+
 ---
 
 ## II. Drei Wege, die geprüft und versperrt sind

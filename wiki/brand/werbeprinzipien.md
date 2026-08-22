@@ -84,4 +84,4 @@ Sie kommen hier herein, sobald er sie benennt, und werden nicht geraten.
 
 Verwandt und bindend: das ehrliche Nudging in der globalen `CLAUDE.md` (lenken ja, Dark
 Patterns nie), das Klartext-Prinzip, die drei Kommunikations-Register und
-`~/.claude/rules/vorleistung-statt-referenz.md`.
+`~/.claude/rules-taetigkeit/aussentext/vorleistung-statt-referenz.md`.
