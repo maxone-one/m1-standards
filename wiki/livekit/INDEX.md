@@ -254,6 +254,30 @@ vier Wahrheitsquellen und begründete eine Aufgabe, die es nie gab. **Verallgeme
 eine Zahl aus einem fremden System eine Handlung trägt, lies ihre Definition im Quelltext.
 Ein Feldname beschreibt keine Größe, er beschreibt eine Hoffnung.**
 
+### LK-23 — Bei eingehendem SIP darf der Agent sprechen, BEVOR der Rückweg zum Anrufer offen ist
+Das Track-Abo und der offene Medienweg sind **zwei verschiedene Zeitpunkte**, und dazwischen
+liegen 200 OK plus ACK. In `pkg/sip/inbound.go` steht der Ausgang zunächst auf
+`mp.DisableOut()`, mit dem Kommentar der Entwickler `// disabled until we send 200`. Erst
+danach kommen Raumbeitritt, `publishTrack()` und `waitSubscribe()`; das `200 OK` und das
+Warten auf das ACK über UDP folgen **danach**, und erst dann `EnableOut()`. Die Agentenseite
+wartet aber nur auf das Abo: `_ParticipantAudioOutput.capture_frame()` hängt an
+`wait_for_subscription()` (`voice/room_io/_output.py`, Zeilen 79 bis 106).
+**Was in diesem Fenster gesprochen wird, ist weg — es wird verworfen, nicht gepuffert.** Der
+Anrufer hört den Satz mitten drin beginnen. LiveKit benennt das im eigenen Quelltext: „If
+the delay kicks in earlier than the caller is ready, they might miss some audio packets."
+Der einzige Wert, der den offenen Rückweg anzeigt, ist `sip.callStatus == "active"`.
+**Es gibt dafür keine offizielle Empfehlung**, und das Telefonie-Beispiel der Doku ruft die
+Begrüßung ohne jedes Warten direkt nach `session.start` auf.
+*Nicht zu verwechseln:* Der „preconnect audio buffer" puffert das **Mikrofon des Nutzers**
+im Browser und hat mit dieser Richtung nichts zu tun. `ctx.wait_for_participant()` hilft
+ebenfalls nicht, es kehrt sofort zurück, wenn der Teilnehmer schon da ist — bei einem
+eingehenden Anruf immer.
+*Lehre:* Vera, BUG-033, **viermal gemeldet, bevor die Ursache belegt war.** Der Grund für
+die Zähigkeit ist verallgemeinerbar: **Der Schaden lag hinter der letzten Stelle, die
+protokolliert.** Agentenseitig sah jeder dieser Anrufe fehlerfrei aus, die ganze Ansage
+stand im Verlauf. **Wenn ein Symptom nur der Mensch am anderen Ende sieht, ist mehr
+Hinsehen im eigenen Log kein Weg zur Ursache.**
+
 ## Wo die Belege stehen
 
 Die Faelle, aus denen diese Regeln stammen, die vier bereits behobenen
