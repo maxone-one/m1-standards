@@ -4,7 +4,7 @@
 API**, toolbezogen und projektübergreifend. Wer einen Kalender anbindet, liest sie **vorher**.
 Das Pendant zu `BUGS.md` und `IRRTUEMER.md`, nur nicht am Projekt, sondern am Werkzeug.
 
-**Last updated:** 2026-08-19 (angelegt; GCAL-01 bis GCAL-10)
+**Last updated:** 2026-08-24 (GCAL-11 und GCAL-12 aus BUG-065; angelegt 2026-08-19)
 **Geltungsbereich:** `maxone-vera` (Kalender „Vera Test", Paket `kalender/`), Cloud-Projekt
 `maxone-vera`, OAuth mit Refresh Token. Originaldoku in [`doku/`](doku/).
 
@@ -72,6 +72,27 @@ Kalender** — wer wirklich wissen will, ob ein Zeitpunkt frei ist, muss beides 
 Schlägt der Versand fehl, existiert der Termin trotzdem. Ein Werkzeug muss deshalb den
 **Zustand** melden (`GEBUCHT` / `NICHT GEBUCHT`), nicht den nächsten Satz.
 *Lehre:* BUG-006, 17.08.2026: Vera meldete einem Anrufer einen Termin, den es nicht gab.
+
+### GCAL-11 — Beim Löschen ist `sendUpdates` standardmäßig `none`, beim Anlegen nicht
+`events.delete` schickt **ohne** ausdrückliches `sendUpdates` **keine Absage an die Gäste**
+`[B: developers.google.com, events.delete, gezogen am 24.08.2026]`. Wer einen Termin mit
+Teilnehmern löscht und nichts weiter angibt, hinterlässt bei jedem Gast eine Einladung zu
+einem Termin, den es nicht mehr gibt — und im eigenen Kalender sieht alles aufgeräumt aus.
+*Lehre:* BUG-065, 24.08.2026. **Die Vorgabe ist genau dort still, wo Stille schadet.** Beim
+Anlegen fällt eine fehlende Einladung sofort auf, weil niemand zusagt; beim Löschen fällt
+eine fehlende Absage niemandem auf, bis der Gast vor verschlossener Tür steht. Wer löscht,
+entscheidet `sendUpdates` deshalb ausdrücklich, und die Frage lautet nicht „soll ich
+benachrichtigen", sondern **„hat dieser Termin je einen Gast gehabt"**.
+
+### GCAL-12 — Ein Kalender-Anbindung ohne Löschweg ist nicht fertig
+Wer nur `insert` baut, baut ein System, das Termine anlegen und nie zurücknehmen kann. Das
+fällt nicht beim Bauen auf, sondern erst, wenn jemand seine Angabe korrigiert: Dann entsteht
+der neue Termin, der alte bleibt, und beide sind gleich gültig.
+*Lehre:* BUG-065, 24.08.2026, gefunden zwei Tage nach dem Vorfall und nur, weil jemand nach
+einem Gesprächsprotokoll fragte. Vera konnte fünf Monate lang buchen und nicht absagen.
+**Der Prüfsatz für jede Anbindung: Zu jedem Weg, der etwas in der Welt entstehen lässt,
+gehört der Weg, der es wieder wegnimmt** — und zwar bevor der erste echte Datensatz
+entsteht, nicht nachdem der erste falsche steht.
 
 ### GCAL-10 — Eine Projektliste, die direkt nach dem Anlegen leer ist, belegt nichts
 Das Anlegen läuft asynchron. Wer noch einmal klickt, hat zwei Projekte.
