@@ -116,20 +116,25 @@ werden sie über `pronunciation_dict_id` mitgegeben.
 Ein Eintrag trägt die Felder `text`, `pronunciation` und `alias`. **`pronunciation` und
 `alias` sind dasselbe Feld**, die API spiegelt den geschriebenen Wert in beide.
 
+### CAR-04: Ein Wörterbuch wird geändert, indem man ein neues anlegt
+
+Es gibt `PATCH /pronunciation-dicts/{id}`, und **wer Tonkonserven hält, benutzt ihn nie.**
+Eine Konserve hängt an der **Kennung** des Wörterbuchs, nicht an seinem Inhalt. Nach einem
+`PATCH` spricht die Live-Synthese neu und jede Konserve weiter alt, ohne dass sich eine
+Zahl ändert oder ein Test anschlägt. Ein `POST` gibt eine neue Kennung und entwertet damit
+alle Konserven von selbst.
+
+Dazu CAR-05 (eine Lautschrift lässt sich nur über ein Wegwerf-Wörterbuch hören, nicht über
+ersetzten Text), die Form der Listen-Antwort und die zwei Fallen beim Aufräumen:
+[`woerterbuch.md`](woerterbuch.md).
+
 ## Sprechgeschwindigkeit
 
 ### CAR-01: Bei sonic-3 ist `speed` eine Zahl, kein Wort
 
-> **KORREKTUR vom 22.08.2026.** Hier stand bis heute „Der Regler geht nur nach oben" mit dem
-> Schlusssatz „Wer eine Ausgabe langsamer braucht, bekommt sie von Cartesia nicht." **Das war
-> falsch verallgemeinert.** Die Messung darunter benutzte die **Strings** `slow` und
-> `slowest`, und die gelten bei `sonic-3` nicht. Die alte Tabelle bleibt als Beleg stehen,
-> ihre Deutung fällt.
->
-> **Was es die Projekte gekostet hat:** In `vera` stand daraufhin in `TODO.md` Punkt 14
-> („Vera liest zu schnell zurück") die Zeile „Cartesia lässt sich nicht langsamer stellen",
-> und der Punkt wechselte die Richtung auf „Struktur statt Synthese", also auf einen Umbau
-> des Gesprächsablaufs. Der Regler lag die ganze Zeit da.
+> **KORRIGIERT am 22.08.2026**, hier stand „Der Regler geht nur nach oben". Die Messung
+> dahinter benutzte **Strings**, die bei `sonic-3` nicht gelten. Was der Irrtum die
+> Projekte gekostet hat: [`klangwerte.md`](klangwerte.md).
 
 **Für `sonic-3` ist `speed` ein Float zwischen 0,6 und 2,0**, und er geht in ein eigenes
 Objekt `generation_config`, nicht mehr in `__experimental_controls`
@@ -184,35 +189,28 @@ drei, und der Median, nicht der Mittelwert.
 
 ## Zwei Fallen beim Messen
 
-**Der WAV-Header trägt keine Länge.** `/tts/bytes` liefert gestreamtes WAV, in dem die
-Rahmenzahl ein Platzhalter ist. `wave.getnframes()` gab in der ersten Messung 48695 Sekunden
-zurück. Richtig ist die Rechnung über die Rohbytes:
+**Der WAV-Header trägt keine Länge**, `/tts/bytes` liefert gestreamtes WAV mit einer
+Platzhalter-Rahmenzahl. Und **netto gegen brutto prüfen**, sonst misst man Stille am
+Dateiende als Sprechzeit. Beides mit der Rechnung und den Zahlen:
+[`messen.md`](messen.md).
 
-```python
-sekunden = (len(rohdaten) - 44) / (abtastrate * 2)   # 16 Bit Mono
-```
+## Die Doku: die Referenz ist offen, die Guides sind es nicht
 
-Beim Speichern über `wave` verschwindet das Problem, weil der Header dabei neu gesetzt wird.
-Nur die direkte Messung an der Antwort ist betroffen.
+> **KORRIGIERT am 23.08.2026.** Hier stand pauschal, `docs.cartesia.ai` leite auf einen
+> Login um und sei nicht abrufbar. **Das gilt nur für die Guides.** Die API-Referenz unter
+> `/api-reference/...` ist ohne Anmeldung lesbar, mit vollem Schema und Beispielen; ein
+> Guide-Pfad antwortet mit 307 auf `play.cartesia.ai/docs-auth-login`. Der ursprüngliche
+> Befund stammte aus einem Guide-Pfad und wurde auf die ganze Domäne verallgemeinert.
+> **Vier Tage lang galt damit eine harte Quelle als unerreichbar.** Ein Negativbefund ist
+> immer nur so breit wie der Versuch, aus dem er stammt: dieselbe Bauform wie „das
+> Wörterbuch kennt keine Lautschrift".
 
-**Netto gegen brutto prüfen.** Ob eine längere Datei mehr Sprache oder nur mehr Stille am Ende
-enthält, ist an der Dauer allein nicht zu sehen. Erst der Vergleich mit der Nettodauer
-(Stille unter einem Prozent der Spitze abgeschnitten) trägt eine Aussage. Bei Cartesia liegen
-beide bis auf Hundertstel gleich, es ist echtes Sprechen.
-
-## Nur schriftliche Doku, kein Login
-
-`docs.cartesia.ai` leitet auf einen Login um und ist mit einem einfachen Abruf nicht lesbar.
-Was hier aus der Doku stammt, ist über die Suchmaschinen-Zusammenfassung belegt. **Die härtere
-Quelle ist ohnehin die laufende API**, und alle Zahlen dieses Handbuchs stammen von dort.
+**Die härteste Quelle bleibt die laufende API**, und alle Zahlen dieses Handbuchs stammen
+von dort. Die Referenz ist die zweitbeste und für Dinge, die man nicht messen kann, ohne
+sie zu tun (Endpunkte, Antwortformen, Paginierung), die richtige.
 
 ## Was uns das gekostet hat
 
-Drei Kunstschreibweisen im Vera-Projekt, die auf der Annahme standen, es gäbe keine
-Lautschrift: `maxone` → `Mex Sown`, `Vera` → `Wera`, und ein geplantes `Mailadresse` →
-`Meyladresse`. Max hat sie am 18.08.2026 aus zwanzig Hörproben ausgewählt und beim letzten
-gesagt, was sie sind: ein Trick. **Zwanzig Hörproben sind zwanzig Minuten seiner Zeit, und
-sie wären mit einem Blick in die Doku nicht nötig gewesen.**
-
-Dazu ein Tag mit einem ungeklärten `[?]`-Verdacht über `anmaxone.work`, den die
-Ganzwort-Regel in einem Satz erklärt.
+Drei Kunstschreibweisen, zwanzig Hörproben von Max' Zeit, ein Tag mit einem ungeklärten
+Verdacht, und fünf Tage später ein zweiter Bug aus demselben Behelf:
+[`woerterbuch.md`](woerterbuch.md#was-die-annahme-gekostet-hat).

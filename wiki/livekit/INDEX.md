@@ -214,7 +214,11 @@ Agenten (LKC-10), sonst schreibt jede Messung in die echten Daten.
 
 [`cloud-agents.md`](cloud-agents.md).
 
-## Zwei Regeln zum Testen mit echtem Ton, beide am 22.08.2026 gemessen
+## Fünf Regeln zu Ton, Unterbrechung und eingehendem SIP
+
+> Die Überschrift hieß bis zum 23.08.2026 „Zwei Regeln zum Testen mit echtem Ton", da
+> standen aber längst vier darunter. Eine Zählung in einer Überschrift altert mit jedem
+> Zusatz und stimmt genau bis zum nächsten.
 
 ### LK-20 — Das eingebaute Test-Framework kennt keinen Ton, für Audio gibt es `lk room join --publish`
 `AgentSession`-Tests laufen **ausdrücklich im Textmodus** („The test framework and agent
@@ -277,6 +281,54 @@ die Zähigkeit ist verallgemeinerbar: **Der Schaden lag hinter der letzten Stell
 protokolliert.** Agentenseitig sah jeder dieser Anrufe fehlerfrei aus, die ganze Ansage
 stand im Verlauf. **Wenn ein Symptom nur der Mensch am anderen Ende sieht, ist mehr
 Hinsehen im eigenen Log kein Weg zur Ursache.**
+
+> **KORREKTURVERMERK vom 23.08.2026, und er betrifft nicht den Befund, sondern seine
+> Anwendung.** Alles oben bleibt gemessen und richtig. Aber der Satz „der einzige Wert,
+> der den offenen Rückweg anzeigt, ist `sip.callStatus == "active"`" steht hier **direkt
+> unter** der Reihenfolge, in der `waitSubscribe()` vorkommt, und beide zusammen ergeben
+> eine Falle, die vier Tage niemand gesehen hat. Wer daraus „warte auf `active`, dann
+> sprich" macht und **vor** dem Start seiner Session wartet, baut einen Zirkel: siehe
+> LK-24. Diese Regel sagt, **dass** man warten muss, LK-24 sagt, **wo**.
+
+### LK-24 — Eingehend wird `sip.callStatus` erst `active`, NACHDEM der Agent seine Spur publiziert hat
+Ein eingehender Anruf ohne Pin durchläuft in `pkg/sip/inbound.go` diese Reihenfolge, und
+der Kommentar der Entwickler nennt sie wörtlich: „For dispatches without pin, we first
+wait for LK participant to become available, and also for at least one track
+subscription."
+
+```go
+if !pinPrompt {
+    if ok, err := c.waitSubscribe(ctx, disp.RingingTimeout); !ok { return err }
+    if ok, err := acceptCall(answerData); !ok { return err }   // hier erst das 200 OK
+}
+c.setStatus(CallActive)
+```
+
+**`waitSubscribe()` steht vor `acceptCall()` steht vor `setStatus(CallActive)`.** Die
+einzige Spur, die der SIP-Teilnehmer abonnieren kann, ist die des Agenten. Daraus folgt
+hart: **Ein Agent, der auf `active` wartet, bevor er publiziert, wartet auf eine
+Bedingung, die nur sein eigenes Publizieren herstellt.** Eingehend ist dieser Zustand
+nicht erreichbar, der Code läuft immer in seine eigene Zeitgrenze, und was wie ein
+Randfall aussieht, ist der einzig mögliche Verlauf.
+
+**Woran man es im Betrieb erkennt, und es sieht nach vier verschiedenen Fehlern aus:** Im
+Log steht bei eingehenden Anrufen **nie** `active`, immer `ringing`. Ein Wartewert ist in
+Wahrheit eine feste Pause, denn er läuft jedes Mal aus. In LiveKits Sessions-Ansicht
+stehen Agent und Anrufer beide unter *Subscribers* und **keiner** unter *Publishers*. Und
+der Anrufer hört durchgehend Freiton, weil ohne `acceptCall()` nie ein `200 OK` rausgeht,
+während der Anbieter den Anruf als „abgebrochen, 00:00:00" führt.
+
+*Der Fix ist die Reihenfolge, nicht die Bedingung:* Session starten, Spur publizieren,
+**dann** auf `active` warten, dann sprechen. Das Fenster aus LK-23 bleibt real und muss
+weiter abgewartet werden, es liegt nur später, als man denkt.
+
+*Lehre:* Vera, BUG-062, **der schwerste Defekt des Projekts, und er hat echte Anrufe
+gekostet.** Verallgemeinert, weit über LiveKit hinaus: **Bevor du auf ein Signal aus einem
+fremden System wartest, sieh nach, wodurch es entsteht.** Steht die eigene Handlung in
+seiner Entstehungskette, ist das Warten kein Riegel, sondern eine Verklemmung. Sie
+verrät sich nie durch einen Fehler, sondern nur dadurch, dass die Zeitgrenze **immer**
+greift, und eine Zeitgrenze, die immer greift, ist keine Sicherung mehr, sondern der
+Normalweg.
 
 ## Wo die Belege stehen
 

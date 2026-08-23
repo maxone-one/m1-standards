@@ -79,3 +79,34 @@ Latenz statt Wahrheit. Umgesetzt in `vera/agent/ansage.py::konservenkennung`.
 **Eine Lücke bleibt und ist dort offen:** In die Kennung geht die **Kennung** des
 Aussprachewörterbuchs ein, nicht sein **Inhalt**. Wer einen Eintrag ändert, ohne ein neues
 Wörterbuch anzulegen, entwertet damit keine einzige Konserve.
+
+> **NACHGETRAGEN am 23.08.2026: Die Lücke ist nicht theoretisch, sie hat einen Weg.** Als
+> dieser Absatz am 22.08. entstand, war „einen Eintrag ändern, ohne ein neues Wörterbuch
+> anzulegen" ein gedachter Fall; die damals bekannten Endpunkte waren `GET`, `POST` und
+> `DELETE`. Es gibt aber `PATCH /pronunciation-dicts/{id}`, und er tut exakt das. Damit
+> ist aus einer notierten Lücke ein benutzbarer Fehlweg geworden: **CAR-04**, ausführlich
+> in [`woerterbuch.md`](woerterbuch.md).
+>
+> **Und das ist die Lehre über den Fall hinaus.** Eine Lücke, die man kennt, aber für
+> unerreichbar hält, wird notiert und nicht verriegelt. Sie wird erreichbar, sobald jemand
+> die passende Schnittstelle findet, und dann sucht niemand mehr in den Notizen, sondern
+> alle im Code. **Wer eine Lücke beschreibt, ohne den Weg dorthin zu kennen, hat sie nicht
+> ausgeschlossen, sondern nur noch nicht gefunden.**
+
+## Was der `speed`-Irrtum die Projekte gekostet hat
+
+Bis zum 22.08.2026 stand im `INDEX.md` „Der Regler geht nur nach oben" mit dem Schlusssatz
+„Wer eine Ausgabe langsamer braucht, bekommt sie von Cartesia nicht". Die Messung dahinter
+war richtig gefahren und benutzte die **Strings** `slow` und `slowest`, die bei `sonic-3`
+nicht gelten; ein String löst dort `ValueError("speed must be a float for sonic-3")` aus.
+
+**Die Folge stand ein halbes Projekt weiter.** In `vera` trug `TODO.md` Punkt 14 („Vera
+liest zu schnell zurück") daraufhin die Zeile „Cartesia lässt sich nicht langsamer
+stellen", und der Punkt wechselte die Richtung auf „Struktur statt Synthese", also auf
+einen Umbau des Gesprächsablaufs mit zusätzlichen Gesprächsrunden. **Der Regler lag die
+ganze Zeit da**, ein Float zwischen 0,6 und 2,0 im `generation_config`.
+
+*Dieselbe Bauform wie bei der Lautschrift:* Aus „so wie ich es versucht habe, ging es
+nicht" wurde „es geht nicht", und dieser Satz stand danach als geprüfte Tatsache da. **Ein
+Negativbefund über einen Parameter, dessen Typ man nicht am Quelltext geprüft hat, misst
+die Verwerfung und nicht den Regler.**
