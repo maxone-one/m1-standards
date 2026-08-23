@@ -745,3 +745,34 @@ projects:
     # Laufzeitdienste oben sind damit Auftragsverarbeiter nach Standard 041.
     data_processors: []
     notes: "Vera Frankenstein, KI-Telefonassistentin fuer maxone.work: nimmt Anrufe unter einer eigenen beworbenen Rufnummer an, klaert das Anliegen und bucht einen Termin. Zugleich Max' eigener Anschluss und verkaufbares Produkt (249 EUR Einrichtung, 79 EUR im Monat). Sagt frueh und beilaeufig, dass sie eine KI ist. Bindender Schutzzweig: steigt bei Verfahrensthemen aus, das ist Abnahmebedingung und kein Feature. Wahrheit ueber das WAS ist .planning/vorarbeit/entscheidungen.md (zwanzig Entscheidungen aus Max' Grill vom 15.08.), ueber das WIE .planning/vorarbeit/stand-bei-der-uebergabe.md; bei Widerspruch gewinnt entscheidungen.md. Die erste Bauform ueber FRITZ!Box und NUC ist gefallen und eingemottet, siehe rules/was-den-plan-traegt-wird-zuerst-geprueft.md."
+
+  # Eingetragen am 23.08.2026 aus der Beo-Session heraus, auf Max' ausdrückliche
+  # Anweisung. Der Bauplan docs/specs/SPEC-beo.md verlangt Beo in beiden Registern;
+  # in ~/.claude/manifests/projects.json stand es bereits, hier fehlte es.
+  - name: beo
+    workspace: beo
+    domain: null  # beo.maxone.one ist entschieden, aber noch nicht aufgeschaltet
+    server: null  # der Dienst hängt an panel.maxone.one, also an maxone.one's Infrastruktur
+    deploy: null
+    container: null
+    supabase_url: null  # nutzt das Supabase von maxone.one mit, kein eigenes
+    status: dev
+    tags: product
+    # Standard 027: Der Dienst zieht in Phase 1 aus maxone.one hierher um, die Adresse
+    # bleibt. Ein eigener Auslieferweg existiert noch nicht, deshalb vorerst manual.
+    deploy_pipeline: manual
+    # ACHTUNG, Standard 026: Groq faellt unter keinen der erlaubten reason-Werte
+    # (payment-processor, domain-registrar, tls-ca, vps-hosting). Das Audit meldet das
+    # als WARN. Bewusst so eingetragen statt in eine falsche Kategorie gezwungen, aus
+    # demselben Grund wie bei vera: eine Falschangabe in der SSoT waere teurer als ein
+    # sichtbarer WARN. Es ist derselbe fehlende Typ "zugekaufter Laufzeitdienst".
+    external_subscriptions:
+      - service: Groq
+        reason: speech-to-text
+        cost_per_month_eur: variabel
+        sunset_plan: nach Verbrauch, kein Abo - whisper-large-v3-turbo 0,04 USD/h, large-v3 0,111 USD/h, Anbieter austauschbar
+    # Pflicht vor dem Live-Gang: Beo schickt Sprachaufnahmen an Groq. Sobald Tester
+    # dazukommen, sind das fremde Stimmen und Groq ist Auftragsverarbeiter nach
+    # Standard 041. Solange es nur Max' eigene Stimme auf seinem NUC ist, nicht.
+    data_processors: []
+    notes: "Beo, systemweites Diktat fuer Linux, Windows und macOS, benannt nach dem Vogel, der menschliche Sprache am besten nachspricht. Halten spricht, Loslassen setzt den Text dort ein, wo der Cursor steht. Bauplan ist docs/specs/SPEC-beo.md, von Max am 23.08.2026 freigegeben; die datierten KORREKTUR-Bloecke oben in der Datei gehen dem Fliesstext darunter vor. Gefahren ueber GSD, Stand in .planning/STATE.md. Was Max heute benutzt, ist eine Uebergangsfassung in Bash (bin/beo-halten.py plus bin/beo-aufnahme.sh, umgezogen aus legacy/diktat.sh), das eigentliche Beo in Tauri v2 mit Rust ist noch nicht gebaut. Der Dienst transcribe liegt heute noch in maxone-one/maxone.one und zieht in Phase 1 hierher um, wobei die Adresse panel.maxone.one/functions/v1/transcribe unveraendert bleibt: sechs Aufrufer im Nachbarrepo haengen daran. Rechtliche Randbedingung: beo.de gehoert einer aktiven Hamburger Firma im selben Marktsegment, Unternehmenskennzeichen nach Paragraf 5 MarkenG. Risiko ist benannt und angenommen, ruhend solange Beo Max' und der Tester Werkzeug ist, und wird vor dem ersten oeffentlichen Auftritt erneut vorgelegt. Zweiter Arbeitsplatz web/ fuer das Frontend, siehe web/README.md."
