@@ -1,9 +1,9 @@
 ---
 title: Server-Inventar
-aka: [Hetzner-Cloud-Inventar, SSH-Zugaenge, maxone-prod, Stalwart-Hosts, Hetzner-Preiserhoehung, Altpreis, Rescale]
+aka: [Hetzner-Cloud-Inventar, SSH-Zugaenge, maxone-prod, Stalwart-Hosts, Hetzner-Preiserhoehung, Altpreis, Rescale, Hetzner-Bibel, Serverkosten, Arm-Migration, cax31, cax41, Umverteilung]
 sources:
   - C:\Users\max\.claude\CLAUDE.md (archived 2026-05-22, Zeilen 311-405)
-last_updated: 2026-07-25
+last_updated: 2026-08-24
 status: active
 ---
 
@@ -196,6 +196,23 @@ Kurios und leicht zu uebersehen: `cpx12` (1 vCPU, 2 GB, 13,67 €) ist teurer al
 
 **Regel:** Vor jeder Neubestellung die CX-Gen3-Zeile derselben Groesse gegenrechnen, nicht aus Gewohnheit CPX nehmen. Das gilt nur fuer NEUE Server; Bestandsserver nie deswegen rescalen, das vernichtet den Altpreis (siehe naechster Abschnitt).
 
+> **KORREKTUR 24.08.2026: Die ganze CX-Gen3-Linie ist in Deutschland derzeit nicht bestellbar.**
+> Gemessen über `/v1/server_types`, ausgewertet nach `locations[].available` statt nach dem
+> bloßen Erscheinen in der Preisliste: **cx23, cx33, cx43 und cx53 stehen an allen drei
+> deutschen Standorten (fsn1, nbg1, hel1) auf `available: false`.** Bestellbar sind dort nur
+> die CAX-, CPX-Gen2- und CCX-Linien.
+>
+> Die Empfehlung oben bleibt richtig, sie läuft aber praktisch ins Leere, solange die Linie
+> nicht lieferbar ist. **Die Lehre für jede Preisabfrage: Ein Tarif in der Preisliste ist noch
+> kein Angebot.** `prices` enthält auch Typen, die man nicht kaufen kann; erst
+> `locations[].available` sagt, ob eine Bestellung möglich ist. Wer nur nach Preis sortiert,
+> empfiehlt Maschinen, die es nicht gibt.
+>
+> **Günstigste tatsächlich bestellbare Wahl in Deutschland am 24.08.2026** (brutto/Monat):
+> 8 Kerne und 16 GB gibt es als `cax31` für 24,98 € (Arm) oder `cpx42` für 82,69 € (x86),
+> 16 Kerne und 32 GB als `cax41` für 48,78 € (Arm) oder `cpx62` für 154,69 € (x86). Ohne Arm
+> kostet dieselbe Maschine also gut das Dreifache.
+
 **Anlass:** Bei der Kostenplanung fuer die voltfair-Uebergabe aufgefallen. Die beiden voltfair-CPX22 laufen auf dem Altpreis 7,99 € netto, waehrend derselbe Tarif neu 19,49 € netto kostet und ein cx33 mit doppelter CPU und doppeltem RAM nur 8,49 € netto.
 
 ## Hetzner-Altpreise: welche Aktionen den guenstigen Preis verfallen lassen (2026-07-25)
@@ -228,6 +245,128 @@ Quellen: <https://docs.hetzner.com/de/cloud/billing/faq> (Abschnitt "Welche Kund
 **Betroffene Maschinen:** Alle Server oben sind Hetzner-Cloud-Instanzen, die Regel gilt also fuer jede davon, projektuebergreifend. `maxone-prod` ist Instanz 120088436 in nbg1-dc3, 4 vCPU auf AMD EPYC Genoa, 8 GB RAM (geteilte AMD-Linie, CPX-Klasse), geprueft am 25.07.2026 ueber die Cloud-Metadaten `http://169.254.169.254/hetzner/v1/metadata`. Ob eine einzelne Maschine noch einen Altpreis traegt, zeigt nur die Rechnung im Hetzner-Konto.
 
 **Anlass:** Max wurde von einer Preiserhoehung getroffen, obwohl er den Server bereits besass. Die Erklaerung steht in dieser Tabelle, die Annahme "Bestandskunden sind sicher" war falsch.
+
+## Die Cloud-API kennt keine Preise, nur eine Preisliste (2026-08-24)
+
+**Das Server-Objekt der Hetzner-Cloud-API hat kein einziges Preisfeld.** Gemessen an
+`/v1/servers`, vollständige Feldliste je Server: `backup_window`, `created`, `id`, `image`,
+`included_traffic`, `ingoing_traffic`, `iso`, `labels`, `load_balancers`, `location`, `locked`,
+`name`, `outgoing_traffic`, `placement_group`, `primary_disk_size`, `private_net`, `protection`,
+`public_net`, `rescue_enabled`, `server_type`, `status`, `volumes`. Kein `price`, kein `cost`,
+kein `billing`.
+
+Die einzigen Preise, die über die API erreichbar sind, hängen am **Typ** (`server_type.prices`),
+nicht an der Instanz. Das ist der **Listenpreis für Neubestellungen**. Eine laufende Maschine mit
+Altpreis sieht in der API exakt so aus wie eine neue mit Neupreis.
+
+**Damit ist der Warnsatz im Abschnitt oben technisch begründet, nicht nur vorsichtig formuliert:
+Was gezahlt wird, steht ausschließlich in der Rechnung.**
+
+### Der Prüfstein, den man ohne Rechnung hat: `created`
+
+Die Preisanpassung gilt laut Hetzner für Instanzen, die **ab dem 15.06.2026 erstellt oder
+rescaled** wurden. Das Erstellungsdatum liefert die API, also lässt sich der Altpreis-Verdacht
+ohne Kontozugang erhärten:
+
+| Server | erstellt | Folge |
+|---|---|---|
+| `maxone-projekte` | 2026-02-06 | vor dem Stichtag, Altpreis |
+| `maxone-watchdog` | 2026-04-27 | vor dem Stichtag, Altpreis |
+| `maxone-staging`  | 2026-05-12 | vor dem Stichtag, Altpreis |
+
+**Grenze der Methode, und sie ist wichtig:** `created` beweist nur die eine Hälfte. Ein späterer
+Rescale hebt den Preis, und **die API führt kein Feld, das einen Rescale sichtbar macht**. Ein
+Server mit altem `created` kann also trotzdem im neuen Tarif laufen. Umgekehrt gilt es hart: ein
+`created` ab dem 15.06.2026 heißt sicher Neupreis.
+
+### Gemessene Altpreise, netto je Monat (Rechnung 083000975793, Zeitraum 06/2026)
+
+| Tarif | Altpreis | Listenpreis heute | Faktor |
+|---|---|---|---|
+| `cpx32` | **13,99 €** | 35,49 € | 2,5 |
+| `cax11` | **4,49 €**  | 5,99 €  | 1,3 |
+| `cpx22` | **7,99 €**  | 19,49 € | 2,4 |
+
+Zwei CPX32 kosten damit zusammen 27,98 € netto, also **33,30 € brutto**, nicht die 84,47 €, die
+sich aus der Preisliste ergäben. Die Rechnung trägt den Hinweis selbst: „Neue Tarife gelten für
+Cloud-Instanzen, die ab dem 15. Juni 2026 erstellt oder rescaled wurden. Bestehende Instanzen
+bleiben bis zum Rescaling preislich unverändert."
+
+### Die Rechnung sagt den Preis, aber nie den Bestand
+
+**Eine Rechnung ist immer ein abgeschlossener Vergangenheitsmonat.** Dieselbe Rechnung
+083000975793 führt unter „Projekt voltfair" zwei CPX22 mit 15,98 € netto. Daraus wurde am
+24.08.2026 der Schluss gezogen, Max zahle laufend für Roberts Server. **Falsch:** Der
+Leistungszeitraum ist 06/2026, und die beiden Maschinen wurden am **04.08.2026 gekündigt und
+gelöscht**, siehe die SSH-Tabelle oben. Voltfair läuft seither vollständig in Robert Scholters
+eigenem Konto.
+
+**Die beiden Quellen taugen also für genau je eine Frage, und für die andere nicht:**
+
+| Frage | richtige Quelle |
+|---|---|
+| Was kostet eine laufende Maschine? | die letzte Rechnung |
+| Welche Maschinen laufen überhaupt? | die API, `/v1/servers` |
+
+Wer die Rechnung für den Bestand nimmt, führt gekündigte Server weiter. Wer die API für den Preis
+nimmt, rechnet mit Listenpreisen. **Beide Fehler sind am selben Tag passiert, in dieselbe
+Aufstellung hinein.**
+
+### Was daraus für Upgrade-Fragen folgt
+
+**Bei einem Bestandsserver mit Altpreis rechnet sich ein Upgrade fast nie**, weil der Vergleich
+nicht Listenpreis gegen Listenpreis läuft, sondern Altpreis gegen Listenpreis. Gegen zwei CPX32
+im Altpreis (33,30 € brutto) spart ein `cax31` nur 8,32 € im Monat und verlangt dafür eine
+vollständige Arm-Migration; ein `cax41` kostet sogar 15,48 € mehr. **Und jedes Rescale der
+Bestandsmaschine vernichtet zusätzlich die Grundlage der Rechnung.** Der richtige Hebel bei einem
+vollen Server ist deshalb Umverteilung auf vorhandene Maschinen, nicht ein größerer Tarif.
+
+### Wie teuer eine Arm-Migration von maxone-prod wirklich wäre (gemessen 2026-08-24)
+
+Weil die Ersparnis nur über die CAX-Linie zu holen ist, wurden alle 58 Images der laufenden
+Container gegen ihre Registry-Manifeste geprüft (`docker manifest inspect`, ausgeführt auf
+maxone-staging, um prod nicht zu belasten):
+
+| Ergebnis | Anzahl | Bedeutung |
+|---|---|---|
+| bietet `arm64` an | 22 | läuft ohne Änderung |
+| **nur x86** | **0** | **kein einziger echter Blocker unter den Fremd-Images** |
+| nicht abfragbar | 36 | lokal gebaut oder in ghcr ohne Anmeldung, kein Manifest abrufbar |
+
+**Die entscheidende Zahl ist die Null.** Jedes fremde Image aus einer öffentlichen Registry, also
+Supabase, Postgres, Traefik, n8n, Stalwart, Vaultwarden und die übrigen, kann Arm bereits. Die 36
+nicht abfragbaren sind ausnahmslos Max' eigene, erkennbar an `:latest`, `:local` oder
+`ghcr.io/maxone-one/*`, dazu elf namenlose Hash-Images.
+
+Ihre Basis-Images sprechen dafür, dass ein Neubau billig wäre: gemessen über die Dockerfiles unter
+`/opt` sind es durchgehend `node:20-alpine`, `node:22-alpine`, `node:22-slim`, `nginx:alpine`,
+`python:3.12-slim` und `alpine:3.20`. **Alle diese Basen haben offizielle arm64-Varianten.** Der
+Aufwand liegt damit nicht im Portieren, sondern im einmaligen Umstellen der Bau-Pipelines auf
+`buildx --platform linux/arm64`.
+
+**Trotzdem lohnt es beim heutigen Altpreis nicht**, siehe Absatz darüber. Die Messung ist für den
+Tag gedacht, an dem der Altpreis ohnehin fällt, etwa nach einem erzwungenen Rescale.
+
+### Der Fehlerfall, aus dem das hier stammt
+
+Am 24.08.2026 wurde eine Kostenaufstellung aus `server_type.prices` gebaut und als gezahlter
+Preis vorgelegt: 42,23 € je CPX32, 84,47 € für beide. Max hat widersprochen, die Rechnung gab ihm
+recht. **Der Warnsatz dagegen stand zu diesem Zeitpunkt bereits in dieser Datei**, im Abschnitt
+„Unterschiede zwischen Servern" vom 16.08.2026, und wurde nicht gelesen.
+
+Zwei Ursachen, beide baulich:
+
+1. **Die Bibel wurde nicht ausgelöst.** `~/.claude/rules/bibel-bei-anbieterarbeit.md` lädt über
+   `paths:`-Frontmatter, und ihre Tabelle nennt Deepgram, LiveKit, Cartesia, Google Calendar,
+   Zadarma und Fish-Audio. **Hetzner steht nicht darin**, und Serverarbeit fasst ohnehin keine
+   Datei an, auf die ein Pfadmuster passen könnte. Eine Bibel, die nur bei Dateiberührung lädt,
+   deckt Infrastrukturarbeit grundsätzlich nicht ab.
+2. **Der Pfad in der Memory zeigt ins Leere.** `reference-hetzner-altpreis-schuetzen` verweist auf
+   `~/.claude/maxone-wiki/inventories/topics/servers.md`. Auf dem NUC liegt das Wiki seit dem
+   Umzug unter **`~/Projekte/maxone-standards/wiki/`**, `~/.claude/maxone-wiki` existiert nicht.
+
+**Regel daraus:** Vor jeder Aussage über laufende Kosten wird die letzte Rechnung geöffnet, nicht
+die API befragt. Die API beantwortet „was kostet so eine Maschine", nie „was zahlt Max".
 
 ## Verwandt
 
