@@ -330,6 +330,26 @@ verrät sich nie durch einen Fehler, sondern nur dadurch, dass die Zeitgrenze **
 greift, und eine Zeitgrenze, die immer greift, ist keine Sicherung mehr, sondern der
 Normalweg.
 
+### LK-25 — NIEMALS `lk agent update-secrets --overwrite` benutzen, um EINEN Wert zu ersetzen
+**Der Flag-Name sagt das Gegenteil dessen, was er tut.** Ohne ihn gilt: „By default, the CLI
+adds or updates the provided secrets, while leaving other existing secrets as-is." Mit ihm:
+„To delete all existing secrets and replace them with the provided secrets"
+`[B: docs.livekit.io/deploy/agents/secrets, gelesen 24.08.2026]`. Wer einen einzelnen
+Schlüssel „überschreiben" will und deshalb `--overwrite` setzt, **löscht alle anderen**. Bei
+`maxone-vera` wären das acht von neun gewesen, darunter Deepgram, Cartesia und die Datenbank.
+*Lehre:* 24.08.2026, `vera/BUGS.md` BUG-070. Richtig ist der Aufruf **ohne** das Flag, danach
+`lk agent secrets` gegenlesen: Genau eine Zeile darf ein neues `Updated At` tragen.
+
+### LK-26 — NIEMALS annehmen, der Cloud-Agent lese denselben Secret-Store wie die Container
+**Er hält eine eigene Kopie, und sie altert getrennt.** Auf `maxone-prod` kommen die Werte aus
+`/opt/secrets/maxone-vera/keys.env` über `env_file`; der LiveKit-Cloud-Agent trägt sie als
+**Agent-Secrets**, einmal beim Einrichten dorthin kopiert. Eine Erneuerung im Store erreicht
+ihn **nie**, und nichts meldet das.
+*Lehre:* 24.08.2026, BUG-070. Nach dem Erneuern des Google-Tokens meldete der Hintergrunddienst
+`200 lebt`, während der Agent noch den toten Token vom 19.08. hielt — also genau der Dienst,
+der am Telefon bucht. **Zwei Orte, zwei Handgriffe:** `docker compose up -d --force-recreate`
+**und** `lk agent update-secrets`. Dasselbe gilt für jeden anderen Schlüssel, den beide teilen.
+
 ## Wo die Belege stehen
 
 Die Faelle, aus denen diese Regeln stammen, die vier bereits behobenen
