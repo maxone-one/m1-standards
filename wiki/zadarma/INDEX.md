@@ -76,6 +76,21 @@ zugeordnet ist. Solange sie dort hängt, gibt es kein Feld für eine SIP-Adresse
 freies Konto für einen Trunk.
 *Lehre:* 18.08.2026.
 
+### ZAD-10 — Wer die Nummer für einen externen Server löst, verliert alles, was an der PBX hängt
+Zadarmas Zusatzdienste hängen an der **Cloud-PBX**, nicht am Konto. Das mitgelieferte CRM
+**Teamsale** sagt das selbst: „The only condition for Teamsale CRM to work is an enabled and
+setup cloud Zadarma PBX" `[B: zadarma.com/en/services/crm/, gelesen 25.08.2026]`. Eine
+Rufnummer, die per ZAD-07 von der PBX gelöst und auf einen externen SIP-Server gelegt wurde,
+läuft daran vorbei: Der Anruf geht vom Zadarma-Rand direkt zum fremden Server.
+`[A:]` **Damit sieht die PBX ihn nicht, und alles PBX-Gebundene ist für diese Nummer aus** —
+CRM-Zeitleiste, PBX-Statistik, Aufzeichnung, Sprachmenü. Die CRM-API kennt zwar
+`POST /customers`, `/leads` und `/deals`, aber `/calls` nur lesend; **einen extern gelaufenen
+Anruf einzutragen ist nicht dokumentiert** `[B: zadarma.com/en/support/api/, Abschnitt CRM]`.
+*Messweg, falls jemand es hart wissen will:* API-Schlüssel unter `my.zadarma.com/api/`
+anlegen und `/v1/statistics/pbx/` über einen Zeitraum mit belegten Anrufen abfragen. Ohne
+Schlüssel ist es eine Ableitung aus zwei belegten Sätzen, keine Messung.
+*Lehre:* 25.08.2026, Vera TODO 11.
+
 ### ZAD-08 — Ein zweites Klingeln ist kein Agent-Sleep
 Wer vor einer KI zwei Freizeichen will, braucht den Hebel **vor** der angenommenen Leitung.
 Beim direkten Weg `Rufnummer -> SIP URI` ist in der API kein Zeitparameter belegt:
