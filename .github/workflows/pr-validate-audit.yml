@@ -35,7 +35,7 @@ jobs:
   validate:
     # Standard 026: self-hosted runner — kein Actions-Minutes-Verbrauch.
     # Scheduled-Audit laeuft bereits auf demselben Runner (Node + npm vorhanden).
-    runs-on: [self-hosted, maxone-prod]
+    runs-on: [self-hosted, maxone-staging]
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     timeout-minutes: 5
