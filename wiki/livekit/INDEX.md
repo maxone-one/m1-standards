@@ -201,6 +201,17 @@ Näherungswerts.
 Ausführlich, mit Code und dem Prüfsatz gegen die nie verdrahtete Prüfung:
 [`sip-anrufer.md`](sip-anrufer.md).
 
+## Durchstellen und Dazuholen: zwei Verfahren, nur eines lässt ein Protokoll übrig
+
+**Beim Weitergeben (`TransferSIPParticipant`, SIP-`REFER`) verlässt der Anrufer den Raum
+und die Sitzung endet** — danach gibt es nichts mehr zu protokollieren. Wer mitschreiben
+will, muss den zweiten Teilnehmer **dazuholen**, und LiveKits eigenes Muster wählt ihn
+dafür **nicht** direkt in den Raum des Anrufers, sondern in einen Beratungsraum und
+schiebt ihn dann mit `move_participant()` hinüber. Alle vier Bausteine stehen im Paket
+1.6.10.
+
+[`sip-durchstellen.md`](sip-durchstellen.md).
+
 ## Den Agenten bei LiveKit Cloud betreiben statt auf eigenem Blech
 
 Zehn Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
