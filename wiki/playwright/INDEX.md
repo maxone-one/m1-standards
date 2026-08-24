@@ -291,6 +291,28 @@ den Schließbefehl dazu.
 **Wann trotzdem Playwright:** sobald geklickt, getippt oder auf ein Element gewartet werden
 muss. `cdp.py` fragt einen Wert ab, es bedient nichts.
 
+> **`cdp.py tabs` sieht einen Playwright-MCP-Browser grundsätzlich nicht, und „beide Ports
+> leer" heißt deshalb nie „kein Browser"** `[B: eigene Messung am 24.08.2026, 03:2x]`. Der
+> MCP-Server startet Chrome mit `--remote-debugging-pipe`, nicht mit
+> `--remote-debugging-port`; er spricht über eine Dateideskriptor-Pipe zum Elternprozess,
+> und auf 9222 und 9223 hört dabei niemand. Nachgemessen an der Kommandozeile des laufenden
+> Prozesses:
+>
+> ```bash
+> ps -eo pid,lstart,args | grep -F "playwright-mcp-profile" | grep -v grep
+> ```
+>
+> **Der Fehlschluss ist teuer, weil er wie eine Messung aussieht.** Im Vera-Projekt stand am
+> 23.08.2026 „es läuft kein Browser (`cdp.py tabs` meldet beide Ports leer)" im Stand,
+> während einer lief. Dieselbe Bauform wie ein leeres Verzeichnis, aus dem jemand „es gab
+> keine Daten" macht: **„nichts gefunden" und „an der falschen Stelle gesucht" sehen für den
+> Leser gleich aus und sind das Gegenteil voneinander.**
+>
+> **Und der belegte Browser gehört oft einer fremden Session.** Der zweite Zugriff scheitert
+> mit „Browser is already in use for … use `--isolated`". Wer wissen will, wem er gehört,
+> geht die Elternkette hoch (`ps -o ppid=`) bis zum `claude`-Prozess und liest dessen
+> Startzeit. Ein fremder Browser wird nicht beendet, auch nicht „kurz".
+
 **Zwei Fallen, beide gemessen:** `/json/new` verlangt **PUT**, POST antwortet 405. Und
 `--warten` ist mit einer Sekunde vorbelegt, weil eine frisch geöffnete Seite ihr Skript noch
 nicht ausgeführt hat; ein Wert, den es erst setzt, wäre sonst schlicht `undefined`, und das
