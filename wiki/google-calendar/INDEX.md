@@ -23,8 +23,17 @@ echten Konto auszuprobieren schlägt jede Konsolen-Interpretation.**
 Er verfällt. Für `maxone-vera` fiel das erste Ablaufdatum rechnerisch auf den 23.08.2026.
 Das Fehlerbild ist heimtückisch: Vera sagt im Gespräch „Ich erreiche gerade den Kalender
 nicht", und niemand merkt es vorher.
-*Lehre:* Phase 2. **Der Wächter, der das meldet, bevor es ein Anrufer hört, ist bis heute
-nicht gebaut.**
+*Lehre:* Phase 2. Der Wächter ist seit dem 24.08.2026 gebaut (`vera/kalender/waechter.py`,
+`GET /zugang`), **nachdem der Ausfall am angekündigten Tag eingetreten war**.
+
+> **KORREKTUR VOM 24.08.2026: Die sieben Tage sind abschaffbar, und das ist der bessere
+> Griff.** Sie hängen an zwei Bedingungen, externer Nutzertyp **und** Veröffentlichungsstatus
+> „Test" `[B: developers.google.com/identity/protocols/oauth2]`. `maxone-vera` steht seit
+> dem 24.08.2026 auf „In Produktion", der Token verfällt damit nicht mehr planmäßig.
+> **Ein Wächter über einer abschaffbaren Ursache ist die zweitbeste Lösung**, und diese
+> Regel hat fünf Tage lang nur die Frist beschrieben statt den Ausweg. Siehe
+> [Google Cloud](../google-cloud/INDEX.md), Falle 1, wo der Ausweg seit dem 16.08.2026
+> steht.
 
 ### GCAL-03 — NIEMALS ganztägige Einträge für blockierend halten
 Google setzt sie standardmäßig auf **„Verfügbar"**. Eine eingetragene Urlaubswoche blockiert
