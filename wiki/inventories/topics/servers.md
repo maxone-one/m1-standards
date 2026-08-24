@@ -49,6 +49,18 @@ Alle Hetzner-Cloud-Server unter Max' Kontrolle, ihre SSH-Zugaenge, Container-Auf
 | GitHub Runner    | ja (Org-Level)    | **ja** (maxone-staging) | nein   | ja               | nein          |
 | Kuma             | nein              | nein            | **ja**          | nein             | nein          |
 | Hardware         | **cpx32** (4C/8GB) | cpx32 (4C/8GB) | **cax11** (2C/4GB) | (Hetzner)        | (Hetzner)     |
+| System-Node      | **v22.22.0**      | **v20.20.2**    | —               | —                | —             |
+
+> **Die Node-Zeile ist der Grund, warum ein CI-Job nicht einfach umziehen kann (gemessen 24.08.2026).**
+> Beide Server tragen `/usr/bin/node`, aber in verschiedenen Hauptversionen. `supabase-js`
+> verlangt ab Node 22 ein natives WebSocket und bricht auf 20 sofort in `createClient` ab, mit
+> „Node.js 20 detected without native WebSocket support". Ein Workflow, der auf prod jahrelang
+> lief, scheitert auf staging im ersten Schritt, ohne dass am Job selbst etwas falsch wäre.
+>
+> **Die Lehre gilt über Node hinaus: Ein Job, der die Maschine wechseln können soll, darf keine
+> Laufzeit vom System erben.** Der Fix ist nicht, staging nachzuziehen, sondern
+> `actions/setup-node@v4` mit fester `node-version` in den Workflow zu schreiben. Dann ist der
+> Job auf jedem Runner gleich, und die Systemversion darf auseinanderlaufen, ohne zu schaden.
 
 > _vybora-prod historisch: Caddy-RP, manuell orchestriert, eigene aeltere Supabase, kein Stalwart, eigener Runner. Stand 2026-05-02 abgeschaltet._
 
