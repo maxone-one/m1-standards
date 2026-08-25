@@ -23,6 +23,7 @@ Jede neue Funktion entsteht im zentralen Dienst und profitiert allen Projekten s
 | Outreacher | https://outreach.maxone.one | E-Mail-Sequenzen, Outbound (Sende-Engine, sendet über das Gateway) |
 | Mail-Gateway | https://mail.maxone.one | EINZIGER Engpass für allen ausgehenden Mailverkehr (tx + outreach), fail-closed + Consent + append-only Audit. Einziger Halter der Provider-Keys. Spec: Standard 016-C. |
 | n8n (Automatisierung) | selfhosted auf maxone-prod | No-Code-/Workflow-Automatisierung + Webhook-Orchestrierung, projektübergreifender Hub. Kein gehostetes SaaS (Zapier/Make). |
+| Downloadkanal | https://github.com/maxone-one/downloads | EINZIGE Auslieferung fertiger Dateien an Menschen (Installer, Pakete, Vorlagen), für alle Projekte zusammen. Details siehe unten. |
 
 Alle drei sind API-first und von KI bedienbar. Neue Fähigkeiten werden als neue Job-Typen, Sources oder Worker eingebaut, nicht als Einzelskripte in Projekten.
 
@@ -72,6 +73,26 @@ Anwendungsfall (Lead-Liefer-Produkt, 2026-07): Kunde bestellt Leads, bekommt sie
 
 ---
 
+## Ein Downloadkanal für alle Projekte
+
+**Jede Datei, die ein Mensch herunterladen soll, wird über `maxone-one/downloads` ausgeliefert**, nie über ein eigenes Repository je Projekt und nie über einen eigenen Server. Max-Entscheid vom 25.08.2026.
+
+Der Grund ist derselbe wie bei jedem anderen zentralen Dienst, hat hier aber eine zweite Seite: Von rund neunzig Repositories unter `maxone-one` sind zwei öffentlich. Ein Release-Anhang in einem privaten Repository ist nicht öffentlich abrufbar, wer den Link anklickt bekommt einen 404. Ein gemeinsames Download-Repository ist damit die einzige Stelle, die überhaupt öffentlich sein muss, während jeder Quelltext privat bleibt.
+
+**Die Dateien liegen in den Releases, nie im Git-Verzeichnis.** Eine Datei im Verzeichnis lädt jeder Klon in voller Größe mit, in jeder je veröffentlichten Fassung, für immer. Die Grenzen unterscheiden sich um Größenordnungen ([GitHub-Doku](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)):
+
+| | Release-Anhang | Datei im Verzeichnis |
+|---|---|---|
+| je Datei | 2 GiB | 100 MiB, Warnung ab 50 MiB |
+| Gesamtgröße | unbegrenzt | unter 1 GB empfohlen, 5 GB Obergrenze |
+| Bandbreite | unbegrenzt | entfällt |
+
+**Das Tag trägt das Projekt: `<projekt>-v<version>`**, also `beo-v0.1.0`. Ohne Präfix ist in einem gemeinsamen Repository nicht erkennbar, wozu ein Release gehört. Jeder Anhang trägt Projekt, Version und Plattform im Dateinamen, weil er nach dem Herunterladen in einem fremden Ordner zwischen hundert anderen Dateien liegt.
+
+**`releases/latest` ist hier verboten.** Der Dauerlink zeigt auf das jüngste Release *irgendeines* Projekts im Repository. Wer ihn für Beo einbaut, liefert nach dem nächsten Vera-Release einen 404 aus. Eine Seite holt sich stattdessen `https://api.github.com/repos/maxone-one/downloads/releases` und nimmt den ersten Treffer ihres Tag-Präfixes; sie bekommt damit Version und Dateinamen gleich mit.
+
+---
+
 ## Verbot
 
 - Eigener Crawler-Code in Projekten (kein `fetch` + loop + Regex statt Crawler-API)
@@ -79,4 +100,5 @@ Anwendungsfall (Lead-Liefer-Produkt, 2026-07): Kunde bestellt Leads, bekommt sie
 - Eigene Outreach-Skripte (kein direktes Brevo-Call statt Outreacher-API)
 - No-Code-/Automatisierungs-SaaS (Zapier, Make, IFTTT o.ä.) für Workflow-/Webhook-Orchestrierung. Stattdessen selfhosted n8n auf maxone-prod.
 - **Direkter Mail-Provider-Aufruf aus IRGENDEINEM Repo** (Brevo, SMTP, SendGrid, Mailgun, SES …). Aller Mailversand läuft über das Gateway `mail.maxone.one`, Provider-Keys nur dort. Spec: Standard 016-C.
+- **Eigenes Download- oder Release-Repository je Projekt.** Auslieferung an Menschen läuft ausschließlich über `maxone-one/downloads`. Ebenso verboten: eine Binärdatei im Git-Verzeichnis statt als Release-Anhang, und `releases/latest` als Dauerlink.
 - Begründung "das geht nicht" ohne vorherigen Bauversuch
