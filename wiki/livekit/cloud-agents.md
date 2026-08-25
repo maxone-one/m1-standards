@@ -113,6 +113,49 @@ Versuch selbst ist deshalb die belastbarste Messung**: Läuft `lk agent create` 
 Guthaben da. Am 19.08.2026 hat genau das eine Blockade aufgelöst, die einen halben Tag auf
 das Ablesen einer Zahl gewartet hatte.
 
+## LKC-11: `lk agent versions` nennt den Git-Commit, `status` nennt ihn nicht
+
+**Die Frage „welcher Code spricht gerade mit Anrufern" beantwortet `status` nicht.** Er
+zeigt eine Plattform-Kennung wie `xX8rvRwdMnKA`, und die sagt nichts darüber, welcher
+Commit darin steckt. `versions` zeigt dieselbe Kennung **mit** einer Attributspalte:
+
+```
+Version        Production  Attributes
+xX8rvRwdMnKA   ✓           {"git_branch":"main","git_commit":"8f7ff95"}
+rqq3dqpxgxaT   --          {"git_branch":"main","git_commit":"ccd79d5"}
+```
+
+**Damit wird aus einer Vermutung eine Messung.** Ob ein bestimmter Fix draußen ist,
+beantwortet danach `git merge-base --is-ancestor <fix> <git_commit>`, und der Rückstand
+`git diff --name-only <git_commit>..HEAD -- <pfade>`.
+
+**Warum das mehr ist als Bequemlichkeit.** Am 25.08.2026 lagen 16 Commits zwischen dem
+laufenden Agenten und `HEAD`, und die Zahl las sich wie ein großer Rückstand. Unter
+`agent/`, `ansagen/` und `kalender/` hatte sich davon **nichts** geändert: Der Agent war
+aktuell. **Ohne die Zuordnung Version zu Commit lässt sich das nicht einmal fragen**,
+und die naheliegende Ersatzrechnung über Zeitstempel führt in die Irre, weil `Deployed
+At` in UTC steht und die Commit-Zeit in Ortszeit.
+
+## LKC-12: Auf dem Build-Tarif kostet der erste Anruf 10 bis 20 Sekunden
+
+**Produktionsagenten skalieren dort nach dem Ende aller Sitzungen auf null Repliken
+herunter**, der Status heißt dann `Sleeping`. Der nächste eingehende Job weckt sie, und
+das „adds 10 to 20 seconds before the agent joins the room"
+`[B: docs.livekit.io/deploy/agents/managing-deployments/, gelesen 25.08.2026]`. **Auf
+Ship und Scale bleiben Produktionsagenten warm**, nicht-produktive Deployments dagegen
+schlafen auf jedem Tarif ein.
+
+**Einen Schalter dagegen gibt es nicht.** Weder `lk agent update` noch `lk agent create`
+kennen ein Flag für Mindest-Repliken, und `livekit.toml` trägt nur Subdomain und
+Agent-Kennung. Es ist eine Tarifeigenschaft, keine Einstellung.
+
+**Für Telefonie ist das der teuerste Satz auf dieser Seite.** Am 25.08.2026 in Vera
+gemessen: kalt über 20,8 Sekunden bis zum Erscheinen, warm 1,4 Sekunden, dieselbe
+Anmeldung und dasselbe Werkzeug. **Eine Erreichbarkeitsprobe mit 20 Sekunden Frist
+meldet auf diesem Tarif also „tot" für einen gesunden Dienst.** Wer so eine Probe baut,
+gibt ihr entweder mehr Frist oder liest `status` daneben: Steht dort nach dem
+Fehlschlag `Running`, hat die Probe geweckt statt gemessen.
+
 ## Fehlerseiten, damit sie niemand ein zweites Mal aufruft
 
 | Adresse | Antwort | Stattdessen |

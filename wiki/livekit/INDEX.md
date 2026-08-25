@@ -214,7 +214,7 @@ schiebt ihn dann mit `move_participant()` hinüber. Alle vier Bausteine stehen i
 
 ## Den Agenten bei LiveKit Cloud betreiben statt auf eigenem Blech
 
-Zehn Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
+Zwölf Regeln zum Deployen mit `lk agent create` und `lk agent deploy`, gemessen am
 19.08.2026 beim Umzug von Veras Agent: warum LiveKit selbst baut (ein fertiges Abbild
 darf nur Enterprise hochladen), wo das Dockerfile liegen muss, wie Zugangsdaten
 hereinkommen, und **die eine Stelle, an der ein Umzug lautlos scheitert**, nämlich der
@@ -222,6 +222,14 @@ Agentenname und der automatische Dispatch. Dazu zwei Fehlerseiten der offizielle
 und der Gegentest ohne Telefon: **Er muss dem Raum selbst beitreten**, denn ein leerer
 Raum löst keinen Job aus, und als wiederkehrende Wache braucht er einen eigenen Zweig im
 Agenten (LKC-10), sonst schreibt jede Messung in die echten Daten.
+
+**Zwei Regeln vom 25.08.2026, beide aus einem Morgenlauf, der fast falsch befundet
+hätte.** `lk agent status` sagt nicht, welcher Code läuft; `lk agent versions` nennt den
+Git-Commit als Attribut und macht aus der Frage eine Messung (LKC-11). Und auf dem
+Build-Tarif skaliert ein Produktionsagent auf null herunter, der erste Anruf danach
+kostet **10 bis 20 Sekunden** (LKC-12). **Eine Erreichbarkeitsprobe mit 20 Sekunden
+Frist meldet dort „tot" für einen gesunden Dienst**, und das ist am Telefon der
+teuerste Satz dieser Seite.
 
 [`cloud-agents.md`](cloud-agents.md).
 
