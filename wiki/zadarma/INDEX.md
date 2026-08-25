@@ -91,6 +91,21 @@ anlegen und `/v1/statistics/pbx/` über einen Zeitraum mit belegten Anrufen abfr
 Schlüssel ist es eine Ableitung aus zwei belegten Sätzen, keine Messung.
 *Lehre:* 25.08.2026, Vera TODO 11.
 
+**Nachtrag 25.08.2026, 15:3x, und er kostet mehr als die vier Posten oben: Die Anrufsperre
+gehört auch dazu.** Zadarmas Sperrliste ist kein Kontomerkmal, sondern eine Antwort auf den
+PBX-Webhook `NOTIFY_START`, wörtlich „start of an incoming call **in the PBX**"; abgewiesen
+wird mit `{"redirect": "blacklist"}`, beendet mit `{"hangup": 1}`, und die mitgesendeten
+Felder heissen `pbx_call_id` und `called_did` `[B: doku/api-uebersicht.txt Zeile 10705,
+Grep über 215 KB, genau ein Blacklist-Treffer]`. **Für eine per ZAD-07 gelöste Nummer
+existiert dieser Webhook nicht**, denn ihr Anruf erreicht die PBX nie.
+
+**Warum das der teuerste Posten der Liste ist:** Die anderen vier kosten Sicht (Statistik,
+Zeitleiste, Aufzeichnung). Dieser kostet **Steuerung vor der Gebühr**. Es ist die einzige
+Stelle im ganzen Aufbau, an der ein unerwünschter Anruf abgewiesen werden könnte, **bevor**
+er den eigenen Server erreicht und damit bevor die Gesprächsminute läuft. Wer einen
+Vorfilter gegen Werbeanrufe plant, plant ihn ohne diesen Hebel und muss ihn hinter der
+Annahme bauen. *Anlass:* Vera TODO 37, 25.08.2026.
+
 ### ZAD-08 — Ein zweites Klingeln ist kein Agent-Sleep
 Wer vor einer KI zwei Freizeichen will, braucht den Hebel **vor** der angenommenen Leitung.
 Beim direkten Weg `Rufnummer -> SIP URI` ist in der API kein Zeitparameter belegt:
