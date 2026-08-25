@@ -33,16 +33,10 @@ Klammern werden die Zeichen als Buchstaben vorgelesen, und genau das war der Bef
 im Vera-Projekt „das Wörterbuch kennt KEINE Lautschrift" wurde. Der Befund war richtig
 gemessen und falsch verallgemeinert.
 
-**Gemessen am 18.08.2026**, drei Läufe je Fall, Testwort in einem Trägersatz:
-
-| Eintrag | Dauer |
-|---|---|
-| kein Eintrag, Kunstwort wird gesprochen | 1,58 s |
-| Textersatz `mail` | 1,21 s |
-| Lautschrift `<<m\|eɪ\|l>>` | **1,07 s** |
-
-Die Lautschrift ist die **kürzeste** von allen. Würden die Zeichen buchstabiert, wäre sie die
-mit Abstand längste. Damit ist belegt, dass die Syntax verstanden und nicht vorgelesen wird.
+**Gemessen am 18.08.2026**, drei Läufe je Fall: Die Lautschrift ist mit **1,07 s** die
+kürzeste von allen (ohne Eintrag 1,58 s, Textersatz 1,21 s). Würden die Zeichen
+buchstabiert, wäre sie die mit Abstand längste. Damit ist belegt, dass die Syntax
+verstanden und nicht vorgelesen wird. Tabelle: [`messen.md`](messen.md).
 
 Neben der Lautschrift gibt es die einfachere Form, eine Aussprachehilfe in normaler Schrift
 („VAH-pee") `[B: Cartesia-Doku]`. Beide stehen im selben Feld.
@@ -124,9 +118,15 @@ Eine Konserve hängt an der **Kennung** des Wörterbuchs, nicht an seinem Inhalt
 Zahl ändert oder ein Test anschlägt. Ein `POST` gibt eine neue Kennung und entwertet damit
 alle Konserven von selbst.
 
-Dazu CAR-05 (eine Lautschrift lässt sich nur über ein Wegwerf-Wörterbuch hören, nicht über
-ersetzten Text), die Form der Listen-Antwort und die zwei Fallen beim Aufräumen:
-[`woerterbuch.md`](woerterbuch.md).
+### CAR-06: Ein Lautschrift-Eintrag setzt hinter das Wort eine Pause
+
+**310 ms gegen 60 ms**, drei Läufe mit Kontrollgruppe `[B: eigene Messung 25.08.2026,
+Vera BUG-077]`. Nicht das Wörterbuch macht die Pause, sondern der Eintrag für **dieses**
+Wort. **Folge:** Ein zusammengesetzter Name wie `maxone.work` braucht **einen** Eintrag
+über die ganze Zeichenfolge, nie einen je Wortteil.
+
+Dazu CAR-05 (Lautschrift nur über ein Wegwerf-Wörterbuch hörbar), die Messung zu CAR-06,
+die Listen-Antwort und die zwei Fallen beim Aufräumen: [`woerterbuch.md`](woerterbuch.md).
 
 ## Sprechgeschwindigkeit
 
@@ -196,21 +196,19 @@ Dateiende als Sprechzeit. Beides mit der Rechnung und den Zahlen:
 
 ## Die Doku: die Referenz ist offen, die Guides sind es nicht
 
-> **KORRIGIERT am 23.08.2026.** Hier stand pauschal, `docs.cartesia.ai` leite auf einen
-> Login um und sei nicht abrufbar. **Das gilt nur für die Guides.** Die API-Referenz unter
-> `/api-reference/...` ist ohne Anmeldung lesbar, mit vollem Schema und Beispielen; ein
-> Guide-Pfad antwortet mit 307 auf `play.cartesia.ai/docs-auth-login`. Der ursprüngliche
-> Befund stammte aus einem Guide-Pfad und wurde auf die ganze Domäne verallgemeinert.
-> **Vier Tage lang galt damit eine harte Quelle als unerreichbar.** Ein Negativbefund ist
-> immer nur so breit wie der Versuch, aus dem er stammt: dieselbe Bauform wie „das
-> Wörterbuch kennt keine Lautschrift".
+**Die API-Referenz unter `/api-reference/...` ist ohne Anmeldung lesbar**, die Guides sind
+es nicht. Bis zum 23.08.2026 galt sie hier pauschal als gesperrt, vier Tage lang: **Ein
+Negativbefund ist immer nur so breit wie der Versuch, aus dem er stammt.**
 
 **Die härteste Quelle bleibt die laufende API**, und alle Zahlen dieses Handbuchs stammen
 von dort. Die Referenz ist die zweitbeste und für Dinge, die man nicht messen kann, ohne
-sie zu tun (Endpunkte, Antwortformen, Paginierung), die richtige.
+sie zu tun (Endpunkte, Antwortformen, Paginierung), die richtige. Die Messung dazu stand
+doppelt und steht seit dem 25.08.2026 nur noch in
+[`woerterbuch.md`](woerterbuch.md#was-ohne-login-lesbar-ist-und-was-nicht).
 
 ## Was uns das gekostet hat
 
-Drei Kunstschreibweisen, zwanzig Hörproben von Max' Zeit, ein Tag mit einem ungeklärten
-Verdacht, und fünf Tage später ein zweiter Bug aus demselben Behelf:
+Drei Kunstschreibweisen, zwanzig Hörproben von Max' Zeit, ein Tag mit ungeklärtem
+Verdacht, fünf Tage später ein zweiter Bug aus demselben Behelf, und am 25.08.2026 ein
+dritter aus dessen Lösung (CAR-06):
 [`woerterbuch.md`](woerterbuch.md#was-die-annahme-gekostet-hat).

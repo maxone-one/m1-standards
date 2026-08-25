@@ -45,3 +45,26 @@ Tonkonserve hält genau eine Ziehung fest, während live gesprochene Sätze sich
 Gespräch ausmitteln. Wer Konserven mehrfach zieht und die langsamste behält, wählt dabei
 **nach Länge** aus, und niemand hört dabei hin: Eine Ziehung mit falscher Aussprache wird
 eingefroren, wenn sie zufällig die langsamste war.
+
+## Lautschrift gegen Textersatz, 18.08.2026
+
+Drei Läufe je Fall, Testwort in einem Trägersatz. Stand am 25.08.2026 aus
+[`INDEX.md`](INDEX.md) hierher gezogen, weil die Datei ihre 11-KB-Grenze erreicht hatte;
+der Kernsatz steht dort weiter.
+
+| Eintrag | Dauer |
+|---|---|
+| kein Eintrag, Kunstwort wird gesprochen | 1,58 s |
+| Textersatz `mail` | 1,21 s |
+| Lautschrift `<<m\|eɪ\|l>>` | **1,07 s** |
+
+Die Lautschrift ist die kürzeste von allen. Würden die Zeichen buchstabiert, wäre sie die
+mit Abstand längste. **Das ist der Beleg dafür, dass die Syntax verstanden wird**, und er
+widerlegt den Satz „das Wörterbuch kennt keine Lautschrift", der drei Tage lang als
+geprüfte Tatsache im Vera-Code stand.
+
+**Was diese Messung NICHT gesehen hat, und es hat sieben Tage später Geld gekostet:** Sie
+misst die Dauer des Trägersatzes, also ob das Wort schneller gesprochen wird. Die **Pause
+dahinter** hat sie nicht getrennt erfasst. Genau die ist CAR-06 (siehe
+[`woerterbuch.md`](woerterbuch.md)), gefunden erst am 25.08.2026 durch Max' Ohr am
+Telefon. **Eine Messung beantwortet nur die Frage, die sie stellt.**

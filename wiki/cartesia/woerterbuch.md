@@ -114,3 +114,48 @@ fällt, fällt sie für jeden Wert, der auf ihr steht, und nicht nur für den, d
 ist.** Ein Bestand, der nur bei einem Anbieter liegt und im eigenen Repo nicht sichtbar ist,
 wird bei so einer Korrektur zuverlässig übersehen. Er braucht ein Werkzeug, das ihn
 anzeigt, sonst ist er ein blinder Fleck mit Wirkung auf jeden Anrufer.
+
+---
+
+## CAR-06: Ein Lautschrift-Eintrag setzt hinter das Wort eine Pause
+
+**Ein Wort mit Lautschrift-Eintrag bekommt am Wortende eine deutlich längere Pause als
+dasselbe Wort ohne Eintrag.** Wer eine Aussprache repariert, handelt sich damit ein neues
+Problem am **Wortübergang** ein, und das trifft besonders zusammengesetzte Marken wie
+`maxone.work`, bei denen zwei Wörter als Einheit klingen sollen.
+
+**Gemessen am 25.08.2026, drei Läufe je Fall**, Trägersatz „dem Inhaber von maxone.work.",
+Stimme und Modell wie im Betrieb, längste Pause im Satz in Millisekunden:
+
+| Lauf | mit Wörterbuch | ohne Wörterbuch | Kontrolle: „Hausbau Meier" mit Wörterbuch |
+|---|---|---|---|
+| 1 | 250 ms | 60 ms | 60 ms |
+| 2 | **400 ms** | 50 ms | 60 ms |
+| 3 | 280 ms | 170 ms | 60 ms |
+| Mittel | **310 ms** | 93 ms | **60 ms** |
+
+**Die dritte Spalte ist der eigentliche Beweis und war der Grund, sie mitzumessen.** Sie
+läuft mit **demselben** Wörterbuch, nur ohne ein betroffenes Wort im Satz, und liegt
+dreimal exakt bei 60 ms. **Nicht das Wörterbuch erzeugt die Pause, sondern der Eintrag für
+genau dieses Wort.** Ohne diese Kontrolle wäre der Befund „ein aktives Wörterbuch macht
+Pausen" gewesen, und das ist falsch.
+
+**Warum das plausibel ist `[A:]`:** Ein Lautschrift-Eintrag ist eine abgeschlossene
+Phonemfolge. Der Synthesizer behandelt sie offenbar als eigene Einheit mit eigener
+Wortgrenze, statt sie in den Redefluss einzubetten. Am Anbieter belegt ist die **Wirkung**,
+nicht diese Erklärung.
+
+**Was daraus folgt, und es ist die unbequeme Reihenfolge:** Ein Ausspracheproblem an einem
+zusammengesetzten Namen wird **nicht** durch einen Eintrag je Wortteil gelöst. Zwei
+Einträge nebeneinander ergeben zwei Pausen. Wer `maxone.work` als Einheit braucht, legt
+**einen** Eintrag für die ganze Zeichenfolge an; das ist dieselbe Ganzwort-Regel, wegen der
+`Mailadresse` einen eigenen Eintrag neben `Mail` braucht.
+
+**Und die Prüffrage vor jedem neuen Eintrag lautet ab jetzt:** Steht dieses Wort je direkt
+vor einem anderen, das mit ihm zusammen klingen muss? Dann kostet der Eintrag mehr, als er
+bringt, solange er nicht beide umfasst.
+
+*Anlass:* Vera BUG-077, 25.08.2026. Max hörte es in Anruf 1 der sechs Testanrufe: „Maxone,
+Work, die Pause zwischen den beiden Wörtern ist viel zu lange." Der Eintrag, der sie
+erzeugt, ist die **Lösung von BUG-064** vom selben Tag, dem „Meks". **Eine Lösung, deren
+Nebenwirkung niemand gemessen hat, ist eine halbe Lösung.**
