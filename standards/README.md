@@ -8,7 +8,7 @@ Neue Regeln werden als **Abschnitt in bestehende Dateien** eingefügt, nicht als
 Nur wenn ein Thema genuinely orthogonal zu allen bestehenden ist, darf eine neue Datei entstehen.
 Ziel: auch nach weiteren Erweiterungen nie mehr als 33 Nummern.
 
-Aktuell: **31 Standards** (2 freie Slots).
+Aktuell: **33 Standards** (0 freie Slots). Die Obergrenze ist erreicht: Neues geht ab jetzt ausschliesslich als Abschnitt in eine bestehende Datei, nie als neue Nummer.
 
 ## Propagations-Regel (2026-05-30)
 
@@ -50,6 +50,7 @@ Wenn eine Datei fehlt, alle vier auf einmal anlegen, nicht nur die fehlende.
 - [015-container-safety.md](015-container-safety.md), Container-Misconfig-Audit + Disk-Guard (builder prune, 4h-Cron, 80%-Bremse)
 - [017-routine-platform.md](017-routine-platform.md), Cron/Watchdog-Routinen nur auf Heartbeat-Plattform (GitHub Actions schedule, systemd-Timer, VECTOR)
 - [019-cost-caps-and-budget-alerts.md](019-cost-caps-and-budget-alerts.md), Drei Verteidigungslinien gegen API-Kostenüberraschungen
+- [033-central-infrastructure.md](033-central-infrastructure.md), Zentrale Dienste + selfhosted n8n als Automatisierungs-Hub + Zustellgarantien in Ketten (Idempotenz, Wiederholung, Fehlerschlange mit Rückweg, Alarm, Signatur, Schema, Korrelations-ID) + ein Downloadkanal
 
 **Tests & Dokumentation:**
 - [003-tests-quality.md](003-tests-quality.md), Test-First (Smoke + Unit vor "live") + Code-Health-Budget (Refactoring ≥ 15 %, Duplikation < 5 %)
@@ -57,6 +58,7 @@ Wenn eine Datei fehlt, alle vier auf einmal anlegen, nicht nur die fehlende.
 - [025-bug-registry.md](025-bug-registry.md), BUGS.md: persistente Bug-Wissensbasis vor jeder Debugging-Session lesen
 - [029-concept-reference.md](029-concept-reference.md), CONCEPT.md: Produkt-Konzept als SSoT für Agenten und Copy + Ausbaustufe lebendes Projekt-Brain (code-verankerter Feature-Katalog, Selbsterhaltung, Konsum-Regel)
 - [031-decisions-md.md](031-decisions-md.md), DECISIONS.md: Strategische Entscheidungen die PRD/Konzept überschreiben + Drei-Quellen-Hierarchie
+- [032-docs-index.md](032-docs-index.md), docs/-Index je Projekt
 
 **UI & Produkt:**
 - [007-required-ui.md](007-required-ui.md), Impressum-API + Credits-API + Vector-Chat-Widget + Footer (alle Customer-facing Pflichten)
@@ -120,6 +122,7 @@ Standards und Wiki sind bidirektional verknüpft. Die Pfeile:
 | 016-mail | `~/.claude/wiki/maxone-mail-pilot/INDEX.md` |
 | 026-pioneer-system | `~/.claude/wiki/pioneers/INDEX.md` |
 | 027-image-pipeline | `~/.claude/wiki/brand/visual-style.md` |
+| 033-central-infrastructure | `maxone-standards/wiki/integrationen/zustellgarantien.md` |
 
 **Regel:** Wenn ein Standard ein komplexes narratives Thema hat (Vorfalls-Geschichte, Betriebswissen, Sprach-Konzepte), gehört der Kontext ins Wiki, der Standard verlinkt dorthin. Das Wiki verlinkt zurück zum Standard als Pflicht-Spec.
 

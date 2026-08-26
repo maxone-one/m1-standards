@@ -39,6 +39,54 @@ Alle No-Code-/Workflow-Automatisierung und Webhook-Orchestrierung läuft über *
 
 ---
 
+## Eine Kette ist erst gebaut, wenn sie zustellt
+
+**Eine Automatisierung, die den Normalfall schafft, ist kein System, sondern eine Demo.**
+Jede Kette zwischen zwei Diensten, ob n8n-Workflow, Webhook-Empfaenger oder eigener
+Worker, hat die folgenden sieben Punkte, bevor sie an echten Daten haengt. Keiner davon
+ist optional, und keiner laesst sich spaeter guenstig nachruesten.
+
+**1. Idempotenzschluessel, und der ist der wichtigste.** Webhooks werden mehrfach
+zugestellt, das ist die Zusage der meisten Anbieter (at-least-once), kein Fehler. Jede
+eingehende Nachricht traegt einen stabilen Schluessel des Absenders, der Empfaenger legt
+ihn ab und verwirft den zweiten Treffer. Ohne das steht derselbe Lead dreimal im CRM und
+dieselbe Rechnung zweimal beim Kunden.
+
+**2. Wiederholung mit wachsendem Abstand und Streuung.** Ein Fehlschlag wird wiederholt,
+nicht verworfen, mit verdoppeltem Abstand und einem Zufallsanteil, damit nicht alle
+Wiederholungen gleichzeitig auf denselben Dienst treffen. Endlich, mit Obergrenze.
+
+**3. Fehlerschlange MIT Rueckweg.** Was nach der letzten Wiederholung uebrig bleibt,
+faellt in eine Fehlerschlange. Zu ihr gehoert der Knopf, der die Eintraege wieder
+einspielt, samt der Frage, wer ihn drueckt. Eine Fehlerschlange ohne Rueckweg ist ein
+Muelleimer mit Zeitstempel.
+
+**4. Alarm statt Log.** Ein Log liest man erst, wenn man schon weiss, dass etwas kaputt
+ist. Jede Kette hat eine Schwelle mit einem Wecker dran (Fehlerschlange nicht leer,
+Durchsatz unter dem Erwartungswert, letzter Erfolg aelter als X). Ohne Alarm merkt man
+den Ausfall daran, dass der Kunde anruft.
+
+**5. Signatur eingehender Webhooks, mit Zeitfenster.** HMAC-Pruefung gegen ein Geheimnis
+je Absender, dazu ein Zeitstempel im Signaturumfang und ein enges Fenster, sonst laesst
+sich eine einmal mitgeschnittene gueltige Nachricht beliebig oft nachspielen.
+
+**6. Schema-Pruefung an beiden Enden.** Eingang und Ausgang, nicht nur Eingang. Ein
+Feld, das der Partner still umbenennt, faellt sonst erst drei Wochen spaeter auf, als
+Luecke in der Auswertung.
+
+**7. Eine Korrelations-ID durch die ganze Kette.** Eine Kennung, die vom ersten Aufruf
+bis zum letzten Schritt mitlaeuft und in jedem Log-Eintrag steht. Ohne sie ist die Frage
+"wo genau ist dieser eine Lead geblieben" nicht beantwortbar, sondern nur erratbar.
+
+**Ausdruecklich NICHT Pflicht: der Circuit-Breaker.** Er schuetzt einen ueberlasteten
+Dienst vor einem Anrufer, der ihn totrennt, und loest damit ein Problem, das bei unseren
+Mengen nicht existiert. Wer ihn ohne gemessenen Anlass einbaut, hat ein Fachwort
+eingebaut, keine Verbesserung. Punkt 2 und 3 decken den Fall ab, den es hier gibt.
+
+Herkunft und die ausfuehrliche Begruendung: `maxone-standards/wiki/integrationen/zustellgarantien.md`
+
+---
+
 ## Build-not-Flag-Regel
 
 Wenn eine Aufgabe nicht erledigt werden kann weil etwas fehlt:
