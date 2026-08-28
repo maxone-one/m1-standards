@@ -129,7 +129,7 @@ Kein Wert der in mehr als einer Datei verwendet wird, darf hardcoded im Komponen
 | Rechtliche Texte / Impressum | Zentrale API (→ Standard 007) |
 | Secrets & API-Keys | `/opt/secrets/` Store (→ Standard 002) |
 | Build-IDs | ENV-Injection zur Build-Zeit (→ A oben) |
-| Farbpaletten / Tokens | `tailwind.config` / CSS-Custom-Properties |
+| Farbpaletten / Tokens | `@theme`-Block in der globalen CSS-Datei (Tailwind v4) / CSS-Custom-Properties (→ Standard 010 C) |
 
 **Cross-Repo-Werte:** kanonische Datei in `maxone-standards/config/<name>.ts`, Sync-Script verteilt, Projekte haben `lib/<name>.ts` (generiert, nicht manuell editiert).
 
@@ -145,7 +145,9 @@ Kein Wert der in mehr als einer Datei verwendet wird, darf hardcoded im Komponen
 
 ## D: Design Token Hierarchy (Primitive vor Semantisch)
 
-Jede Token-Datei (Tailwind, CSS Custom Properties, `landing-styles.ts` o.ä.) MUSS zweistufig aufgebaut sein. Primitive einmal definieren, semantische Token zeigen darauf, nie auf eigene Strings.
+Jede Token-Datei (Tailwind `@theme`, CSS Custom Properties, `landing-styles.ts` o.ä.) MUSS zweistufig aufgebaut sein. Primitive einmal definieren, semantische Token zeigen darauf, nie auf eigene Strings.
+
+> **Korrektur 28.08.2026:** Hier stand bis heute `tailwind.config` als kanonischer Ort der Farbpaletten. Diese Datei gibt es in Tailwind v4 nicht mehr; die Token stehen im `@theme`-Block der globalen CSS-Datei. 15 der 20 Tailwind-Projekte laufen bereits auf v4, darunter venfree, das den Standard damit korrekt erfüllt, ohne die genannte Datei zu besitzen. Ein Standard, der einen Weg nennt, den das größte Projekt verlassen hat, leitet den nächsten Bau fehl.
 
 ```ts
 // RICHTIG
