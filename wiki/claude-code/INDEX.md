@@ -568,3 +568,5 @@ ausführliches README).
 **Was hier NICHT steht und bewusst woanders bleibt:** die Verhaltensregeln selbst. Dieses
 Handbuch sagt, wie das Werkzeug funktioniert, nicht wie gearbeitet wird. Das steht in der
 globalen `CLAUDE.md` und in `~/.claude/rules/`, und im Zweifel gewinnt dort der Wortlaut.
+
+- [Remote Control und die Sessionliste](remote-control-sessionliste.md) — warum alte Sessions stehen bleiben (sie sind wieder aufnehmbar), die zwei Faelle automatischer Archivierung, die drei Handgriffe zum Aufraeumen, und dass es keinen CLI-Weg gibt
