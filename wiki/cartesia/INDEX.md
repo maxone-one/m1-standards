@@ -128,6 +128,47 @@ Wort. **Folge:** Ein zusammengesetzter Name wie `maxone.work` braucht **einen** 
 Dazu CAR-05 (Lautschrift nur über ein Wegwerf-Wörterbuch hörbar), die Messung zu CAR-06,
 die Listen-Antwort und die zwei Fallen beim Aufräumen: [`woerterbuch.md`](woerterbuch.md).
 
+> **NACHTRAG 01.09.2026, und er ist der eigentliche Anwendungsfall von CAR-06.** Die Regel
+> stand seit dem 25.08. genau so da, und trotzdem lief die Suche nach der Ursache derselben
+> Pause sechs Tage später noch einmal von vorn, über drei Messreihen hinweg. **Der Eintrag
+> für `maxone` allein setzt seine Pause zwischen `maxone` und `work`, also mitten in den
+> Markennamen** — 520 ms gemessen, gegen 40 ms ohne Wörterbuch. Ein Eintrag über
+> `maxone work` als ganze Zeichenfolge hat sie nicht. **Wer eine Regel schreibt, die einen
+> Fall vorhersagt, prüft beim nächsten Auftreten dieses Falls zuerst die eigene Bibel.**
+
+### CAR-07 — Zwischen zwei Ziehungen schwankt nicht nur die Dauer, sondern die TONALITÄT
+
+**Und der Unterschied ist hörbar, nicht statistisch.** Max am 01.09.2026 zu zwei Aufnahmen
+desselben Satzes mit identischem Text, identischer Stimme, identischer Emotion und
+identischem Wörterbuch: „Bei Messsatz 2 ist das Guten Tag freundlich, der Rest nicht. Bei
+Messsatz 3 ist beides freundlicher." Und: „Beim Ersatz 3 hört es sich so an, dass sie es in
+einem Atemzug sagt, wobei bei 2 sie kurz eine Pause hat und **ab da nicht so freundlich
+wirkt**."
+
+**Gemessen liegt der Unterschied in einer Pause** `[B: eigene Messung 01.09.2026, vier
+Ziehungen von „Guten Tag, hier ist Vera.", Stimme Marlene]`:
+
+| Lauf | Gesamt | innere Stille | Sprechzeit |
+|---|---|---|---|
+| 2 | 1,86 s | **470 ms** hinter „Guten Tag," | 1,33 s |
+| 3 | 1,58 s | 50 ms | 1,53 s |
+
+**Zwei Folgen, und die zweite ist die teurere.**
+
+**Erstens: Der Höreindruck „freundlich" hängt an einer messbaren Größe.** Er lässt sich
+also automatisieren, statt jede Aufnahme vorlegen zu müssen — gewählt wird die Ziehung mit
+der geringsten Summe innerer Stille, bei Gleichstand die mit der längeren Sprechzeit.
+
+**Zweitens: „Die längste Aufnahme behalten" ist als Auswahlregel kaputt**, auch wenn ihr
+Ziel (nicht gehetzt klingen) richtig ist. **Eine Aufnahme wird vor allem durch Pausen lang,
+nicht durch langsameres Sprechen.** Wer auf Gesamtdauer optimiert, wählt systematisch die
+Aufnahmen mit den meisten Löchern — also genau die, die als distanziert empfunden werden.
+Die Größe muss **Sprechzeit** sein, nicht Gesamtzeit.
+
+*Lehre: Vera, BUG-053 in seiner korrigierten Fassung. Verallgemeinert über TTS hinaus:
+**Bevor eine Zahl zum Auswahlkriterium wird, gehört geprüft, wodurch sie eigentlich groß
+wird.** Hier war „lang" ein Sammelbegriff für zwei Dinge mit entgegengesetztem Wert.*
+
 ## Sprechgeschwindigkeit
 
 ### CAR-01: Bei sonic-3 ist `speed` eine Zahl, kein Wort
