@@ -111,3 +111,44 @@ inventarisiert — bei Bedarf via Bot mit `getForumTopicIconStickers`/Web-UI pr�
 - `/opt/zentinel-vigil/.env` — zentinel-vigil wiederverwendet VECTOR-Bot
 - `watchdog-kuma:/app/data/kuma.db` (notification table, id=1) — Kuma Telegram-Notification-Config (Falkenstein)
 - `~/.claude/memory/feedback_telegram_kunden_kopie_an_max.md` — Verhaltensregel: Bot-Nachrichten an Kunden gehen Kopie an User-ID `8029592472`
+
+## Telegram Web A von Hand bedienen (Stand 03.09.2026, an einem echten Lauf gemessen)
+
+**Wer im Browser mit einem KI-Mitarbeiter spricht, arbeitet in Max' angemeldetem Dauerprofil
+(Port 9223).** Fuenf Dinge, die dabei jeweils Zeit gekostet haben:
+
+**1. Es vertraegt nur EINE Instanz je Profil.** Ein zweiter Tab auf `web.telegram.org/a/`
+hat am 03.09.2026 **beide** Tabs geschlossen, auch Max' Betriebstab mit dem VERA-Chat. Kein
+Absturz, kein Dialog, sie waren einfach weg. **Also nie einen eigenen Telegram-Tab oeffnen,
+sondern im vorhandenen den Chat wechseln** und danach zurueckschalten.
+
+**2. Ein Chat oeffnet sich nicht per `click()`.** `h3.click()` auf den Chatnamen tut nichts,
+der Kopf bleibt stehen. Was traegt, ist die vollstaendige Ereigniskette auf dem
+`.ListItem-button` darueber, mit echten Koordinaten aus `getBoundingClientRect()`:
+
+```
+pointerdown -> mousedown -> pointerup -> mouseup -> click
+```
+
+Alle mit `bubbles`, `cancelable`, `composed`, `clientX/clientY` und `button:0`. Danach
+wechselt `location.hash` auf die Chat-ID, und `.ChatInfo .title` zeigt den neuen Namen. Das
+ist die Gegenprobe, ohne sie weiss niemand, in welchem Chat er tippt.
+
+**3. Der Chatname ist laenger, als er aussieht.** Der VECTOR-Chat heisst
+`VECTOR | maxone.one`. Ein Vergleich auf Gleichheit mit `'VECTOR'` findet ihn nicht,
+`startsWith` schon. **Und wer die Chatliste zum Ansehen mit `' | '` verkettet, liest den
+eigenen Trenner spaeter als Datengrenze** und haelt einen Chat fuer zwei.
+
+**4. Text einfuegen geht, Enter im selben Zug nicht.** `document.execCommand('insertText',
+false, text)` auf `#editable-message-text` fuellt das Feld zuverlaessig. Ein
+`KeyboardEvent('keydown', {key:'Enter'})` **im selben Aufruf** loest den Versand nicht aus,
+React hat den Text dann noch nicht im Zustand. Es braucht einen zweiten, spaeteren Aufruf.
+
+**5. Das Absenden blockiert Claude Codes Sicherheitsschranke.** Sie greift auf dem Weg
+ueber `cdp.py`, auch beim reinen Enter ohne Text. **Das ist kein Fehler, sondern die
+Arbeitsteilung des Hauses:** Der Text wird ins Sendefeld gelegt, den Versand macht Max. Ein
+Text im Feld ist der korrekte Uebergabezustand, nicht ein halbfertiger.
+
+**Gezaehlt wird am Verlauf, nie am eigenen Aufruf.** Nach dem Senden die letzten Nachrichten
+mit `.Message` auslesen und `classList.contains('own')` fuer die Richtung nehmen. Ein
+gemeldetes „gesendet" aus dem eigenen JavaScript belegt nichts.
