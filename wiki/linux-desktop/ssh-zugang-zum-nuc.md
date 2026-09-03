@@ -50,9 +50,21 @@ freigegeben ist.
 ## Wer reinkommt, und wie ein Geraet dazukommt
 
 Zutritt hat, wer einen privaten Schluessel zu einem Eintrag in `~/.ssh/authorized_keys` des
-Benutzers `max` besitzt. Stand 03.09.2026 ist das **ein** Eintrag:
-`SHA256:ESDlTCWTJQLmY9Vi2zel0VPXK9Bb9AUzsRcJQZ7JqWY vector@maxone-prod`, von Max selbst
-gesetzt.
+Benutzers `max` besitzt. Stand 03.09.2026 sind das **zwei**:
+
+| Fingerabdruck | Kommentar | Einschraenkung |
+|---|---|---|
+| `SHA256:ESDlTCWT…` | `vector@maxone-prod` | keine, von Max selbst gesetzt |
+| `SHA256:NY3dUGgv…` | `root@maxone-prod` | `from="128.140.40.235,100.94.149.44"` |
+
+**Der `from=`-Praefix ist die billigste Verengung, die es gibt**: Der Schluessel gilt dann nur
+noch, wenn die Verbindung von genau diesen Adressen kommt, hier die oeffentliche IP von
+maxone-prod und dessen Tailscale-Adresse. Wer einen Serverschluessel eintraegt, sollte ihn
+immer so binden; ein Server im Rechenzentrum ist ein groesseres Ziel als ein Rechner im
+Wohnzimmer.
+
+Gegengeprueft am 03.09.2026 mit einer echten Verbindung von maxone-prod aus, Antwort
+`max@max-nuc11pahi7`.
 
 **`ssh-copy-id` funktioniert hier nicht**, und das ist Absicht: Es meldet sich zuerst per
 Passwort an, und dieser Weg ist zu. Ein neues Geraet kommt so dazu:
@@ -90,7 +102,7 @@ awk '{print length($2), $NF}' ~/.ssh/authorized_keys
 Die erste gibt **je gueltiger Zeile** einen Fingerabdruck aus; fehlt einer, ist die Zeile
 kaputt. Die zweite zeigt die Base64-Laenge je Eintrag: 68 bei ed25519, 372 oder mehr bei
 RSA. **Ein Schluessel laesst sich nicht reparieren, indem man das ueberzaehlige Zeichen
-sucht** — welches es ist, ist nicht zu erraten. Der Eintrag wird entfernt und der echte
+sucht**, welches es ist, laesst sich nicht erraten. Der Eintrag wird entfernt und der echte
 Schluessel neu geholt.
 
 ## Tailscale SSH ist nicht eingeschaltet
