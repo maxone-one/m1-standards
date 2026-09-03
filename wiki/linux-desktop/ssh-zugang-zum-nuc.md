@@ -54,8 +54,15 @@ Benutzers `max` besitzt. Stand 03.09.2026 sind das **zwei**:
 
 | Fingerabdruck | Kommentar | Einschraenkung |
 |---|---|---|
-| `SHA256:ESDlTCWT…` | `vector@maxone-prod` | keine, von Max selbst gesetzt |
 | `SHA256:NY3dUGgv…` | `root@maxone-prod` | `from="128.140.40.235,100.94.149.44"` |
+| `SHA256:CVVJaXIG…` | `vector@maxone-prod` | `from="128.140.40.235,100.94.149.44"` |
+
+**Ein dritter Schluessel lag hier am 03.09.2026 fuer wenige Stunden und ist am selben Abend
+wieder entfernt worden** (`SHA256:ESDlTCWT…`, ebenfalls `vector@maxone-prod`). Max hatte ihn
+Vector gegeben, Vector besass den privaten Teil aber nicht und hat deshalb ein neues Paar
+erzeugt. **Ein Schluessel, dessen Gegenstueck niemand besitzt, ist kein toter Eintrag, sondern
+ein Zugang ohne bekannten Inhaber**, und genau das ist der Grund, ihn zu entfernen statt ihn
+stehen zu lassen. Vorher gesichert nach `authorized_keys.vor-entfernung-esdl-2026-09-03`.
 
 **Der `from=`-Praefix ist die billigste Verengung, die es gibt**: Der Schluessel gilt dann nur
 noch, wenn die Verbindung von genau diesen Adressen kommt, hier die oeffentliche IP von
