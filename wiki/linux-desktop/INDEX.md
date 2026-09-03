@@ -90,3 +90,8 @@ anschliessend beim Funkchip.
   setzt den gemerkten Zustand vor dem Anmeldebildschirm zurueck.
 - **Chrome und Wayland:** ohne `--ozone-platform=x11` weisse Fenster.
 - **KWallet ist seit dem 24.08.2026 aus**, Chrome legt Passwoerter seitdem unverschluesselt ab.
+- **SSH-Zugang, seit 03.09.2026:** Der NUC hat einen gehaerteten `sshd`, erreichbar aus dem
+  Heimnetz und ueber Tailscale, nur per Schluessel. Wer ein Geraet dazunehmen will oder eine
+  Anmeldung ohne Grund abgewiesen bekommt, liest zuerst
+  [ssh-zugang-zum-nuc.md](ssh-zugang-zum-nuc.md) — dort steht auch, warum ein kaputter
+  Eintrag in `authorized_keys` nie eine Fehlermeldung erzeugt, sondern nur verweigert.
