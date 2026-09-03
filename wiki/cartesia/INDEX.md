@@ -86,6 +86,31 @@ Das gilt auch für mehrwortige Einträge `[B: Cartesia-Doku]`.
 **Praktisch heißt das:** Ein Doppeleintrag `maxone` plus `Maxone` ist überflüssig, der
 kleingeschriebene reicht. Eine durchgehend große Schreibweise braucht dagegen einen eigenen.
 
+> **NACHTRAG 04.09.2026: Der Doppeleintrag ist nicht mehr nur überflüssig, er wird
+> ABGEWIESEN.** Ein `POST` mit beiden Formen antwortet mit HTTP 400 und diesem Klartext:
+>
+> ```
+> Invalid pronunciation dictionary items: Entries "maxone" and "Maxone" would
+> collide because at least one is case-insensitive
+> ```
+>
+> **Das ist zugleich die Bestätigung der Regel darüber**, und zwar von Cartesia selbst
+> statt aus der Doku gelesen: Wären die Einträge unabhängig, könnten sie nicht kollidieren.
+>
+> **Die teure Folge betrifft bestehende Wörterbücher, nicht neue.** Vera trug den
+> Doppeleintrag seit dem 25.08.2026, angelegt mit der ausdrücklichen Begründung „ein
+> zweiter Eintrag kostet nichts". Er lief weiter und wirkte, **aber derselbe Sollstand
+> ließ sich nicht mehr anlegen**: Der nächste, der irgendeinen Ausspracheeintrag ändern
+> wollte, wäre in einen 400er gelaufen, dessen Meldung ein ganz anderes Wort nennt als
+> das, das er gerade setzen wollte. **Ein Bestand, der sich nicht reproduzieren lässt,
+> meldet das nie von selbst.**
+>
+> *Prüfsatz daraus, über Cartesia hinaus:* Ein Datensatz, der beim Anlegen erlaubt war, ist
+> deshalb nicht dauerhaft anlegbar. Wer einen Sollstand pflegt, prüft ihn gelegentlich
+> gegen die API, statt nur die Abweichungen zu vergleichen.
+>
+> *Anlass:* Vera, 04.09.2026, beim Eintragen von `Mailadresse` (TODO 36.3).
+
 ### Reihenfolge bei mehreren Einträgen
 
 Einträge werden der Reihe nach angewandt, und ein früherer kann einen späteren zerschneiden.
