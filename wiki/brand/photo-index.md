@@ -51,3 +51,19 @@ Katalog der Personen-/Marken-Fotos, damit ich beim Bildauswählen nicht jedes Ma
 ## Pflege
 
 Neue Fotos hier sofort eintragen (Datei, Motiv, Keywords, Verwendung). Noch nicht visuell geprüfte Einträge bei nächster Gelegenheit auf **(gesehen)** hochstufen. Vor jedem Bildauswählen ZUERST hier suchen, nicht blind Dateien öffnen.
+
+## Was dieser Katalog NICHT abdeckt (ergaenzt 03.09.2026)
+
+**Die exit-faehigen Kundenprodukte fuehren ihre Bilder selbst.** `project_bild_ssot_maxone_one`
+zieht die Grenze bei den Assets („venfree, SLF, snapflow bekommen das NICHT"), und derselbe Grund
+gilt fuer den Katalog: Ein Index im eigenen Repo geht beim Verkauf mit, ein Eintrag hier nicht.
+
+| Produkt | eigener Bild-Index | Stand |
+|---|---|---|
+| venfree | `~/Projekte/venfree/docs/BILD-INDEX.md` | 4 Bilder, alle am 03.09.2026 visuell geprueft |
+| SLF, snapflow | noch keiner | offen |
+
+*Anlass: Am 03.09.2026 hat eine venfree-Session drei Bilder einzeln geoeffnet, um eines fuer eine
+Kleinanzeige auszuwaehlen. Max wies darauf hin, dass genau dafuer dieser Katalog existiert. Die
+Suche hier haette nichts gebracht: **venfree kam in dieser Datei null Mal vor**, und neben den
+Bilddateien lag keine Beschreibung. Die Regel war richtig, sie hatte nur eine Luecke.*
