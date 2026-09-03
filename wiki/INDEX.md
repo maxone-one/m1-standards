@@ -27,6 +27,7 @@ Narratives Betriebswissen und Domain-Kontext für Claude-Sessions. Ergänzt die 
 | [kitchen-station](kitchen-station/INDEX.md) | Kiosk-App, Android, Tablet-Ops | Bei Arbeit an kitchen-station |
 | [paperclip](paperclip/INDEX.md) | Paperclip-Architektur und Ops | Bei Arbeit mit Paperclip |
 | [meta-plattform](meta-plattform/INDEX.md) | Facebook, Instagram, Business Suite: Konten, Stimmen, Zielpfade, Rechte | Vor jedem Griff an Seiten, Werbekonten oder Portfolios |
+| [telefonwerbung](telefonwerbung/INDEX.md) | Wann ein Werbeanruf zulässig ist, was die mutmaßliche Einwilligung nicht trägt, die Anrufmaschinen-Frage bei KI, Rufnummernanzeige, Bußgelder | Vor jeder Akquise am Telefon, vor jedem ausgehenden Anruf einer KI, und bevor ein Werbemittel einen Anruf ankündigt |
 | [playwright](playwright/INDEX.md) | Serverwahl, Profillage, Tab-Klassen, Node gegen Browser, Fehlerbilder | Vor jedem Browserschritt, besonders vor dem Öffnen oder Schließen |
 | [claude-code](claude-code/INDEX.md) | Was automatisch lädt, Hooks, Skills, Berechtigungen, Sessions und Pool, Fehlerbilder, Grenzen | Vor jedem Griff an Hooks, Skills, `settings.json` oder Kontext, und bei „warum fragt er schon wieder" |
 | [vscode](vscode/INDEX.md) | Fenster abfragen und öffnen, die drei Zustandsebenen, bekannte Fehlerbilder | Vor jedem `code`-Aufruf und bei „warum ist das Fenster weg" |
