@@ -17,59 +17,64 @@ erreichen. Genau das ist der Normalfall, wenn man es falsch macht, denn `/logout
 
 **Der Kunde liefert die Lizenz, sonst nichts** [B: Max, 06.09.2026]. Es geht nicht um
 Zugriff auf Kundensysteme und nicht um dessen Verbindungen: Die Arbeitsumgebung bleibt
-Max' eigene, Werkzeuge werden lokal nachinstalliert. Das schliesst den Verzicht auf
-claude.ai-Connectors im Kundenabo ein und macht damit den einfachen Weg unten erst gangbar.
+Max' eigene, Werkzeuge werden lokal nachinstalliert. Am Kundenkonto haengen keine
+Verbindungen, und es sollen auch keine daran haengen.
 
 ---
 
-## 1. Der Weg, der traegt: ein Token je Projekt
+## 1. Der Weg, der traegt: `CLAUDE_CONFIG_DIR` je VS-Code-Profil
 
-In der Anmelde-Rangfolge steht `CLAUDE_CODE_OAUTH_TOKEN` auf **Platz 5**, der per
-`/login` hinterlegte Abo-Zugang auf **Platz 7** [B: [Authentication](https://code.claude.com/docs/en/authentication),
-Abschnitt „Authentication precedence"]. Ein Token schlaegt also den global angemeldeten
-Account, **ohne ihn anzufassen**.
+**Zugangsdaten kommen ausschliesslich aus der Prozessumgebung, nie aus einer Settings-Datei
+des Projekts.** Das ist am 06.09.2026 gemessen worden, siehe Abschnitt 2. Daraus folgt der
+einzige Weg, der im VS-Code-Panel funktioniert:
 
-Der `env`-Block gilt laut Settings-Referenz auf **„Any file"**, also auch projektlokal
-[B: [settings-reference](https://code.claude.com/docs/en/settings-reference), Eintrag `env`].
-Damit reicht im Kundenprojekt eine Datei:
+`claudeCode.environmentVariables` setzt echte Umgebungsvariablen des Claude-Prozesses
+[B: `extension.js` 2.1.261]. Die Einstellung traegt `scope: machine`
+[B: `package.json` der Extension], laesst sich also **nicht** in `.vscode/settings.json`
+eines Projekts setzen, wohl aber je **VS-Code-Profil**.
+
+**Profile sind ordnergebunden, und ein Profil traegt beliebig viele Ordner**
+[B: [VS Code: Profiles](https://code.visualstudio.com/docs/configure/profiles)]:
+*„When you create or select a profile, it is associated with the current folder or
+workspace. Whenever you open that folder, the workspace's profile becomes active."* Die
+Zuordnungen stehen im Profiles-Editor unter **Folders & Workspaces**, zuruecksetzen laesst
+sie `Developer: Reset Workspace Profiles Associations`.
+
+**Profile bilden damit Abos ab, nicht Projekte.** Bei zwei Kunden sind es drei Profile,
+nicht fuenf:
+
+| Profil | `CLAUDE_CONFIG_DIR` | Ordner |
+|---|---|---|
+| Eigen (Default) | `~/.claude` | alle eigenen Projekte |
+| Kunde A | `~/.claude-kunde-a` | nur dessen Ordner |
+| Kunde B | `~/.claude-kunde-b` | nur dessen Ordner |
+
+Je Profil in den Benutzereinstellungen:
 
 ```json
-// kundenprojekt/.claude/settings.local.json
-{
-  "env": {
-    "CLAUDE_CODE_OAUTH_TOKEN": "<Token aus dem Abo des Kunden>"
-  }
-}
+"claudeCode.environmentVariables": [
+  { "name": "CLAUDE_CONFIG_DIR", "value": "/home/max/.claude-kunde-a" }
+]
 ```
 
-Die eigenen Projekte bleiben unberuehrt, weil dort schlicht kein Token gesetzt ist. **Ein
-Wechsel kann nicht global durchschlagen**, weil die Datei nur in ihrem Ordner wirkt.
+Im neuen Verzeichnis meldet man sich einmal mit dem Kundenabo an. Das geteilte Gehirn holt
+man per Symlink dazu — `skills`, `commands`, `agents` — und verlinkt **nicht** `projects/`,
+`memory/`, `.credentials.json`, `.claude.json`.
 
-Die Rangfolge der Settings-Dateien, von stark nach schwach
-[B: [settings](https://code.claude.com/docs/en/settings), „Settings precedence"]:
+### Die Alternative ohne Profile: ein Wrapper, der nach Pfad entscheidet
 
-| Rang | Datei | Gilt fuer |
-|---|---|---|
-| 3 | `.claude/settings.local.json` | „You, in this one project only" |
-| 4 | `.claude/settings.json` | alle im Projekt, gehoert ins Repo |
-| 5 | `~/.claude/settings.json` | du, in jedem Projekt |
+`claudeCode.claudeProcessWrapper` ist ebenfalls machine-scoped, aber es ist **eine einzige
+globale Einstellung**: ein Skript, das anhand des Arbeitsverzeichnisses das richtige
+`CLAUDE_CONFIG_DIR` exportiert und dann das echte Binary aufruft. Die Extension uebergibt
+den Binary-Pfad als Argument und die Umgebung mit [B: `extension.js`, Funktion `t$$`]:
 
-**Zwei Eigenschaften kommen dem Fall entgegen.** `settings.local.json` traegt Claude Code
-beim ersten Schreiben selbst in die globalen Git-Excludes ein, das Token landet also nicht
-im Repo. Und weil das Konfigverzeichnis dasselbe bleibt, steht im Kundenprojekt das
-**volle eigene Werkzeug**: Skills, Commands, Agents, MCP-Server, Einstellungen. Nichts zu
-symlinken, nichts zu duplizieren.
-
-### Das Kundentoken holen, ohne den eigenen Zugang anzuruehren
-
-```bash
-CLAUDE_CONFIG_DIR=/tmp/kunde-a claude setup-token   # Browser-Login als Kunde
-# Token erscheint im Terminal -> in settings.local.json eintragen
-rm -rf /tmp/kunde-a
+```js
+if (Q) return { pathToClaudeCodeExecutable: Q, executableArgs: X ? [X] : [], env: J };
 ```
 
-Der eigene Login liegt in einem anderen Verzeichnis und bleibt unberuehrt. Das Token gilt
-**ein Jahr** [B: Authentication, „Generate a long-lived token"].
+Damit entfaellt die Profil-Vervielfaeltigung und die offene Frage aus Abschnitt 5. **Ob der
+Wrapper mit dem Workspace als `cwd` startet, ist noch nicht gemessen** — der Code legt es
+nahe, beweist es aber nicht.
 
 ---
 
@@ -134,65 +139,53 @@ Q.CLAUDE_CODE_ENTRYPOINT = "claude-vscode";
 
 ---
 
-## 4. Ausbaustufe: VS-Code-Profile, wenn auch die Verlaeufe getrennt gehoeren
+## 4. Der Weg, der NICHT traegt: ein Token je Projekt
 
-Der Weg aus Abschnitt 1 laesst die Sitzungsverlaeufe **gemeinsam** in
-`~/.claude/projects/`. Fuer Max ist das richtig, es ist seine Arbeitsumgebung. Verlangt ein
-Kunde je vertraglich, dass auch Transkripte getrennt liegen, fuehrt der Weg ueber getrennte
-Konfigverzeichnisse plus VS-Code-Profile.
+> **KORREKTUR 06.09.2026, wenige Stunden nach dem Anlegen dieser Seite.** Hier stand als
+> Hauptempfehlung, ein `CLAUDE_CODE_OAUTH_TOKEN` in die projektlokale
+> `.claude/settings.local.json` zu legen. Die Herleitung war sauber und trotzdem falsch:
+> Die Anmelde-Rangfolge stellt das Token ueber den `/login`-Zugang, der `env`-Schluessel
+> gilt laut Settings-Referenz auf „Any file", und beides stimmt auch. **Gemessen wurde es
+> erst danach, und die Messung hat es widerlegt.**
 
-**Die Falle dabei:** `claudeCode.environmentVariables` hat `scope: machine`
-[B: `package.json` der Extension 2.1.261]. VS Code filtert machine-scoped Einstellungen aus
-Workspace-Settings heraus — **`.vscode/settings.json` im Projektordner wird ignoriert**.
-Pro Projekt geht es so also nicht, pro Profil schon.
+Vier Laeufe mit `claude auth status` (2.1.261, liest Settings ohne Trust-Dialog und ohne
+Modellaufruf) [B: 06.09.2026, Mac Mini]:
 
-**Profile sind ordnergebunden, und ein Profil traegt beliebig viele Ordner**
-[B: [VS Code: Profiles](https://code.visualstudio.com/docs/configure/profiles)]:
-*„When you create or select a profile, it is associated with the current folder or
-workspace. Whenever you open that folder, the workspace's profile becomes active."* Die
-Zuordnungen stehen im Profiles-Editor unter **Folders & Workspaces**, zuruecksetzen laesst
-sie `Developer: Reset Workspace Profiles Associations`.
+| Woher die Variable kam | Was gemessen wurde |
+|---|---|
+| Projekt-Settings, harmlose `DRIFT_PROBE_A` | **wirkt** — ein Bash-Unterprozess der Sitzung gibt `projekt-env-wirkt` aus |
+| Projekt-Settings, `CLAUDE_CODE_OAUTH_TOKEN` | **wirkt nicht** — `authMethod` bleibt `claude.ai`, Konto unveraendert |
+| Shell-Umgebung, dasselbe Token | **wirkt** — `authMethod` springt auf `oauth_token`, Konto- und Abo-Felder verschwinden |
+| Shell-Umgebung, `CLAUDE_CONFIG_DIR` | **eigener Zugang** — `loggedIn: false`, `authMethod: none` |
 
-**Profile bilden damit Abos ab, nicht Projekte:**
+**Die dritte Zeile ist die Kalibrierung und macht den Befund erst belastbar.** Ohne sie
+haette die zweite Zeile auch heissen koennen, dass `auth status` fuer Env-Variablen
+schlicht blind ist. Sie ist es nicht.
 
-| Profil | `CLAUDE_CONFIG_DIR` | Ordner |
-|---|---|---|
-| Eigen (Default) | `~/.claude` | alle eigenen Projekte |
-| Kunde A | `~/.claude-kunde-a` | nur dessen Ordner |
-| Kunde B | `~/.claude-kunde-b` | nur dessen Ordner |
+**Der Schluss:** Der `env`-Block aus Projekt-Settings wirkt, aber **Credential-Variablen
+sind gezielt herausgefiltert**. Das passt zu der Menge sensibler Variablen, die das Bundle
+fuehrt (`ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN` und die
+Provider-Schluessel), und zu der bereits dokumentierten Sperre bei `sandbox.*`: *„Only
+honored from user, managed/policy, or CLI (`--settings`) settings — project settings
+(`.claude/settings.json` and `.claude/settings.local.json`) are ignored."*
 
-Bei zwei Kunden sind es **drei Profile, nicht fuenf**. Je Profil in den
-Benutzereinstellungen:
-
-```json
-"claudeCode.environmentVariables": [
-  { "name": "CLAUDE_CONFIG_DIR", "value": "/home/max/.claude-kunde-a" }
-]
-```
-
-Das geteilte Gehirn holt man sich dann per Symlink dazu — `skills`, `commands`, `agents` —
-und verlinkt **nicht** `projects/`, `memory/`, `.credentials.json`, `.claude.json`.
-
----
+**Das ist kein Fehler, sondern Absicht.** Ein Repo, das seine eigene Abrechnung setzen
+duerfte, waere ein Einfallstor: Es genuegte, eine Datei mitzuliefern, und fremde Anfragen
+liefen ueber ein fremdes Konto. Wer diesen Weg in Zukunft wieder vorschlaegt, misst ihn
+bitte mit den vier Zeilen oben nach, statt der Rangfolgen-Logik zu glauben.
 
 ## 5. Was offen ist
 
-**Zwei Annahmen sind noch nicht gemessen.** Beide betreffen den Fall, in dem eine
-Verwechslung fremde Abrechnung bedeutet, also nicht kleinreden:
+**Eine Annahme ist noch nicht gemessen**, und sie traegt die Konstruktion aus Abschnitt 1:
 
-1. **Ob Credential-Variablen aus Projekt-Settings ueberhaupt angewandt werden.** Das Bundle
-   fuehrt eine eigene Menge sensibler Variablen, die `ANTHROPIC_API_KEY`,
-   `ANTHROPIC_AUTH_TOKEN` und `CLAUDE_CODE_OAUTH_TOKEN` zusammenfasst; ihre Durchsetzung
-   liegt im CLI-Binary, nicht in `extension.js`. Fuer `sandbox.*` ist belegt, dass
-   Projekt-Settings **ignoriert** werden (*„Only honored from user, managed/policy, or CLI
-   settings — project settings are ignored"*). Ob dieselbe Sperre fuer Credential-Variablen
-   im `env`-Block gilt, ist **nicht geklaert**. Die Settings-Doku formuliert vorsichtig,
-   *„most `env` values"* wuerden nach Ordner-Freigabe wirken.
-2. **Ob machine-scoped Einstellungen wirklich je Profil gespeichert werden.** Die VS-Code-Doku
-   sagt es nur indirekt, ueber die Bemerkung, dass sie beim Profil-Export ausgelassen werden.
+- **Ob machine-scoped Einstellungen wirklich je Profil gespeichert werden.** Die VS-Code-Doku
+  sagt es nur indirekt, ueber die Bemerkung, dass sie beim Profil-Export ausgelassen werden.
+  Faellt das anders aus, bleibt der Wrapper aus Abschnitt 1 als Weg, der ohne diese Annahme
+  auskommt.
 
-**Beides ist in wenigen Minuten empirisch zu klaeren** und sollte vor dem ersten
-Kundeneinsatz geklaert sein, nicht danach.
+**Vor dem ersten Kundeneinsatz klaeren, nicht danach.** Der Fall, in dem eine Verwechslung
+fremde Abrechnung bedeutet, vertraegt keine ungepruefte Annahme — das hat Abschnitt 4
+gerade vorgefuehrt.
 
 ## 6. Die Kontrolle im Betrieb
 
@@ -204,12 +197,16 @@ dass im Kundenfenster wirklich das Kundenabo zieht.
 bekommen eine unverwechselbare. Ein Mechanismus, der stimmt, plus ein Blick, der es
 bestaetigt — Belege statt Vertrauen, wie ueberall sonst auch.
 
-## Was am Kundenabo fehlt
+## Was am Kundenabo anders ist
 
-`CLAUDE_CODE_OAUTH_TOKEN` *„can only make model requests"* [B: Authentication]: **keine
-claude.ai-Connectors, kein Remote Control**. Lokale MCP-Server ueber `.mcp.json` laufen
-normal. Fuer den hier beschriebenen Fall ist das folgenlos, weil das Kundenkonto neu
-gekauft ist und dort ohnehin keine Verbindungen bestehen.
+Weil im Kundenverzeichnis ein echter `/login` steht und kein Token, hat das Kundenabo den
+**vollen Funktionsumfang**, einschliesslich claude.ai-Connectors und Remote Control. Nur
+sind dort keine Verbindungen eingerichtet, weil das Konto eigens gekauft wurde — fuer den
+hier beschriebenen Fall ist das folgenlos, die Arbeitsumgebung bleibt Max' eigene und
+Werkzeuge werden lokal nachinstalliert.
+
+**Getrennt sind ausserdem die Sitzungsverlaeufe**, weil `projects/` im jeweiligen
+Konfigverzeichnis liegt. Bei Kundenarbeit ist das der richtige Zustand und kein Verlust.
 
 ---
 

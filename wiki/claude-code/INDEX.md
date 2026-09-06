@@ -570,4 +570,4 @@ Handbuch sagt, wie das Werkzeug funktioniert, nicht wie gearbeitet wird. Das ste
 globalen `CLAUDE.md` und in `~/.claude/rules/`, und im Zweifel gewinnt dort der Wortlaut.
 
 - [Remote Control und die Sessionliste](remote-control-sessionliste.md) — warum alte Sessions stehen bleiben (sie sind wieder aufnehmbar), die zwei Faelle automatischer Archivierung, die drei Handgriffe zum Aufraeumen, und dass es keinen CLI-Weg gibt
-- [Mehrere Claude-Abos, eines je Projekt](mehrere-abos-pro-projekt.md) — wie das Kundenabo nur im Kundenprojekt zieht und der eigene Zugang ueberall sonst: Token je Projekt statt Profil, warum die Terminal-Loesungen aus dem Netz hier ausscheiden, und die Messung, die die verbreitete macOS-Behauptung widerlegt
+- [Mehrere Claude-Abos, eines je Projekt](mehrere-abos-pro-projekt.md) — wie das Kundenabo nur im Kundenprojekt zieht und der eigene Zugang ueberall sonst: `CLAUDE_CONFIG_DIR` je VS-Code-Profil, warum die Terminal-Loesungen aus dem Netz hier ausscheiden, und **warum der naheliegende Weg ueber ein Token in den Projekt-Settings nicht traegt** (gemessen, Credential-Variablen sind dort gefiltert)
