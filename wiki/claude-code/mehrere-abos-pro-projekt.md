@@ -187,15 +187,94 @@ bitte mit den vier Zeilen oben nach, statt der Rangfolgen-Logik zu glauben.
 fremde Abrechnung bedeutet, vertraegt keine ungepruefte Annahme — das hat Abschnitt 4
 gerade vorgefuehrt.
 
-## 6. Die Kontrolle im Betrieb
+## 6. Einrichtung auf dem NUC, der Reihe nach
 
-`/status` zeigt, welche Anmeldung eine Sitzung tatsaechlich benutzt: Bei aktivem Token
-erscheint die `Login`-Zeile des eigenen Abos dort nicht. Das ist der Ein-Blick-Nachweis,
-dass im Kundenfenster wirklich das Kundenabo zieht.
+Linux, Benutzer `max`, Projekte unter `/home/max/Projekte/`. Die Schritte 1 bis 5 gelten je
+Kunde; Schritt 0 einmal.
 
-**Dazu die Farbe.** Jedes Projekt traegt ohnehin eine Peacock-Farbe; Kundenprojekte
-bekommen eine unverwechselbare. Ein Mechanismus, der stimmt, plus ein Blick, der es
-bestaetigt — Belege statt Vertrauen, wie ueberall sonst auch.
+### Schritt 0: die offene Annahme zuerst klaeren
+
+**Bevor irgendetwas eingerichtet wird.** Die ganze Konstruktion haengt daran, dass
+`claudeCode.environmentVariables` je Profil gespeichert wird und nicht profiluebergreifend
+(Abschnitt 5).
+
+1. Zweites Profil anlegen: Zahnrad unten links → **Profiles** → **New Profile**.
+2. Darin `claudeCode.environmentVariables` mit einem harmlosen Wert setzen, etwa
+   `{ "name": "ABO_PROBE", "value": "profil-zwei" }`.
+3. Ins Default-Profil zurueck und nachsehen, ob der Wert dort **fehlt**.
+
+**Steht er in beiden Profilen, ist der Weg tot** und es gilt die Wrapper-Variante aus
+Abschnitt 1. Steht er nur im zweiten, weiter mit Schritt 1.
+
+### Schritt 1: Konfigverzeichnis fuer den Kunden, mit geteiltem Gehirn
+
+```bash
+KUNDE=kunde-a
+NEU="$HOME/.claude-$KUNDE"
+mkdir -p "$NEU"
+
+# geteilt: das Werkzeug. Aenderungen wirken sofort in allen Abos.
+for teil in skills commands agents rules plugins memory CLAUDE.md; do
+  [ -e "$HOME/.claude/$teil" ] && ln -sfn "$HOME/.claude/$teil" "$NEU/$teil"
+done
+
+# eigenstaendig: Einstellungen als Kopie, damit sie abweichen duerfen
+cp -n "$HOME/.claude/settings.json" "$NEU/settings.json" 2>/dev/null
+
+ls -la "$NEU"
+```
+
+**Was bewusst NICHT verlinkt wird:** `projects/` (die Sitzungsverlaeufe),
+`.credentials.json` (der Zugang) und `.claude.json` (traegt die MCP-Konfiguration samt
+`oauthAccount`). Genau diese drei sollen je Abo eigene sein — das ist der Zweck der Uebung.
+
+### Schritt 2: Profil anlegen und den Kundenordner daran binden
+
+Kundenordner oeffnen, dann **Profiles → New Profile**, Namen wie das Abo. Die Bindung
+entsteht dabei von selbst: das gerade offene Fenster wird dem Profil zugeordnet. Kontrolle
+im Profiles-Editor unter **Folders & Workspaces**.
+
+**Ein Profil traegt beliebig viele Ordner.** Kommt spaeter ein zweiter Ordner desselben
+Kunden dazu, oeffnest du ihn und waehlst dasselbe Profil — kein neues anlegen.
+
+### Schritt 3: das Konfigverzeichnis im Profil setzen
+
+Im **neuen Profil**, Benutzereinstellungen (nicht Workspace, dort wirkt es nicht):
+
+```json
+"claudeCode.environmentVariables": [
+  { "name": "CLAUDE_CONFIG_DIR", "value": "/home/max/.claude-kunde-a" }
+]
+```
+
+Danach das Fenster neu laden (`Developer: Reload Window`), sonst laeuft der alte
+Claude-Prozess weiter.
+
+### Schritt 4: mit dem Kundenabo anmelden
+
+Im Kundenfenster `/login`. Der Zugang landet in `~/.claude-kunde-a/.credentials.json`
+(Linux, Modus 0600) und ist von deinem eigenen vollstaendig getrennt.
+
+### Schritt 5: nachweisen, nicht annehmen
+
+**Im Panel:** `/status` im Kundenfenster zeigt Konto und Organisation des Kunden, `/status`
+in einem eigenen Projekt weiter deins. **Beide Fenster gleichzeitig offen pruefen**, denn
+genau das ist die Anforderung.
+
+**Vom Terminal aus**, falls du es hart gegenpruefen willst:
+
+```bash
+CLAUDE_CONFIG_DIR=$HOME/.claude-kunde-a claude auth status   # Kundenkonto
+claude auth status                                            # dein Konto
+```
+
+Beide Ausgaben tragen `email` und `subscriptionType`. Stehen dort zwei verschiedene
+Konten, ist die Trennung belegt.
+
+### Die Peacock-Farbe nicht vergessen
+
+Kundenprojekte bekommen eine unverwechselbare Farbe. Der Mechanismus stimmt dann, und der
+Blick bestaetigt es — dieselbe Logik wie ueberall sonst.
 
 ## Was am Kundenabo anders ist
 
