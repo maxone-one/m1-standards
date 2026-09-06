@@ -23,6 +23,14 @@ im Desktop; VS Code ist nur eine seiner Oberflächen.
 Solange das Claude-Code-Handbuch fehlt, steht der Anmelde-Abbruch weiter unten hier und
 zieht beim Bau um.
 
+**Profile als Abo-Trenner stehen drueben.** Dass ein VS-Code-Profil an Ordner gebunden ist
+und beliebig viele davon tragen kann, ist Editor-Wissen und gehoert hierher; wofuer Max das
+braucht — je Kundenprojekt ein eigenes Claude-Abo, ohne dass ein Wechsel global durchschlaegt
+— steht in
+[claude-code/mehrere-abos-pro-projekt.md](../claude-code/mehrere-abos-pro-projekt.md), samt
+der Falle, dass `claudeCode.environmentVariables` `scope: machine` traegt und deshalb aus
+`.vscode/settings.json` **nicht** wirkt.
+
 ## Fenster: die drei Sätze, die man wirklich braucht
 
 | Aufgabe | Befehl | Falle |
