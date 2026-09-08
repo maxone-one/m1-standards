@@ -48,7 +48,32 @@ Handles in der Social-SSoT `maxone-standards/config/social.ts` und auf `maxone.o
 Konten derselben Zentrale sind belegt seine. **Ihn selbst danach zu fragen kostet einen
 Satz und ersetzt die Ableitung**, das ist noch offen.
 
-## OFFEN, sicherheitsrelevant: die Nummer +49 1517 0843599
+## BEANTWORTET 08.09.2026, sicherheitsrelevant: die Nummer +49 1517 0843599
+
+> **Max hat die Frage am 08.09.2026 um 17:4x selbst beantwortet: Er besitzt die SIM nicht
+> mehr.** Damit ist der Abschnitt unten in der Sache erledigt, seine Herleitung stimmte.
+>
+> **Die härtere Quelle wusste es schon**, und dieser Abschnitt hat sie vier Wochen lang
+> nicht gekannt: `~/.claude/memory/MAX.md` führt die Nummer seit dem **31.08.2026** mit
+> dem Satz „Die SIM besitzt Max nicht mehr, die Nummer lebt aber weiter". Wer hier eine
+> offene Frage sah, hat in der Personen-Akte nicht nachgesehen. **MAX.md ist die Wurzel,
+> dieser Abschnitt war die Kopie.**
+>
+> **Was daraus folgt, und es steht so in MAX.md noch nicht:** Eine abgegebene
+> Mobilnummer wird vom Anbieter nach einer Sperrfrist neu vergeben. Solange sie
+> irgendwo als Wiederherstellungsweg hinterlegt ist, kann der nächste Inhaber sie
+> genau dafür benutzen. **Bekannt hinterlegt ist sie an zwei Stellen:** hier am
+> privaten Facebook-Konto (Kontaktinformationen, kein zweiter Faktor) und beim privaten
+> Kleinanzeigen-Konto `shopping@karastelev.de`, dessen SMS-Bestätigung deshalb seit dem
+> 31.08.2026 ins Leere geht `[B: MAX.md]`. **Ob es weitere gibt, ist nicht erhoben**, und
+> das ist die eigentliche offene Frage, nicht mehr die Eigentümerschaft.
+>
+> **Warum WhatsApp trotzdem läuft** (Chrome-App auf Port 9226): Eine bestehende
+> WhatsApp-Sitzung überlebt den Verlust der SIM, sie bricht erst beim nächsten
+> Neuanmelden. Das ist kein Widerspruch, sondern der Grund, warum der Verlust so lange
+> nicht auffiel.
+
+### Der Stand bis dahin, unverändert stehengelassen
 
 > **KORREKTUR 10.08.2026, 23:12: „Max nicht zuzuordnen" war zu stark.** Der Absatz unten
 > stützte sich darauf, dass keine seiner bekannten Nummern auf 99 endet. Das stimmt, führt
