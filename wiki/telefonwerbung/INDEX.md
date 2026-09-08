@@ -10,6 +10,10 @@ description: Wann ein Werbeanruf zulaessig ist, was er enthalten muss, und was d
 Wortlaut, mit Fundstellen und Zitaten, stehen in [rechtsprechung.md](rechtsprechung.md)**;
 hier steht, was daraus folgt.
 
+**Die Gegenrichtung, also wenn jemand Max anruft, steht in
+[anrufer-ermitteln-und-melden.md](anrufer-ermitteln-und-melden.md)**: wer hinter einer
+Nummer steckt und wie man Rufnummernmissbrauch ohne Huerden meldet.
+
 **Nächste Recherche zum selben Thema frühestens am 03.10.2026**, siehe
 `rules-abruf/10-werkzeug/neues-werkzeug-bekommt-ein-handbuch.md`.
 
