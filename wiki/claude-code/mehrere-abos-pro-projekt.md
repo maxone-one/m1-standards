@@ -174,37 +174,31 @@ duerfte, waere ein Einfallstor: Es genuegte, eine Datei mitzuliefern, und fremde
 liefen ueber ein fremdes Konto. Wer diesen Weg in Zukunft wieder vorschlaegt, misst ihn
 bitte mit den vier Zeilen oben nach, statt der Rangfolgen-Logik zu glauben.
 
-## 5. Was offen ist
+## 5. Was offen war, und wie es ausging
 
-**Eine Annahme ist noch nicht gemessen**, und sie traegt die Konstruktion aus Abschnitt 1:
+**Die Annahme, die die Konstruktion aus Abschnitt 1 trägt, ist gemessen, und sie hält**
+[B: NUC, 09.09.2026, 10:52]. Im Profil `Fallnavigator` gesetzt, danach drei Fenster
+gleichzeitig offen:
 
-- **Ob machine-scoped Einstellungen wirklich je Profil gespeichert werden.** Die VS-Code-Doku
-  sagt es nur indirekt, ueber die Bemerkung, dass sie beim Profil-Export ausgelassen werden.
-  Faellt das anders aus, bleibt der Wrapper aus Abschnitt 1 als Weg, der ohne diese Annahme
-  auskommt.
+| Fenster | Claude-Prozess | Konfigverzeichnis |
+|---|---|---|
+| fallnavigator | PID 116666 | `/home/max/.claude-fallnavigator` |
+| werkstatt | PID 39871 | keine Variable, also `~/.claude` |
+| tagesplaner | PID 13620 | keine Variable, also `~/.claude` |
 
-**Vor dem ersten Kundeneinsatz klaeren, nicht danach.** Der Fall, in dem eine Verwechslung
-fremde Abrechnung bedeutet, vertraegt keine ungepruefte Annahme — das hat Abschnitt 4
-gerade vorgefuehrt.
+Abgelesen an `/proc/<pid>/environ`, also an der Prozessumgebung selbst und nicht an einer
+Anzeige im Panel. **Machine-scoped Einstellungen werden je Profil gespeichert und wirken
+auch nur dort.** Der Wrapper aus Abschnitt 1 wird für diesen Zweck nicht gebraucht.
 
 ## 6. Einrichtung auf dem NUC, der Reihe nach
 
 Linux, Benutzer `max`, Projekte unter `/home/max/Projekte/`. Die Schritte 1 bis 5 gelten je
 Kunde; Schritt 0 einmal.
 
-### Schritt 0: die offene Annahme zuerst klaeren
+### Schritt 0: entfällt seit dem 09.09.2026
 
-**Bevor irgendetwas eingerichtet wird.** Die ganze Konstruktion haengt daran, dass
-`claudeCode.environmentVariables` je Profil gespeichert wird und nicht profiluebergreifend
-(Abschnitt 5).
-
-1. Zweites Profil anlegen: Zahnrad unten links → **Profiles** → **New Profile**.
-2. Darin `claudeCode.environmentVariables` mit einem harmlosen Wert setzen, etwa
-   `{ "name": "ABO_PROBE", "value": "profil-zwei" }`.
-3. Ins Default-Profil zurueck und nachsehen, ob der Wert dort **fehlt**.
-
-**Steht er in beiden Profilen, ist der Weg tot** und es gilt die Wrapper-Variante aus
-Abschnitt 1. Steht er nur im zweiten, weiter mit Schritt 1.
+Hier stand eine Probe, solange Abschnitt 5 offen war. Sie ist gelaufen, der Weg trägt.
+**Der Stolperstein liegt woanders, und zwar in Schritt 2.**
 
 ### Schritt 1: Konfigverzeichnis fuer den Kunden, mit geteiltem Gehirn
 
@@ -230,9 +224,25 @@ ls -la "$NEU"
 
 ### Schritt 2: Profil anlegen und den Kundenordner daran binden
 
-Kundenordner oeffnen, dann **Profiles → New Profile**, Namen wie das Abo. Die Bindung
-entsteht dabei von selbst: das gerade offene Fenster wird dem Profil zugeordnet. Kontrolle
-im Profiles-Editor unter **Folders & Workspaces**.
+Kundenordner oeffnen, dann **Profiles → New Profile**, Namen wie das Abo.
+
+> **KORREKTUR 09.09.2026.** Hier stand, die Bindung entstehe dabei von selbst. **Sie tut es
+> nicht.** Das Profil wird angelegt, der Ordner bleibt am Default-Profil hängen, und das
+> Fenster liest weiter die eigenen Einstellungen: Claude nimmt also Max' Abo, ohne dass
+> irgendwo ein Fehler erscheint. Gemessen an `profileAssociations` in
+> `~/.config/Code/User/globalStorage/storage.json`, wo der Workspace nach dem Anlegen
+> weiterhin auf `__default__profile__` zeigte.
+
+**Die Bindung schreibt erst der Wechsel ins Profil.** Am schnellsten von der Befehlszeile,
+und der Befehl erledigt Anlegen, Binden und Neuladen in einem:
+
+```bash
+code --profile "Fallnavigator" /home/max/Projekte/fallnavigator/fallnavigator.code-workspace
+```
+
+Kontrolle im Profiles-Editor unter **Folders & Workspaces**, härter in derselben
+`storage.json`: Dort muss neben dem Workspace die Profil-ID stehen, nicht
+`__default__profile__`.
 
 **Ein Profil traegt beliebig viele Ordner.** Kommt spaeter ein zweiter Ordner desselben
 Kunden dazu, oeffnest du ihn und waehlst dasselbe Profil — kein neues anlegen.
