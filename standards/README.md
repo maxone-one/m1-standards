@@ -1,133 +1,179 @@
 # Standards
 
-Jede Regel als eigene `NNN-name.md`, mit Versionsnummer und Begründung. Format nahe am ADR-Stil (Architecture Decision Records), nachvollziehbar WARUM eine Regel existiert.
+Jede Regel als eigene `NNN-name.md`, mit Status, Datum und Begründung. Format nahe am
+ADR-Stil, nachvollziehbar WARUM eine Regel existiert.
 
-## Cap-Regel: maximal 33 Standards
+## Die Blockordnung (Neuschnitt 09.09.2026)
 
-Neue Regeln werden als **Abschnitt in bestehende Dateien** eingefügt, nicht als neue Nummer.
-Nur wenn ein Thema genuinely orthogonal zu allen bestehenden ist, darf eine neue Datei entstehen.
-Ziel: auch nach weiteren Erweiterungen nie mehr als 33 Nummern.
+**Nummern werden nicht mehr fortlaufend vergeben, sondern in ihrem Themenblock.** Neues geht
+in den Block, dem es gehört: entweder als Abschnitt in eine bestehende Nummer oder auf die
+freie Nummer des Blocks. **Hinten anhängen gibt es nicht mehr, weil hinten kein Platz ist,
+sondern nur noch in der Mitte.**
 
-Aktuell: **33 Standards** (0 freie Slots). Die Obergrenze ist erreicht: Neues geht ab jetzt ausschliesslich als Abschnitt in eine bestehende Datei, nie als neue Nummer.
+| Block | Nummern | frei |
+|---|---|---|
+| A · Betrieb und Auslieferung | 001-005 | — |
+| B · Netz und Domains | 006-008 | **008** |
+| C · Sicherheit | 009-013 | **013** |
+| D · Daten und Zugang | 014-016 | **016** |
+| E · Oberfläche, Marke und Community | 017-021 | — |
+| F · Ablauf und Qualität | 022-026 | — |
+| G · Die Projektakte | 027-030 | **030** |
+| H · Dienste, Kosten, Recht | 031-033 | — |
 
-## Propagations-Regel (2026-05-30)
+**Cap-Regel: maximal 33 Standards.** Aktuell **29 belegt, 4 frei**. Die Zahl wird nicht
+getippt, sondern gemessen: `python3 scripts/standards-zaehlen.py`. Vor dem Neuschnitt stand
+hier „33 Standards, 0 freie Slots", während es 34 waren; die Zeile war zuletzt am 27.08.
+angefasst worden und niemand hat nachgezählt.
 
-Wenn in einem Projekt eine neue Regel entsteht (Vorfall, Direktive, Erfahrung):
-
-1. **Standard anlegen oder erweitern**, hier in maxone-standards (Cap beachten)
-2. **Alle anderen Projekte nachrüsten**, sofort, nicht "beim nächsten Touch"
-3. **Broadcast anlegen** wenn Drift-Risiko besteht (Standard 021-C)
-
-Projektlokal = temporär. In Standards = permanent und projektübergreifend.
-
----
-
-## Pflicht-Dateien pro Projekt (alle auf einmal anlegen/prüfen)
-
-Für jedes Projekt mit `status: live` oder `status: dev` müssen diese Dateien **gleichzeitig** vorhanden sein:
-
-| Datei | Ort | Standard | Inhalt |
-|---|---|---|---|
-| `CONCEPT.md` | Repo-Root | 029 | Was das Produkt ist, Vision, Sprache |
-| `PLAN.md` | Repo-Root | 024 | Offene + erledigte Pläne |
-| `BUGS.md` | Repo-Root | 025 | Aktive + geschlossene Bugs |
-| `HANDOFF.md` | `/opt/<projekt>/` auf Server | 004 | Infra-Zustand, letzter Deploy |
-| `docs/DECISIONS.md` | `docs/` | 031 | Strategische Entscheidungen, die PRD/Konzept überschreiben (nur wenn PRD vorhanden) |
-
-Wenn eine Datei fehlt, alle vier auf einmal anlegen, nicht nur die fehlende.
+**Wie ein Verweis aussieht:** als Link auf den Dateinamen
+(`[023-gates-und-review.md](023-gates-und-review.md)`), nicht als nackte Nummer im Fließtext.
+Ein Dateiname bricht sichtbar, wenn die Datei wandert; eine Zahl zeigt stumm auf etwas
+anderes. Beim Neuschnitt fanden sich Verweise auf „Standard 044" (existierte nie) und auf
+„018 (Bundle-Drift)", das seit einer früheren Umnummerierung `auth-db` heißt.
 
 ---
 
 ## Index
 
-**Infrastruktur & Deploy:**
-- [001-deploy.md](001-deploy.md), Blue/Green + kein Prod-Build + Deploy-Pipeline + Post-Deploy-Warmup
-- [002-secrets-tls.md](002-secrets-tls.md), Zentraler Secrets-Store + TLS via DNS-01
-- [004-handoff-md.md](004-handoff-md.md), HANDOFF.md auf dem Server vor jeder Arbeit lesen
-- [005-paths-naming.md](005-paths-naming.md), Pfade und Container-Naming-Konventionen
-- [006-domain-policy.md](006-domain-policy.md), Neue Infrastruktur auf `.one`, nie `.studio`
-- [012-cert-dns-reality.md](012-cert-dns-reality.md), DNS auf eigenen Server + TLS-Cert gültig + LE-Issuer
-- [015-container-safety.md](015-container-safety.md), Container-Misconfig-Audit + Disk-Guard (builder prune, 4h-Cron, 80%-Bremse)
-- [017-routine-platform.md](017-routine-platform.md), Cron/Watchdog-Routinen nur auf Heartbeat-Plattform (GitHub Actions schedule, systemd-Timer, VECTOR)
-- [019-cost-caps-and-budget-alerts.md](019-cost-caps-and-budget-alerts.md), Drei Verteidigungslinien gegen API-Kostenüberraschungen
-- [033-central-infrastructure.md](033-central-infrastructure.md), Zentrale Dienste + selfhosted n8n als Automatisierungs-Hub + Zustellgarantien in Ketten (Idempotenz, Wiederholung, Fehlerschlange mit Rückweg, Alarm, Signatur, Schema, Korrelations-ID) + ein Downloadkanal
+**A · Betrieb und Auslieferung**
+- [001-deploy.md](001-deploy.md), Blue/Green + kein Prod-Build + Deploy-Pipeline + Warmup
+- [002-server-ordnung.md](002-server-ordnung.md), Pfade, Container-Namen, Netze, HANDOFF.md auf dem Server
+- [003-container-sicherheit.md](003-container-sicherheit.md), Container-Misconfig-Audit + Disk-Guard
+- [004-zentrale-infrastruktur.md](004-zentrale-infrastruktur.md), Zentrale Dienste, selfhosted n8n, Zustellgarantien, ein Downloadkanal
+- [005-geplante-laeufe.md](005-geplante-laeufe.md), Routinen nur auf Heartbeat-Plattform, nie in IDE- oder Claude-Sitzungen
 
-**Tests & Dokumentation:**
-- [003-tests-quality.md](003-tests-quality.md), Test-First (Smoke + Unit vor "live") + Code-Health-Budget (Refactoring ≥ 15 %, Duplikation < 5 %)
-- [024-plan-tracker.md](024-plan-tracker.md), PLAN.md mit "## Noch offen" + "## Erledigt" in jedem aktiven Projekt
-- [025-bug-registry.md](025-bug-registry.md), BUGS.md: persistente Bug-Wissensbasis vor jeder Debugging-Session lesen
-- [029-concept-reference.md](029-concept-reference.md), CONCEPT.md: Produkt-Konzept als SSoT für Agenten und Copy + Ausbaustufe lebendes Projekt-Brain (code-verankerter Feature-Katalog, Selbsterhaltung, Konsum-Regel)
-- [031-decisions-md.md](031-decisions-md.md), DECISIONS.md: Strategische Entscheidungen die PRD/Konzept überschreiben + Drei-Quellen-Hierarchie
-- [032-docs-index.md](032-docs-index.md), docs/-Index je Projekt
+**B · Netz und Domains**
+- [006-domain-politik.md](006-domain-politik.md), Neue Infrastruktur auf `.one`, nie `.studio`
+- [007-zertifikate-und-dns.md](007-zertifikate-und-dns.md), DNS auf eigenen Server, TLS-Cert gültig, LE-Issuer
+- *008 frei, für Netz und Domains*
 
-**UI & Produkt:**
-- [007-required-ui.md](007-required-ui.md), Impressum-API + Credits-API + Vector-Chat-Widget + Footer (alle Customer-facing Pflichten)
-- [022-ssot-version.md](022-ssot-version.md), Version-Marker (ENV + /api/version + Footer) + Cron-E-Mail-Dedup + SSoT/kein Hardcode
-- [023-admin-ui.md](023-admin-ui.md), Dashboard-Layout + DevPanel + App-Launcher
-- [026-pioneer-system.md](026-pioneer-system.md), Pioneer-System: limitierte Slots, Puls-Pool, Leaderboard
-- [027-image-pipeline.md](027-image-pipeline.md), Bild-Pipeline (EXIF, Format, Optimierung)
-- [028-brevo-api-outreach.md](028-brevo-api-outreach.md), Brevo API Outreach-Campaigns
-- [030-manufacturer-assets.md](030-manufacturer-assets.md), Hersteller-Logos + Produktbilder: Bezugsreihenfolge (Pressematerial → Website-Inspektion → Playwright), Speicherort, URL-Muster KNX-Hersteller, Audit-Query
+**C · Sicherheit**
+- [009-geheimnisse-und-tls.md](009-geheimnisse-und-tls.md), Zentraler Secrets-Store + TLS via DNS-01
+- [010-sicherheits-scans.md](010-sicherheits-scans.md), Secret-Scan (gitleaks) + Static-Analysis (Semgrep OWASP)
+- [011-llm-sicherheit.md](011-llm-sicherheit.md), Direct und Indirect Injection, Agent-Rechte, Approval-Queue
+- [012-live-audits.md](012-live-audits.md), DSGVO-Tracker-Audit + Bundle-Drift-Audit
+- *013 frei, für Sicherheit*
 
-**Sicherheit & Gates:**
-- [008-gates-review.md](008-gates-review.md), Gate 1 (Konzept) + Gate 2 (erste Scheibe sichtbar) + Gate 3 (Launch-Review) + Pentest-Light + Re-Review alle 180 Tage
-- [009-compliance.md](009-compliance.md), Sunset-Prozess + AVV/DPA-Registry (beide DSGVO-Art.-28-Richtungen)
-- [010-stack-platform.md](010-stack-platform.md), Stack-Whitelist + Plattform-Blacklist (Lovable/Bolt/Base44 raus) + Self-Hosted-First
-- [011-live-domain-audit.md](011-live-domain-audit.md), DSGVO-Tracker-Audit + Bundle-Drift-Audit (beide Live-Domain-Probes)
-- [013-security-scanning.md](013-security-scanning.md), Secret-Scan (gitleaks) + Static-Analysis (Semgrep OWASP)
-- [014-llm-security.md](014-llm-security.md), Direct Injection (System-Prompt-Härtung, Tool-Rechte, Approval-Queue) + Indirect Injection (RAG/Mail/Telegram)
+**D · Daten und Zugang**
+- [014-auth-und-db-trennung.md](014-auth-und-db-trennung.md), Supabase SSR Auth, eine DB pro Projekt, Zugriffsrechte
+- [015-rls-policy-nennt-ihre-rolle.md](015-rls-policy-nennt-ihre-rolle.md), Jede RLS-Policy nennt ihre Rolle mit `TO`
+- *016 frei, für Daten und Zugang*
 
-**Infrastruktur-Services:**
-- [016-mail.md](016-mail.md), Mail-Architektur (Outbound=Brevo, Inbound=Stalwart JMAP) + Passwort-Sync
-- [018-auth-db.md](018-auth-db.md), Supabase SSR Auth (broad Middleware-Matcher) + DB-Isolation (ein Projekt, eine DB)
-- [021-project-coordination.md](021-project-coordination.md), Spec-Archiv (PRD/TODO/DONE) + Dep-Currency (Sweep-Kadenz) + Cross-Project-Broadcast
+**E · Oberfläche, Marke und Community**
+- [017-pflichtbausteine-oberflaeche.md](017-pflichtbausteine-oberflaeche.md), Impressum, Credits, Widget, Footer, Layout-Qualität, Design-first
+- [018-admin-oberflaeche.md](018-admin-oberflaeche.md), Dashboard-Layout + DevPanel + App-Launcher
+- [019-marke-und-sprache.md](019-marke-und-sprache.md), Wahrhaftige Unterschrift, echte Umlaute, Schreibstil
+- [020-bilder.md](020-bilder.md), Verarbeitungs-Pipeline + Herstellerquellen für Logos und Produktbilder
+- [021-pioneer-system.md](021-pioneer-system.md), **Jedes Projekt führt eines**: limitierte Slots, Puls-Pool, Leaderboard
 
-**Marke & Kommunikation:**
-- [020-brand-communication.md](020-brand-communication.md), Wahrhaftige Unterschrift (KI nie als Max) + Echte Umlaute (niemals ASCII-Ersatz)
+**F · Ablauf und Qualität**
+- [022-tests-und-code-qualitaet.md](022-tests-und-code-qualitaet.md), Test-First + Code-Health-Budget
+- [023-gates-und-review.md](023-gates-und-review.md), Gate 1 bis 3, Bau-Reihenfolge und Takt, Pentest-Light, Re-Review
+- [024-stack-und-plattform.md](024-stack-und-plattform.md), Stack-Whitelist, Plattform-Blacklist, Self-Hosted-First
+- [025-ssot-und-versionsmarker.md](025-ssot-und-versionsmarker.md), Version-Marker, Cron-Dedup, SSoT, kein Hardcode
+- [026-projekt-koordination.md](026-projekt-koordination.md), Spec-Archiv, Dep-Currency, Cross-Project-Broadcast, was ins Repo gehört
+
+**G · Die Projektakte**
+- [027-projektakte.md](027-projektakte.md), `docs/INDEX.md` als Einstiegspunkt
+- [028-konzept-und-entscheidungen.md](028-konzept-und-entscheidungen.md), CONCEPT.md, das lebende Projekt-Brain, DECISIONS.md
+- [029-plan-und-fehlerregister.md](029-plan-und-fehlerregister.md), PLAN.md + BUGS.md + Cross-Project-Bugmuster
+- *030 frei, für die Projektakte*
+
+**H · Dienste, Kosten, Recht**
+- [031-mail.md](031-mail.md), Gateway-Pflicht, Mail-Architektur, Passwort-Sync
+- [032-kosten-caps.md](032-kosten-caps.md), Drei Verteidigungslinien gegen Kostenüberraschungen
+- [033-compliance-lebenszyklus.md](033-compliance-lebenszyklus.md), Sunset-Prozess + AVV/DPA-Registry
 
 ---
+
+## Umleitung: wo die alten Nummern geblieben sind
+
+**Rund 655 Dateien in allen Projekten verweisen auf die alten Nummern.** Sie werden nicht auf
+Vorrat umgeschrieben, sondern beim nächsten Anfassen des jeweiligen Projekts. Diese Tabelle
+löst jeden alten Verweis auf.
+
+| alt | neu | | alt | neu |
+|---|---|---|---|---|
+| 001 deploy | 001 | | 018 auth-db | 014 |
+| 002 secrets-tls | 009 | | 019 cost-caps | 032 |
+| 003 tests-quality | 022 | | 020 brand-communication | 019 |
+| 004 handoff-md | 002 (B) | | 021 project-coordination | 026 |
+| 005 paths-naming | 002 (A) | | 022 ssot-version | 025 |
+| 006 domain-policy | 006 | | 023 admin-ui | 018 |
+| 007 required-ui | 017 | | 024 plan-tracker | 029 (A) |
+| 008 gates-review | 023 | | 025 bug-registry | 029 (B) |
+| 009 compliance | 033 | | 026 pioneer-system | 021 |
+| 010 stack-platform | 024 | | 027 image-pipeline | 020 (A) |
+| 011 live-domain-audit | 012 | | 028 brevo-api-outreach | → Wiki |
+| 012 cert-dns-reality | 007 | | 029 concept-reference | 028 (A/B) |
+| 013 security-scanning | 010 | | 030 manufacturer-assets | 020 (B) |
+| 014 llm-security | 011 | | 031 decisions-md | 028 (C) |
+| 015 container-safety | 003 | | 032 docs-index | 027 |
+| 016 mail | 031 | | 033 central-infrastructure | 004 |
+| 017 routine-platform | 005 | | 034 rls-policy | 015 |
+
+**Der Gateway-Abschnitt hieß 016-C und heißt jetzt 031-A.** Wer einen Verweis auf „016-C"
+findet, meint die Mail-Gateway-Pflicht.
+
+---
+
+## Pflicht-Dateien pro Projekt (alle auf einmal anlegen)
+
+| Datei | Ort | Standard |
+|---|---|---|
+| `CONCEPT.md` | Repo-Root | 028 |
+| `PLAN.md` | Repo-Root | 029 |
+| `BUGS.md` | Repo-Root | 029 |
+| `HANDOFF.md` | `/opt/<projekt>/` auf dem Server | 002 |
+| `docs/DECISIONS.md` | `docs/` | 028 (nur wenn ein PRD existiert) |
+
+Fehlt eine, werden alle auf einmal angelegt, nicht nur die fehlende.
+
+## Propagations-Regel (2026-05-30)
+
+Wenn in einem Projekt eine neue Regel entsteht (Vorfall, Direktive, Erfahrung):
+
+1. **Standard anlegen oder erweitern**, hier in maxone-standards (Blockordnung beachten)
+2. **Alle anderen Projekte nachrüsten**, sofort, nicht „beim nächsten Touch"
+3. **Broadcast anlegen**, wenn Drift-Risiko besteht
+   ([026-projekt-koordination.md](026-projekt-koordination.md) C)
+
+Projektlokal = temporär. In Standards = permanent und projektübergreifend.
 
 ## Format einer Regel
 
 ```markdown
-# NNN — Titel
+# NNN: Titel
 
 **Status:** active | deprecated | proposed
 **Seit:** YYYY-MM-DD
 **Gilt für:** alle Projekte | nur Kundenprojekte | ...
 
 ## Regel / Inhalt
-Knappe Aussage, was Pflicht ist.
-
 ## Warum
-Was passiert ist, das diese Regel nötig gemacht hat.
-
 ## Wie anwenden
-Konkrete Schritte, Befehle, Templates.
-
 ## Audit
-Wie `scripts/audit.mjs` die Einhaltung prüft.
 ```
 
-Bei zusammengeführten Standards (mehrere Themen in einer Datei): Inhalt-Übersicht als erstes, dann Abschnitte `## A —`, `## B —` etc.
+Bei mehreren Themen in einer Datei: Inhalt-Übersicht als erstes, dann `## A:`, `## B:` etc.
 
----
+## Cross-Links: Wiki und Standards
 
-## Cross-Links: Wiki & Standards
+**Regel:** Hat ein Standard ein komplexes narratives Thema (Vorfalls-Geschichte,
+Betriebswissen, Nachschlagedaten), gehört der Kontext ins Wiki, der Standard verlinkt
+dorthin. Das Wiki verlinkt zurück zum Standard als Pflicht-Spec.
 
-Standards und Wiki sind bidirektional verknüpft. Die Pfeile:
-
-| Standard | Wiki-Topic |
+| Standard | Wiki-Seite |
 |---|---|
-| 016-mail | `~/.claude/wiki/maxone-mail-pilot/INDEX.md` |
-| 026-pioneer-system | `~/.claude/wiki/pioneers/INDEX.md` |
-| 027-image-pipeline | `~/.claude/wiki/brand/visual-style.md` |
-| 033-central-infrastructure | `maxone-standards/wiki/integrationen/zustellgarantien.md` |
-
-**Regel:** Wenn ein Standard ein komplexes narratives Thema hat (Vorfalls-Geschichte, Betriebswissen, Sprach-Konzepte), gehört der Kontext ins Wiki, der Standard verlinkt dorthin. Das Wiki verlinkt zurück zum Standard als Pflicht-Spec.
-
-Wiki-Index-Datei (Eintrittspunkt): `c:/Users/max/.claude/INDEX.md`
+| 014-auth-und-db-trennung | `wiki/auth/supabase-ssr-setup.md` |
+| 017-pflichtbausteine-oberflaeche | `wiki/design/brief-checkliste.md` |
+| 020-bilder | `wiki/bilder/hersteller-bezugsquellen.md`, `~/.claude/wiki/brand/visual-style.md` |
+| 021-pioneer-system | `wiki/pioneer/umsetzung.md` |
+| 004-zentrale-infrastruktur | `wiki/integrationen/zustellgarantien.md` |
+| 031-mail | `wiki/integrationen/brevo-outreach-im-gateway.md`, `~/.claude/wiki/maxone-mail-pilot/INDEX.md` |
 
 ## Externe Recherche
 
-- [`../research/2026-04-28-github-similar-projects.md`](../research/2026-04-28-github-similar-projects.md), ossf/scorecard, garak, promptfoo, trivy, OWASP-Top-10-LLM
+- [`../research/2026-04-28-github-similar-projects.md`](../research/2026-04-28-github-similar-projects.md),
+  ossf/scorecard, garak, promptfoo, trivy, OWASP-Top-10-LLM

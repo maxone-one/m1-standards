@@ -49,7 +49,7 @@ Aus jedem Vorfall sind unverhandelbare Regeln entstanden — vollständig dokume
 - **Trigger:** Passwort für `hey@viktoria-from.de` über `/api/atelier/mailbox-password` geändert. Stalwart RocksDB aktualisiert, maxone-Supabase `email_accounts` (mit AES-GCM-verschlüsseltem JMAP-Passwort) nicht.
 - **Verstärker:** `email-client` MDN-Checker (IP `10.0.2.3`) läuft alle ~3 Min und authentifiziert sich pro Konto via JMAP. Mit altem Passwort → `security.authentication-ban`. Ban läuft ab → erneuter Ban. 45+ Events zwischen 15:41 und 21:34 UTC.
 - **Endzustand:** SnappyMail-Login mit `AUTHENTICATIONFAILED` geblockt. Stalwart-Neustart 21:32 UTC löscht den Ban — MDN-Checker triggert ihn 21:34 UTC neu. Zyklus nicht ohne Store-Sync stoppbar.
-- **Permanenter Fix:** [[zentinel-rules#regel-23]]. Standard 016 (mailbox-password-sync) verlangt: Stalwart-Änderung MUSS `email_accounts` + Browser-Sessions synchron mitziehen, sonst `warning`-Feld in HTTP-Response.
+- **Permanenter Fix:** [[zentinel-rules#regel-23]]. Standard 031 (mailbox-password-sync) verlangt: Stalwart-Änderung MUSS `email_accounts` + Browser-Sessions synchron mitziehen, sonst `warning`-Feld in HTTP-Response.
 - **Lehre:** Zwei unabhängige Passwort-Stores ohne Sync-Mechanismus = garantierte Desync bei der ersten Änderung. Der MDN-Checker macht aus einem stillen Bug einen lauten Ban-Zyklus — gut für Diagnose, schlecht für Nutzer.
 
 ### 2026-04-28 — Unsichtbarer Anhang + Blue/Green Split-Brain

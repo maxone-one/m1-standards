@@ -74,6 +74,6 @@ Alias-Routing eingebunden (z.B. viktoria-from: `mail@` → `hey@` zusaetzlich).
 
 - Briefing: `c:/Users/max/Projects/Zentinel/briefings/BRIEF-BREVO-MULTIACCOUNT-2026-05-22.md`
 - RFC 2142 (mailbox names for common services)
-- Standard 016-mail
+- Standard 031-mail
 - Wiki [[brevo-accounts]] — Owner-Accounts pro Projekt
 - Wiki [[servers]] — Stalwart auf maxone-prod

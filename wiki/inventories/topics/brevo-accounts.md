@@ -157,7 +157,7 @@ Im Zuge der Aktion wurde der `companyName` des Brevo-Accounts von "Schreibstudio
 ## Sources
 
 - Briefing: `c:/Users/max/Projects/Zentinel/briefings/BRIEF-BREVO-MULTIACCOUNT-2026-05-22.md`
-- Standard 016-mail
+- Standard 031-mail
 - Standard 003-secrets-store
 - Standard 004-tls-dns01
 - Wiki [[mail-aliases]] — Alias-Routing pro Domain

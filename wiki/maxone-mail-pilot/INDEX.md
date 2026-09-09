@@ -31,7 +31,7 @@ Pilot-Wiki für das Mail/Zentinel/Stalwart-Subsystem. Komprimiert die [ZENTINEL-
 | Neue Domain anlegen / Mail-Setup | [[topics/secrets-tls]] + [[topics/zentinel-rules#regel-12]] + [[topics/zentinel-rules#regel-20]] |
 | Sent-Folder leer oder Anhang fehlt | [[topics/zentinel-rules#regel-19]] und [[topics/zentinel-rules#regel-21]] |
 | Blue/Green-Swap | [[topics/zentinel-rules#regel-22]] |
-| Mailbox-Passwort ändern (Stalwart/Atelier) | [[topics/zentinel-rules#regel-23]] + Standard 016-mail |
+| Mailbox-Passwort ändern (Stalwart/Atelier) | [[topics/zentinel-rules#regel-23]] + Standard 031-mail |
 | OOM / Container-Spikes / `swapoff` / mem_limit-Frage | [[topics/zentinel-rules#regel-24]] + Standard 015-container-safety |
 | Ein Vorfall wiederholt sich (Symptom-Match) | [[topics/failure-modes]] zuerst — prüfe ob historischer Match |
 | Vacation / Auto-Reply / OOO einrichten | [[topics/sieve-runtime]] — niemals in trusted Scripts, immer per-account JMAP |
@@ -42,7 +42,7 @@ Pilot-Wiki für das Mail/Zentinel/Stalwart-Subsystem. Komprimiert die [ZENTINEL-
 
 - 2026-05-02: Initial pilot compile (manual run) — 3 Topics, 1 Concept.
 - 2026-05-02: Refactor — failure-modes als eigenes Topic extrahiert; Concept-Wechsel `brevo-vs-stalwart` → `silent-failures`; Coverage-Tags auf Section-Ebene; INDEX/Schema spec-konform.
-- 2026-05-22: +Regel 23 (Mailbox-Passwort-Sync, Standard 016) + Regel 24 (mem_limit Pflicht für Stalwart, kein `swapoff -a`, Standard 015). +Vorfall 2026-05-16 (Passwort-Desync hey@viktoria-from.de) + Vorfall 2026-05-21 (OOM-Storm). zentinel-rules + failure-modes nachgezogen, Bibel ist Source-of-Truth.
+- 2026-05-22: +Regel 23 (Mailbox-Passwort-Sync, Standard 031) + Regel 24 (mem_limit Pflicht für Stalwart, kein `swapoff -a`, Standard 015). +Vorfall 2026-05-16 (Passwort-Desync hey@viktoria-from.de) + Vorfall 2026-05-21 (OOM-Storm). zentinel-rules + failure-modes nachgezogen, Bibel ist Source-of-Truth.
 - 2026-05-27: mail-architecture +Projekt-Status-Tabelle. venfree ist live mit eigenem Brevo-Account (`mail@venfree.de`, Org `6a10d33f1e4d419de9018610`). Cleanup im Maxone-Account offen.
 
 ## Compile-Stand

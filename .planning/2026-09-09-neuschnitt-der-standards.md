@@ -8,7 +8,10 @@ so, dass es langfristig funktioniert, **ohne zusätzliche Nummern dranhängen zu
 die Cap-Regel und schrieb den Inhalt stattdessen als Abschnitt in 008. Dabei fiel auf: Die
 Registry sagt 33, es sind 34.
 
-**Status: Entwurf. Es ist noch keine Standard-Datei geändert und keine Nummer vergeben.**
+**Status: UMGESETZT am 09.09.2026, 14:30 bis 14:5x.** Der Entwurf unten steht unverändert,
+was daraus wurde, steht am Ende unter „Was daraus wurde". Zwei Dinge sind anders gelaufen
+als geplant, beide dort benannt: Das Pioneer-System bleibt ein Standard (Max-Direktive), und
+die Checklisten werden nicht angefasst (eigene Nummernreihe).
 
 ## Was gemessen ist
 
@@ -128,3 +131,63 @@ Reihenfolge der Umsetzung, in einem Zug:
 
 **Schritt 2 und 3 sind der teure Teil**: 236 KB lesen und neu schreiben. Das gehört in eine
 eigene Sitzung mit frischem Kontext, nicht an das Ende einer langen.
+
+---
+
+# Was daraus wurde (Vollzug, 09.09.2026)
+
+**29 Nummern belegt, 4 frei, keine Datei über der Größengrenze.** Gemessen mit
+`python3 scripts/standards-zaehlen.py`, das auch die Bestandszeile im README gegen den
+Ordner prüft. Genau diese Zeile war der Anlass des ganzen Vorgangs.
+
+## Zwei Abweichungen vom Entwurf
+
+**Erstens: Das Pioneer-System bleibt ein Standard, und zwar für jedes Projekt.** Der Entwurf
+wollte es ins Wiki schieben, weil es „ein Produkt beschreibt, keine Regel". Max hat das am
+09.09.2026 entschieden und die Prämisse umgedreht: „Es ist Bestandteil jeden Projektes.
+Jedes Projekt, was begonnen wird, soll ein Pioneersystem führen. Allein aus dem Grund, um
+möglichst früh und schnell eine Community zu bilden." Es steht jetzt als **021** in Block E,
+sein `Gilt für` ist von „vanfree (Referenz)" auf „jedes Projekt" erweitert, und der
+Ausführungsteil (Konfetti, SQL, Toast-Copy, Avatar-CSS) liegt in `wiki/pioneer/umsetzung.md`.
+Damit ist Block E voll und die Zahl der freien Nummern vier statt fünf.
+
+**Zweitens: Die Checklisten werden nicht angefasst, und das ist ein eigener Befund.**
+`checklists/` führt eine **zweite Nummernreihe, die ebenfalls „Standard" genannt wird**.
+Beleg: `checklists/016-stack-whitelist.md` schreibt „Pflicht bei Gate 1 (Standard 015
+CONCEPT.md) und bei Gate 3 (Standard 013 LAUNCH-REVIEW.md)" — gemeint sind
+`checklists/015-concept-gate.md` und `checklists/013-launch-gate.md`, nicht die Standards
+015 und 013. Diese Verweise sind in sich korrekt. **Wer sie auf die neuen Standard-Nummern
+umbiegt, zerstört funktionierende Verweise und merkt es nicht, weil das Ergebnis plausibel
+aussieht.** Offen bleibt damit, ob die Checklisten ihre eigene Reihe behalten und nur anders
+heißen sollten. Das ist eine Frage an Max, keine Ausführung.
+
+## Was gemacht wurde
+
+- **24 Dateien 1:1 umbenannt** (`git mv` über einen Zwischenordner, weil Ziel- und
+  Quellnummern einander überlappen), **10 zu 5 zusammengelegt**, Köpfe auf die neue Nummer
+  nachgezogen und das Titelformat auf `# NNN: Titel` vereinheitlicht.
+- **Fünf Wiki-Seiten neu**, für alles, was aus den zu großen Dateien ausgelagert wurde:
+  `wiki/pioneer/umsetzung.md`, `wiki/bilder/hersteller-bezugsquellen.md`,
+  `wiki/design/brief-checkliste.md`, `wiki/auth/supabase-ssr-setup.md`,
+  `wiki/integrationen/brevo-outreach-im-gateway.md`. **Kein Satz ist dabei verloren
+  gegangen**, geprüft mit einer Verlustprüfung über alle Fettungen der Quelldateien
+  (zwei Meldungen, beide Fehlalarme: eine Überschrift und die gewollte Umnummerierung).
+- **Die Umleitungstabelle alt→neu steht in `standards/README.md`.** Die rund 655 Verweise in
+  anderen Projekten werden nicht auf Vorrat umgeschrieben, sondern beim nächsten Anfassen.
+  So wird kein fremdes Repo angefasst, in dem gerade eine andere Session arbeitet.
+- **83 Verweise im Repo nachgezogen**, davon 61 im `VULN-CATALOG.md`, jeweils am Kontext der
+  Fundstelle gelesen statt aus der Tabelle geraten. Das Ersetzen lief simultan: Wer 008 zu
+  023 macht und danach 023 zu 018, zerstört das eben geschriebene Ergebnis.
+
+## Der Nebenbefund, der den Neuschnitt rechtfertigt
+
+**Der Bestand war in seinen Querverweisen bereits verrottet, vor jeder Änderung von heute.**
+`025-bug-registry` verwies auf „**044**, SSoT & kein Hardcode" (044 hat es nie gegeben) und
+auf „**005**, Test-First" (005 war Pfade). `017-routine-platform` nannte „Standards 018
+(Bundle-Drift), 019 (Cert/DNS), 030 (Mail-Architektur)" — alle drei zeigten seit einer
+früheren Umnummerierung auf etwas anderes, und einer davon war ein Selbstverweis mit
+fremder Nummer. **Der bestehende Wächter `scripts/check-standard-refs.mjs` konnte das nicht
+finden, und er sagt selbst warum:** Er meldet nur Verweise auf Nummern, die es *nicht gibt*.
+Ein Verweis auf eine existierende Nummer mit falschem Inhalt fällt durch. Genau deshalb
+steht die Verweis-Konvention jetzt im README: **Verwiesen wird auf den Dateinamen, nicht auf
+die nackte Zahl.** Ein Dateiname bricht sichtbar, eine Zahl zeigt stumm woanders hin.
