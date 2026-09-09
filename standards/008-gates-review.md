@@ -7,7 +7,7 @@
 ## Inhalt
 
 - [A] Gate 1: Konzept vor Code (CONCEPT.md)
-- [E] Gate 2: Die erste Scheibe ist sichtbar
+- [E] Gate 2: Die erste Scheibe ist sichtbar + Reihenfolge und Takt (E.1: UI, Werkzeug, Backend; alle vier Stunden etwas Sichtbares)
 - [B] Gate 3: Launch-Gate (LAUNCH-REVIEW.md)
 - [C] Pentest-Light (defensive Außensicht)
 - [D] Re-Review-Reminder (alle 180 Tage)
@@ -84,6 +84,48 @@ Zahlenden keiner.
 
 **Audit:** Ein `PLAN.md`, dessen erste Aufgabe kein ansehbares Ergebnis hat, ist ein
 Befund. Verhaltensfassung mit Anlass: `~/.claude/rules/erst-der-sichtbare-teil.md`.
+
+### E.1: Die Reihenfolge und der Takt (Max-Direktive 09.09.2026)
+
+**UI first, Werkzeug second, Backend third. In dieser Reihenfolge, in jedem Projekt,
+eigene wie Kundenprojekte.** Gate 2 verlangt, dass die erste Scheibe sichtbar ist. Dieser
+Abschnitt sagt, was danach kommt und in welchem Abstand: zuerst die Oberfläche, die der
+Auftraggeber ansehen und beurteilen kann, dann das Werkzeug, das die Arbeit tatsächlich
+tut, zuletzt der Unterbau, der es dauerhaft und für viele trägt.
+
+**Die Regel gilt der Umsetzung, nicht der Planung** (Max, 09.09.2026, 13:00). Eine
+Roadmap darf und soll fachlich richtig ordnen: was voneinander abhängt, was zuerst
+geklärt sein muss, was aufeinander aufbaut. GSD plant also weiter nach Sachlogik. **Erst
+beim Bauen greift die Reihenfolge, und dort greift sie als Dreierbündel: UI, Werkzeug,
+Backend folgen dicht aufeinander, innerhalb derselben Scheibe**, nicht als drei
+Projektphasen, zwischen denen Wochen liegen. Wer die drei auseinanderzieht, hat wieder
+Schichten gebaut, nur in anderer Reihenfolge.
+
+**Der Takt: spätestens alle vier Stunden gibt es etwas Neues zu sehen.** Der Auftraggeber,
+bei einem Kundenprojekt der Kunde, soll den Fortschritt in diesem Abstand sehen können,
+ohne danach fragen zu müssen. Vier Stunden sind damit auch die Obergrenze für den
+Zuschnitt einer Aufgabe: **Was länger als einen halben Arbeitstag braucht, bevor irgendwer
+irgendetwas sehen kann, ist falsch geschnitten und wird geteilt**, nicht durchgezogen.
+Sichtbar heißt dabei dasselbe wie in der Tabelle oben, eine Attrappe zählt ausdrücklich.
+
+**Dass das UI danach Schritt für Schritt nachgezogen werden muss, ist ausdrücklich in
+Ordnung und kein Planungsfehler.** Werkzeug und Backend erschließen im Bauen Wege, die
+beim Entwurf der Oberfläche niemand kennen konnte, und dann überholen sie das UI. Wer
+daraus schließt, die Oberfläche hätte warten sollen, bis unten alles feststeht, hat die
+Reihenfolge umgedreht. **Das Nachziehen ist der Normalfall, nicht die Panne**, und es ist
+billiger als der umgekehrte Weg: Ein UI, das einer fertigen Datenbank hinterhergebaut
+wird, erbt deren Denkweise, und der Auftraggeber sieht bis dahin nichts.
+
+**Warum die Reihenfolge und nicht nur die erste Scheibe:** Ein Backend ohne Oberfläche
+lässt sich nicht abnehmen, nur glauben. Der Zahlende kann eine Tabelle nicht beurteilen,
+eine Seite schon, und er korrigiert dort in Minuten, was unten Tage kostet. Bei einem
+Kundenprojekt kommt hinzu, dass sichtbarer Fortschritt die Beziehung trägt: Wer vier
+Stunden nichts sieht, hält das Projekt für gestorben, ganz gleich, wie viel in dieser Zeit
+entstanden ist.
+
+**Audit:** Eine Roadmap, deren erste Phase eine Schicht ist statt einer vertikalen
+Scheibe, ist ein Befund. Ebenso eine Aufgabe im `PLAN.md`, die länger als vier Stunden
+läuft, ohne dass währenddessen etwas Ansehbares entsteht.
 
 ---
 
