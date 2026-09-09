@@ -108,6 +108,16 @@ Zuschnitt einer Aufgabe: **Was länger als einen halben Arbeitstag braucht, bevo
 irgendetwas sehen kann, ist falsch geschnitten und wird geteilt**, nicht durchgezogen.
 Sichtbar heißt dabei dasselbe wie in der Tabelle oben, eine Attrappe zählt ausdrücklich.
 
+**Sichtbar heißt erreichbar, nicht gebaut** (Max, 09.09.2026, 13:16, nach einer Rüge an
+genau dieser Stelle). Eine Datei im Arbeitsbaum des Bauenden ist für den Kunden
+unsichtbar, und ein Pfad, den nur der Auftraggeber anklicken kann, erfüllt den Takt
+nicht. **Der Kunde muss es öffnen können, und wo etwas abgesegnet werden soll, muss er
+auf derselben Seite antworten können**, statt in einer getrennten Rückfrage per Telefon
+oder Mail. Für Attrappen ist ein Artifact auf claude.ai der kürzeste Weg dorthin: ein
+Aufruf, und der Link überlebt das Ausschalten des eigenen Rechners, anders als ein
+weitergeleiteter lokaler Port. **Sobald echte Kundendaten im Spiel sind, gilt das nicht
+mehr**, dann läuft es auf eigener Infrastruktur.
+
 **Dass das UI danach Schritt für Schritt nachgezogen werden muss, ist ausdrücklich in
 Ordnung und kein Planungsfehler.** Werkzeug und Backend erschließen im Bauen Wege, die
 beim Entwurf der Oberfläche niemand kennen konnte, und dann überholen sie das UI. Wer
