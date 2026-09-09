@@ -294,6 +294,12 @@ sind dort keine Verbindungen eingerichtet, weil das Konto eigens gekauft wurde â
 hier beschriebenen Fall ist das folgenlos, die Arbeitsumgebung bleibt Max' eigene und
 Werkzeuge werden lokal nachinstalliert.
 
+**Was das Konfigverzeichnis NICHT trennt** [B: NUC, 09.09.2026]: Eine `.mcp.json` im
+Home-Verzeichnis gilt unabhaengig von `CLAUDE_CONFIG_DIR` und damit auch im Kundenabo. Auf
+dem NUC standen darin Playwright und **Zentinel**, also Max' Mailsystem samt Schluessel im
+Klartext. Vor dem ersten Kundeneinsatz nachsehen und, was nicht hingehoert, im
+Kundenverzeichnis mit `disabledMcpjsonServers` sperren statt die globale Datei umzubauen.
+
 **Getrennt sind ausserdem die Sitzungsverlaeufe**, weil `projects/` im jeweiligen
 Konfigverzeichnis liegt. Bei Kundenarbeit ist das der richtige Zustand und kein Verlust.
 
