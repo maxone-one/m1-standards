@@ -3,9 +3,9 @@
   "name": "maxone-mail-pilot",
   "mode": "knowledge",
   "sources": [
-    { "path": "c:/Users/max/Projects/maxone.one/briefings/ZENTINEL-STALWART-BIBEL.md" },
+    { "path": "/home/max/Projekte/maxone.one/briefings/ZENTINEL-STALWART-BIBEL.md" },
     { "path": "C:/Users/max/.claude/CLAUDE.md", "section_filter": "mail|stalwart|brevo|zentinel|secrets|tls" },
-    { "path": "C:/Users/max/.claude/projects/c--Users-max-Projects-maxone-one/memory/", "exclude": ["MEMORY.md"] }
+    { "path": "/home/max/.claude/projects/-home-max-Projekte-maxone-one/memory/", "exclude": ["MEMORY.md"] }
   ],
   "output": "C:/Users/max/.claude/wiki/maxone-mail-pilot/",
   "auto_update": "prompt",

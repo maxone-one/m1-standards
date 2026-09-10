@@ -6,7 +6,7 @@
     { "path": "https://github.com/maxone-one/voltfair/blob/main/lib/images/process-upload.ts", "note": "Implementation der Upload-Pipeline, zitiert in image-pipeline.md 'Sources'" },
     { "path": "https://github.com/maxone-one/voltfair/blob/main/next.config.ts", "note": "Next.js Image-Optimization-Config, zitiert in image-pipeline.md 'Sources'" },
     { "path": "https://github.com/maxone-one/maxone-standards/blob/main/standards/027-image-pipeline.md", "note": "Kanonischer Standard, zitiert in image-pipeline.md 'Sources' und brand/INDEX.md 'Standards'" },
-    { "path": "c:/Users/max/Projects/maxone.one/packages/ui/src/content/ensemble.json", "note": "Cast-SSoT für das geschlossene Personen-Ensemble, referenziert in visual-style.md Abschnitt 'Geschlossenes Personen-Ensemble'" },
+    { "path": "/home/max/Projekte/maxone.one/packages/ui/src/content/ensemble.json", "note": "Cast-SSoT für das geschlossene Personen-Ensemble, referenziert in visual-style.md Abschnitt 'Geschlossenes Personen-Ensemble'" },
     { "path": "C:/Users/max/.claude/memory/MAX.md", "section_filter": "Brand-Foto-Setup", "note": "Referenziert in visual-style.md 'Sources' als [[MAX.md]] → Brand-Foto-Setup" }
   ],
   "output": "C:/Users/max/.claude/maxone-wiki/brand/",

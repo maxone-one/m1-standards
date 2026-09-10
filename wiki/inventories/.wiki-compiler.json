@@ -5,7 +5,7 @@
   "sources": [
     { "path": "/opt/secrets/", "note": "Konsumenten-/Token-Inventare je Projekt, per SSH gelesen, nie kopiert" },
     { "path": "C:/Users/max/.claude/memory/", "section_filter": "reference_.*inventory|reference_.*ids" },
-    { "path": "c:/Users/max/Projects/maxone-standards/registry/", "note": "projects.yml, exceptions.yml als Cross-Check gegen Tabellen" }
+    { "path": "/home/max/Projekte/m1-standards/registry/", "note": "projects.yml, exceptions.yml als Cross-Check gegen Tabellen" }
   ],
   "output": "C:/Users/max/.claude/maxone-wiki/inventories/",
   "auto_update": "prompt",
