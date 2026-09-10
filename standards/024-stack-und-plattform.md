@@ -9,6 +9,7 @@
 - [A] Stack-Whitelist & Plattform-Blacklist
 - [B] Self-Hosted-First (keine Abos)
 - [C] CSS: Tailwind v4, und nur Tailwind
+- [D] Lokal zuerst: die Daten bleiben beim Nutzer
 
 ---
 
@@ -148,3 +149,56 @@ Ballast.
 *Anlass: Max am 28.08.2026, nachdem beim Code-Review zu venfree auffiel, dass Tailwind in
 allen Projekten gebaut, aber in keinem Standard verlangt wird, und dass die einzige
 Erwähnung in 022 eine Datei nannte, die es seit v4 nicht mehr gibt.*
+
+---
+
+## D: Lokal zuerst, der Server nur mit Anlass
+
+**Status:** active · **Seit:** 2026-09-10 · **Gilt für:** jedes Projekt, das Daten eines
+Nutzers entgegennimmt
+
+**Max-Direktive vom 10.09.2026, im Wortlaut:** „Wobei die Daten erster Linie weiterhin auf
+ihrer Festplatte bleiben. Also ein webbasiertes Tool, welches lokal arbeitet. Nur durch ein
+leichtes Nudging aufgrund von Funktionserweiterungen darf überhaupt auf den Server
+hochgeladen werden. In diesem Fall muss natürlich strikt immer verschlüsselt werden. Das ist
+auch übrigens meine normale Herangehensweise und globale Firmenarchitektur."
+
+**Diese Regel steht eine Stufe vor Abschnitt B.** Self-Hosted-First beantwortet, auf wessen
+Server etwas läuft, und die Antwort ist: auf unserem. **Abschnitt D beantwortet die Frage
+davor, nämlich ob überhaupt ein Server nötig ist**, und die Antwort ist im Normalfall nein.
+
+### Die drei Teile
+
+**Erstens, die Daten bleiben beim Nutzer.** Ein Werkzeug ist im Normalfall eine Webanwendung,
+die im Browser rechnet und auf der Platte des Nutzers speichert. Nicht „auch lokal möglich",
+sondern lokal als Standardzustand.
+
+**Zweitens, der Server braucht einen Anlass.** Hochgeladen wird nur für eine Funktion, die es
+ohne Server nicht gibt, und der Nutzer wird an genau dieser Stelle gefragt, statt dass es im
+Hintergrund geschieht. **Wer aus Bequemlichkeit des Bauenden alles auf den Server legt, hat
+die Regel gebrochen, auch wenn nichts passiert.**
+
+**Drittens, was hochgeht, ist verschlüsselt.** Max sagt „strikt immer". Das ist keine Abwägung
+nach Datenart und keine Ausnahme für Testbetrieb.
+
+### Der Prüfsatz vor jedem Entwurf
+
+**Könnte diese Funktion im Browser laufen und auf der Platte des Nutzers speichern?** Wenn ja,
+tut sie das. Wenn nein, steht in `CONCEPT.md`, welche Funktion den Server erzwingt, und der
+Nutzer erfährt es an der Stelle, an der es passiert.
+
+### Was daraus für Attrappen folgt
+
+**Eine Attrappe bei einem fremden Anbieter nimmt nie eine Datei an.** Ein Artifact auf
+claude.ai liegt bei einem US-Anbieter und taugt für erfundene Beispiele, nie für Material
+eines echten Menschen. Die Attrappe verhindert das technisch, nicht durch einen Hinweistext:
+kein `input[type=file]`, kein Dateidialog, kein sendendes Eingabefeld.
+
+### Warum das kein Verzicht ist
+
+**Es entscheidet die Rechtslage mit.** Am Ort der Daten hängt, ob ein Auftragsverarbeiter
+nötig ist, ob eine Folgenabschätzung greift und wie groß der Schaden eines Einbruchs wäre.
+Ein Werkzeug, das lokal arbeitet, hat diese Fragen zum großen Teil gar nicht erst.
+
+**Und es verkauft sich.** Wer sagen kann „Ihre Unterlagen verlassen Ihren Rechner nicht",
+braucht keine Vertrauensbeteuerung.
