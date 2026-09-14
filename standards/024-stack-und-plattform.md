@@ -19,7 +19,7 @@ Der Stack jedes Projekts MUSS aus der Whitelist stammen. Blacklist-Komponenten s
 
 ### Whitelist
 
-**Hosting:** Hetzner Cloud EU ✅ Default · Coolify self-host ✅ · Vercel ⚠️ nur Marketing ohne PII · AWS/Azure/GCP ❌ ohne DSFA
+**Hosting:** Hetzner Cloud EU ✅ Default · Coolify ❌ (Max-Regel „kein Coolify“ vom 21.05.2026, auf maxone-prod seit 23.03.2026 entfernt; bis 14.09.2026 stand hier irrtümlich ✅) · Vercel ⚠️ nur Marketing ohne PII · AWS/Azure/GCP ❌ ohne DSFA
 
 **Datenbank:** Supabase self-hosted ✅ Default · PostgreSQL eigener Container ✅ · SQLite ✅ für Tools · Firebase ❌ · PlanetScale/Neon ⚠️ nur mit DSFA
 
