@@ -101,18 +101,18 @@ einem Re-Up auf beide gleichzeitig, und die Domain antwortet zufällig mal alt, 
 
 ### 4. Wenn eine Seite nicht antwortet
 
-**Zuerst dieser eine Befehl, bevor irgendetwas anderes untersucht wird.** In 95 Prozent der
-Fälle ist es der Traefik-Backend-Cache: Der Container hat beim Recreate eine neue IP
-bekommen, Traefik hält die alte. Der TLS-Handshake klappt dann, der HTTP-Stream öffnet, und
-die Antwort kommt nie.
+**Zuerst die Probe, bevor irgendetwas anderes untersucht wird.** Sie sagt in einer Zeile je
+Adresse, ob sie von außen antwortet und mit welchem Code. Gefahrlos, auch wenn alles gesund ist.
 
 ```bash
 ssh ... "/usr/local/bin/traefik-probe-fix.sh https://venfree.de/ https://www.venfree.de/"
 ```
 
-Das Skript probt jede URL, und **nur bei 000, 502 oder 504** startet es Traefik neu und probt
-danach erneut. Es ist damit gefahrlos aufzurufen, auch wenn alles gesund ist. Bestätigte
-Fälle: slf-kong am 27.04. und 06.05.2026, vector-blue am 19.04.2026.
+**Seit dem 15.09.2026 startet das Skript Traefik nie mehr neu** [B: maxone.one BUGS.md F-98].
+Bleibt eine Adresse nach sechs Runden bei 000, 502 oder 504, geht ein Task an Vault, und das
+Skript endet mit 1. **Von Hand neu starten nur, wer vorher belegt hat, dass es der Cache ist.**
+Verhalten, der alte Neustart-Fall und der Heiler auf maxone-watchdog:
+[topics/traefik-probe.md](topics/traefik-probe.md).
 
 **Direkt nach einem Slot-Wechsel kann `curl -I` (HEAD) 502 zeigen, während `curl` (GET) 200
 liefert.** Erst beides prüfen, dann urteilen.
@@ -196,7 +196,7 @@ Feste Punkte aus der laufenden Kommandozeile [B: `/opt/traefik/docker-compose.ym
 
 | Symptom | Ursache | Handgriff |
 |---|---|---|
-| TLS klappt, GET läuft ins Leere, curl-Timeout | Traefik hält die alte Container-IP | `traefik-probe-fix.sh <url>` |
+| TLS klappt, GET läuft ins Leere, curl-Timeout | Traefik hält die alte Container-IP, oder der Container hängt im falschen Netz | Probe, dann Handgriff 4: Status, Netz und Label prüfen, Neustart nur belegt |
 | Alles 404, Traefik meldet sich gesund | Traefik zu alt für die Docker-API (v3.3 spricht 1.24, Docker 29 verlangt 1.40) | Traefik auf v3.6 oder neuer. `DOCKER_API_VERSION` als Umgebungsvariable hilft **nicht**, Traefik setzt sie selbst |
 | Eine Domain antwortet abwechselnd alt und neu | alter Slot nur gestoppt statt entfernt, Traefik routet auf beide | alten Slot `docker rm`, im `deploy.sh` `stop` **und** `rm` |
 | Erster Besucher sieht eine Sekunden lange weiße Seite | kein Prewarm vor dem Umschalten | `deploy.sh` um den Prewarm-Block ergänzen (Standard 001 D) |
@@ -209,7 +209,7 @@ Feste Punkte aus der laufenden Kommandozeile [B: `/opt/traefik/docker-compose.ym
 **Diagnose in dieser Reihenfolge**, weil jede Stufe billiger ist als die nächste:
 
 ```bash
-/usr/local/bin/traefik-probe-fix.sh https://<domain>/   # 1. der Standardfall
+/usr/local/bin/traefik-probe-fix.sh https://<domain>/   # 1. antwortet es von außen (startet nichts neu)
 docker ps --filter "name=<projekt>"                     # 2. läuft der Slot überhaupt
 docker logs traefik --since 1h 2>&1 | grep -iE "error"  # 3. sagt Traefik etwas
 docker logs <container> --tail 50                       # 4. sagt die Anwendung etwas
