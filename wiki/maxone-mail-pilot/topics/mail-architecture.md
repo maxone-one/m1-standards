@@ -20,7 +20,15 @@ status: active
 
 Sources span 2026-03 to 2026-04. Recent consensus (alle Einträge <3mo, frisch).
 
-**Warum Brevo überhaupt (Grundlage):** Hetzner sperrt **ausgehenden Port 25** auf den Cloud-Servern (verifiziert 2026-05-29). Stalwart kann daher Mail **nicht** direkt an Empfänger-MX zustellen — das ist die ursprüngliche, harte Veranlassung für Brevo als Outbound, nicht Komfort. Konsequenz: **alles**, was Stalwart selbst verschickt (z.B. Sieve `vacation` / Auto-Reply), braucht einen **Brevo-Smarthost-Relay** (`smtp-relay.brevo.com:587`), sonst hängt es still in der Queue. Auto-Reply lieferte 2026-05-29 extern nicht aus, genau aus diesem Grund (Smarthost noch nicht konfiguriert). Details: Bibel Regel 25.
+> **KORREKTUR 15.09.2026, 23:5x: Port 25 ausgehend ist auf maxone-prod offen.** Max: „Hetzner
+> sperrt den Port 25 schon seit Ewigkeiten nicht mehr.“ Gemessen `[ANRUF]`: TCP auf
+> `gmail-smtp-in.l.google.com:25` antwortet mit `220 mx.google.com ESMTP`. Der folgende Absatz ist
+> damit überholt. Routen am selben Tag gelesen `[ANRUF]`: Absender maxone.one, maxone.studio,
+> griddone.de, karastelev.de sowie DSN und Reports gehen direkt per `mx`, viktoria-from und die
+> vibiphoto-Domains über `brevo_viktoria`, **alle übrigen Absenderdomains über die Auffangroute
+> `brevo`**. Stand und Messung: `maxone.one/briefings/ZENTINEL-STALWART-BIBEL.md`, Regel 25.
+
+**Warum Brevo überhaupt (Grundlage, Stand 29.05.2026, überholt):** Hetzner sperrt **ausgehenden Port 25** auf den Cloud-Servern (verifiziert 2026-05-29). Stalwart kann daher Mail **nicht** direkt an Empfänger-MX zustellen — das ist die ursprüngliche, harte Veranlassung für Brevo als Outbound, nicht Komfort. Konsequenz: **alles**, was Stalwart selbst verschickt (z.B. Sieve `vacation` / Auto-Reply), braucht einen **Brevo-Smarthost-Relay** (`smtp-relay.brevo.com:587`), sonst hängt es still in der Queue. Auto-Reply lieferte 2026-05-29 extern nicht aus, genau aus diesem Grund (Smarthost noch nicht konfiguriert). Details: Bibel Regel 25.
 
 maxone hat **eine geteilte Mail-Pipeline**: Outbound geht über **Brevo** (`api.brevo.com/v3/smtp/email`), Inbound und der **Sent-Folder** liegen in **Stalwart** (JMAP). Beide werden von einer einzigen Supabase Edge Function namens `email-client` orchestriert. Stalwart-Logs zeigen daher **niemals** ausgehende Zentinel-Mails — wer "hat X meine Mail bekommen?" untersucht, fragt zuerst die Brevo Events API, nicht Stalwart. Zentinel selbst ist kein eigener Container, sondern die Route `/admin/email` in den `maxone-v2-blue/green` Containern auf `maxone-prod`. Cross-cutting: viele Failure-Modi der Pipeline sind **silent** (200 OK ohne Side-Effect, `event=error` nach `messageId`, RocksDB-vs-Config-Präzedenz) — siehe [[../concepts/silent-failures]].
 
