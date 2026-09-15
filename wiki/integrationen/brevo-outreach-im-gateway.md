@@ -166,6 +166,30 @@ test -f src/lib/brevo-send.ts
 # → via DB-Migrationscheck
 ```
 
+## Lesende Prüfung per API, Stolpersteine
+
+Gemessen am 15.09.2026 bei der Vorfallprüfung F-112 (`werkstatt/bugs/F-112-…`), alle vier
+Mandanten-Konten im Free-Plan, Aufruf von maxone-prod aus. Die Schlüssel stehen in der
+Datenbank `outreach`, Tabelle `tenants`, Spalte `brevo_api_key`.
+
+- **Ohne eigenen `User-Agent` sperrt Cloudflare.** `GET /v3/senders` mit dem Standard von
+  Python-urllib: 403 „Error 1010: Access denied". Mit gesetztem User-Agent: 200.
+- `GET /v3/smtp/statistics/reports`: höchstens 30 Tage je Aufruf, sonst 400 `out_of_range`.
+  `aggregatedReport` nimmt auch 50 Tage.
+- `GET /v3/emailCampaigns` mit `endDate` in der Zukunft: 400 „End date should not be greater
+  than current date". Ohne Datumsfilter liefert `count` die Gesamtzahl. `status=scheduled`
+  gibt es nicht (400 „Invalid value of status"), gültig sind u. a. `sent`, `queued`,
+  `inProcess`, `draft`, `suspended`, `archive`, `inReview`.
+- `GET /v3/organization/activities` (Anmeldungen, Schlüsselnutzung): 400 „Upgrade to
+  Enterprise plan". **Ob ein Schlüssel lesend missbraucht wurde, ist im Free-Plan nicht
+  messbar.**
+- `GET /v3/whatsappCampaigns`: 403 „plan not eligible for using whatsapp".
+- `GET /v3/transactionalSMS/statistics/aggregatedReport` mit `startDate=2026-05-01`,
+  `endDate=2026-09-15`: 500 `invalid_request`, Ursache `[?]`.
+- **Tragen:** `/account`, `/smtp/statistics/events?event=requests` (Betreff, Absender, Tag),
+  `/contacts?limit=1` (`count`), `/contacts/lists`, `/processes` (Importe, Exporte),
+  `/webhooks`, `/senders/domains`, `/smsCampaigns`.
+
 ## Nicht-Ziele
 
 - Brevo-Template-Engine nutzen, unsere Templates bleiben in der DB, Rendering bei uns
