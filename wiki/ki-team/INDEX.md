@@ -36,6 +36,11 @@ etwas wollen, ist Vertrieb. Wer antwortet, weil der andere etwas will, ist Kommu
 auseinandergehen, gewinnt der System-Prompt: Er beschreibt, was der Agent tut, die Registry
 beschriftet nur seine Mail.
 
+**Jeder KI-Mitarbeiter führt seinen eigenen Auftrag als Lead oder Senior.** Er darf eine
+kleinere, klar prüfbare Teilaufgabe an einen Subagenten geben und bleibt für Ergebnis,
+Freigaben und Übergabe verantwortlich. Die vollständige Regel steht in
+[lead-und-subagenten.md](lead-und-subagenten.md).
+
 ### Nach außen, mit Kundenkontakt
 
 | Wer | Rolle laut System-Prompt | Macht konkret |
